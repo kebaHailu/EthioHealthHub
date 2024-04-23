@@ -42,7 +42,7 @@ class BillingDetail(models.Model):
     order_number = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     doctor_fee = models.IntegerField()
-    vat =  models.DecimalField(max_length=5, decimal_places=2 )
+    vat = models.DecimalField(max_digits=5, decimal_places=2)
     discount = models.IntegerField()
     other_info = models.TextField()
 
