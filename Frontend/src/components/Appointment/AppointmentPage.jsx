@@ -6,7 +6,7 @@ import PersonalInformation from "../Booking/PersonalInformation";
 import { Button, Steps, message } from "antd";
 import moment from "moment";
 import SelectApppointment from "./SelectApppointment";
-import useAuthCheck from "../../redux/hooks/useAuthCheck";
+// import useAuthCheck from "../../redux/hooks/useAuthCheck";
 import { useCreateAppointmentByUnauthenticateUserMutation } from "../../redux/api/appointmentApi";
 import { useDispatch } from "react-redux";
 import { addInvoice } from "../../redux/feature/invoiceSlice";
@@ -30,7 +30,8 @@ let initialValue = {
 }
 const AppointmentPage = () => {
   const dispatch = useDispatch();
-  const {data, role} = useAuthCheck();
+  const {data, role} = '';
+  
   const [current, setCurrent] = useState(0);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectTime, setSelectTime] = useState('');
@@ -139,7 +140,7 @@ const AppointmentPage = () => {
                 disabled={current === 0 ? (selectTime ? false : true) : IsDisable || !selectTime}
                 onClick={() => next()}>Next</Button>)}
 
-            {current === steps.length - 1 && (<Button type="primary" size="large" disabled={isConfirmDisable} loading={isLoading} onClick={handleConfirmSchedule}>Confirm</Button>)}
+            {current === steps.length - 1 && (<Button type="success" size="large" disabled={isConfirmDisable} loading={isLoading} onClick={handleConfirmSchedule}>Confirm</Button>)}
             {current > 0 && (<Button style={{ margin: '0 8px', }} size="large" onClick={() => prev()} >Previous</Button>)}
           </div>
         </div>

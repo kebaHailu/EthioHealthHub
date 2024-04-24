@@ -3,16 +3,10 @@ import { FaCheck, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa';
 import SocialSignUp from './SocialSignUp';
 import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
-import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
+// import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
 import { message } from 'antd';
 
-// password regex
-// ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$
-// At least one upper case English letter, (?=.*?[A-Z])
-// At least one lower case English letter, (?=.*?[a-z])
-// At least one digit, (?=.*?[0-9])
-// At least one special character, (?=.*?[#?!@$%^&*-])
-// Minimum eight in length .{8,} (with the anchors)
+
 
 const SignUp = ({ setSignUp }) => {
     const [error, setError] = useState({});
@@ -26,8 +20,8 @@ const SignUp = ({ setSignUp }) => {
     }
     const [user, setUser] = useState(formField)
     const [userType, setUserType] = useState('patient');
-    const [doctorSignUp, { data: dData, isSuccess: dIsSuccess, isError: dIsError, error: dError, isLoading: dIsLoading }] = useDoctorSignUpMutation();
-    const [patientSignUp, { data: pData, isSuccess: pIsSuccess, isError: pIsError, error: pError, isLoading: pIsLoading }] = usePatientSignUpMutation();
+    // const [doctorSignUp, { data: dData, isSuccess: dIsSuccess, isError: dIsError, error: dError, isLoading: dIsLoading }] = '';
+    // const [patientSignUp, { data: pData, isSuccess: pIsSuccess, isError: pIsError, error: pError, isLoading: pIsLoading }] = '';
     const [passwordValidation, setPasswordValidation] = useState({
         carLength: false,
         specailChar: false,
@@ -41,12 +35,12 @@ const SignUp = ({ setSignUp }) => {
     }
     useEffect(() => {
         // doctor account
-        if (dIsError && dError) {
+        if ('dIsError && dError') {
             message.error("Email Already Exist !!")
             setLoading(false);
         }
 
-        if (!dIsError && dIsSuccess) {
+        if ('!dIsError && dIsSuccess') {
             handleSignUpSuccess();
             setLoading(false);
             setLoading(false);
@@ -58,11 +52,11 @@ const SignUp = ({ setSignUp }) => {
         }
 
         // Patient account
-        if (pIsError && pError) {
-            message.error("Email Already Exist !!")
+        if ('pIsError && pError') {
+            message.error("internal server error ")
             setLoading(false);
         }
-        if (!pIsError && pIsSuccess) {
+        if ('!pIsError && pIsSuccess') {
             handleSignUpSuccess();
             setLoading(false);
             setSignUp(false);
@@ -73,7 +67,7 @@ const SignUp = ({ setSignUp }) => {
             })
         }
 
-    }, [dIsError, dError, pError, pIsError, , pIsLoading, dIsLoading, pData, dData, setSignUp, setLoading, dIsSuccess])
+    }, [])
 
     const [emailError, setEmailError] = useState({
         emailError: false
@@ -124,7 +118,8 @@ const SignUp = ({ setSignUp }) => {
     }
     const hanldeOnSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        console.log(user)
+        // setLoading(true);
         if (userType === "doctor") {
             doctorSignUp(user);
         } else {
@@ -166,7 +161,7 @@ const SignUp = ({ setSignUp }) => {
             {error.length && <h6 className="text-danger text-center">{error}</h6>}
             {infoError && <h6 className="text-danger text-center">{infoError}</h6>}
             <button type="submit"
-                className="btn btn-primary btn-block mt-2 iBtn"
+                className="btn btn-success btn-block mt-2 iBtn"
                 disabled={
                     passwordValidation.carLength && passwordValidation.numeric && passwordValidation.upperLowerCase && passwordValidation.specailChar && emailError.emailError ? "" : true
                 }

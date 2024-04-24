@@ -142,7 +142,7 @@ const AdminDashboard = () => {
                                                 <td>
                                                     <h2 className="table-avatar">
                                                         <a className="avatar avatar-sm mr-2"><img className="avatar-img rounded-circle" src={userImg} alt=""/></a>
-                                                        <a>Dr. Ruby Perrin</a>
+                                                        <a>Dr. Yisak</a>
                                                     </h2>
                                                 </td>
                                                 <td>Dental</td>

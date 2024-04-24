@@ -26,8 +26,8 @@ const Service = () => {
       <div className="container" style={{ marginTop: 200, marginBottom: 100 }}>
         <div className="row">
           {
-            Array(6).fill(null).map((_item, id) => (
-              <div className="col-lg-4 col-md-6 col-sm-6" key={id + 6}>
+            Array(3).fill(null).map((_item, id) => (
+              <div className="col-lg-4 col-md-6 col-sm-6" key={id + 3}>
                 <div className="card shadow border-0 mb-5">
                   <img src={img} alt="" className="img-fluid" style={{ maxHeight: '17rem', objectFit: 'cover' }} />
                   <div className="p-2">

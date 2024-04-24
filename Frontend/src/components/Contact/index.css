@@ -1,7 +1,7 @@
 .info .icon {
     margin-top: 2px;
     font-size: 22px;
-    color: #1977cc;
+    color:#32de8b;
     padding: 5px;
     background: #d6e9fa;
     display: flex;
@@ -18,8 +18,17 @@
 }
 .contact .info p {
     font-size: 14px;
-    color: #4b7dab;
+    color: #1d5b3a;
 }
 .contact .appointment-btn {
     border: 0 !important;
+    background: #32de8b;
 }
+/* Targeting all input types within the form and textarea specifically */
+ 
+/* More specific selectors for input fields within forms */
+.form-control:focus, textarea.form-control:focus {
+    border: 2px solid #32de8b !important; /* Green border */
+    outline: none; /* Removes the default focus outline */
+}
+

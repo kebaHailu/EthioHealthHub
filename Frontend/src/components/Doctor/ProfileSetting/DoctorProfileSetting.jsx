@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Select, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useUpdateDoctorMutation } from '../../../redux/api/doctorApi';
-import useAuthCheck from '../../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../../redux/hooks/useAuthCheck';
 import { doctorSpecialistOptions } from '../../../constant/global';
 import ImageUpload from '../../UI/form/ImageUpload';
 import dImage from '../../../images/avatar.jpg';
@@ -13,7 +13,8 @@ import { DatePicker } from 'antd';
 const DoctorProfileSetting = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [updateDoctor, { isLoading, isSuccess, isError, error }] = useUpdateDoctorMutation()
-    const { data } = useAuthCheck();
+    // const { data } = useAuthCheck();
+    const {data} = '';
     const { register, handleSubmit } = useForm({});
     const [userId, setUserId] = useState('');
     const [selectValue, setSelectValue] = useState({});
@@ -113,7 +114,7 @@ const DoctorProfileSetting = () => {
                                 <option value={''}>Select</option>
                                 <option className='text-capitalize'>male</option>
                                 <option className='text-capitalize'>female</option>
-                                <option className='text-capitalize'>shemale</option>
+                                
                             </select>
                         </div>
                     </div>

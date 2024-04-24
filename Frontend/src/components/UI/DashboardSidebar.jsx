@@ -2,7 +2,7 @@ import React from 'react';
 import img from '../../images/avatar.jpg';
 import './DashboardSidebar.css';
 import { Link, NavLink } from 'react-router-dom';
-import useAuthCheck from '../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../redux/hooks/useAuthCheck';
 import {
     FaTable,
     FaCalendarDay,
@@ -15,7 +15,9 @@ import {
 } from "react-icons/fa";
 
 const DashboardSidebar = () => {
-    const { data, role } = useAuthCheck();
+    // const { data, role } = useAuthCheck();
+      const data = {}; // Set default data or fetch data from other sources if needed
+      const role = "doctor";
 
     return (
         <div className="profile-sidebar p-3 rounded">
@@ -25,7 +27,7 @@ const DashboardSidebar = () => {
                         <div className="profile-info text-center">
                             <Link to={'/'}><img src={data?.img ? data?.img : img} alt="" /></Link>
                             <div className='profile-details'>
-                                <h5 className='mb-0'>{data?.firstName + " " + data?.lastName}</h5>
+                                <h5 className='mb-0 '>{data?.firstName + " " + data?.lastName}</h5>
                                 <div>
                                     <p className="mb-0">{data?.designation}</p>
                                 </div>
@@ -36,9 +38,9 @@ const DashboardSidebar = () => {
                             <Link to={'/'}><img src={data?.img ? data?.img : img} alt="" /></Link>
                             <div className='profile-details'>
                                 <h5 className='mb-0'>{data?.firstName + " " + data?.lastName}</h5>
-                                <div className='mt-2'>
-                                    <p className=' form-text m-0'>24 Jul 1983, 38 Years</p>
-                                    <p className=' form-text m-0'> New Yourk , USA</p>
+                                <div className='mt-2 hard-details'>
+                                    <p className=' form-text m-0'>09 september 2001, 22 Years</p>
+                                    <p className=' form-text m-0'> Addis Ababa , Ethiopia</p>
                                     <p className=' form-text m-0'>{data?.email}</p>
                                 </div>
                             </div>

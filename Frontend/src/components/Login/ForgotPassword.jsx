@@ -3,13 +3,13 @@ import Header from '../Shared/Header/Header'
 import Footer from '../Shared/Footer/Footer'
 import { Button, Form, Input, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useResetConfirmMutation } from '../../redux/api/authApi';
+// import { useResetConfirmMutation } from '../../redux/api/authApi';
 
 const ForgotPassword = () => {
     const [matchePass, setMatchPass] = useState(true);
     const { userId, uniqueString } = useParams();
     const navigate = useNavigate();
-    const [resetConfirm, { isError, isLoading, isSuccess, error }] = useResetConfirmMutation();
+    const [resetConfirm, { isError, isLoading, isSuccess, error }] = '';
 
     const onFinish = (values) => {
         const { password, rePassword } = values
