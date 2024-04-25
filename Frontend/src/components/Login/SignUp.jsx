@@ -5,21 +5,26 @@ import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
 // import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
 import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 
-const SignUp = ({ setSignUp }) => {
+const SignUp = () => {
+    const Navigate =useNavigate();
     const [error, setError] = useState({});
     const [infoError, setInfoError] = useState('');
     const [loading, setLoading] = useState(false);
+    
+    const [userType, setUserType] = useState("patient");
     const formField = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-    }
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      role: userType === "doctor" ? "doctor" : "patient",
+    };
     const [user, setUser] = useState(formField)
-    const [userType, setUserType] = useState('patient');
+   
     // const [doctorSignUp, { data: dData, isSuccess: dIsSuccess, isError: dIsError, error: dError, isLoading: dIsLoading }] = '';
     // const [patientSignUp, { data: pData, isSuccess: pIsSuccess, isError: pIsError, error: pError, isLoading: pIsLoading }] = '';
     const [passwordValidation, setPasswordValidation] = useState({
@@ -29,45 +34,18 @@ const SignUp = ({ setSignUp }) => {
         numeric: false
     })
 
-    const handleSignUpSuccess = () => {
-        setLoading(false);
-        setUser(formField)
-    }
-    useEffect(() => {
-        // doctor account
-        if ('dIsError && dError') {
-            message.error("Email Already Exist !!")
-            setLoading(false);
-        }
+    // const handleSignUpSuccess = () => {
+    //     setLoading(false);
+    //     setUser(formField)
+    // }
 
-        if ('!dIsError && dIsSuccess') {
-            handleSignUpSuccess();
-            setLoading(false);
-            setLoading(false);
-            swal({
-                icon: 'success',
-                text: `Successfully Account Created Please Verify Your email`,
-                timer: 5000
-            })
-        }
-
-        // Patient account
-        if ('pIsError && pError') {
-            message.error("internal server error ")
-            setLoading(false);
-        }
-        if ('!pIsError && pIsSuccess') {
-            handleSignUpSuccess();
-            setLoading(false);
-            setSignUp(false);
-            swal({
-                icon: 'success',
-                text: `Successfully ${userType === 'doctor' ? 'Doctor' : 'Patient'} Account Created Please Login`,
-                timer: 2000
-            })
-        }
-
-    }, [])
+     useEffect(() => {
+       setUser((prevUser) => ({
+         ...prevUser,
+         role: userType === "doctor" ? "doctor" : "patient",
+       }));
+     }, [userType]);
+  
 
     const [emailError, setEmailError] = useState({
         emailError: false
@@ -118,12 +96,28 @@ const SignUp = ({ setSignUp }) => {
     }
     const hanldeOnSubmit = async (e) => {
         e.preventDefault();
+        
         console.log(user)
         // setLoading(true);
         if (userType === "doctor") {
             doctorSignUp(user);
         } else {
+            
             patientSignUp(user)
+        }
+
+        try{
+            const response =await AuthService.Signup(user);
+            if(response.status === 201){
+                swal("Success", "User Created Successfully", "success");
+                Navigate('/login');
+            }
+        }
+        catch(error){
+            console.Error(error.message);
+        }
+        finally{
+            setLoading(false);
         }
     }
 

@@ -13,7 +13,7 @@
     object-fit: cover;
     object-position: top;
     margin-left: 11px;
-    border: 2px #1977cc solid;
+    border: 2px #67cc19 solid;
     cursor: pointer;
 }
 .hideTopHeader{
@@ -25,11 +25,11 @@
     transition: 1ms!important;
 }
 #header {
-    background: #fff;
-    transition: all 0.5s;
-    z-index: 997;
-    top: 40px;
-    box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
+  background: #fff;
+  transition: all 0.5s;
+  z-index: 997;
+  top: 2px;
+  box-shadow: 0 0 20px 10px rgba(18, 18, 1, 0.3);
 }
 
 #header.header-scrolled {
@@ -47,7 +47,7 @@
 }
 
 #header .logo a {
-    color: #2c4964;
+    color: #219555;
 }
 
 #header .logo img {
@@ -82,7 +82,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 18px;
     color: #2c4964;
     white-space: nowrap;
     transition: 0.3s;
@@ -92,7 +92,7 @@
 
 .navbar a i,
 .navbar a:focus i {
-    font-size: 12px;
+    font-size: 16px;
     line-height: 0;
     margin-left: 5px;
 }
@@ -101,8 +101,8 @@
 .navbar .active,
 .navbar .active:focus,
 .navbar li:hover>a {
-    color: #1977cc;
-    border-color: #1977cc;
+    color: #19cc5e;
+    border-color: #19cc4f;
 }
 
 .navbar .dropdown ul {
@@ -116,7 +116,7 @@
     opacity: 0;
     visibility: hidden;
     background: #fff;
-    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    box-shadow: 10px 10px 30px rgba(127, 137, 161, 0.25);
     transition: 0.3s;
 }
 
@@ -140,7 +140,7 @@
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover>a {
-    color: #1977cc;
+    color: #19cc3d;
 }
 
 .navbar .dropdown:hover>ul {

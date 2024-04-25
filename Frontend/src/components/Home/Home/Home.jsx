@@ -2,7 +2,7 @@ import React from "react";
 import Blog from "../Blog/Blog";
 import Footer from "../../Shared/Footer/Footer";
 import Testimonial from "../Testimonial/Testimonial";
-import ClinicAndSpecialities from "../ClinicAndSpecialities/ClinicAndSpecialities";
+// import ClinicAndSpecialities from "../ClinicAndSpecialities/ClinicAndSpecialities";
 import BookDoctor from "../BookOurDoctor/BookDoctor";
 import Availabe from "../AvailableFeatures/Available";
 import HeroSection from "../HeroSection/HeroSection";
@@ -19,7 +19,7 @@ const Home = () => {
       <HeroSection />
       <InfoPage />
       <Service />
-      <ClinicAndSpecialities />
+      {/* <ClinicAndSpecialities /> */}
       <BookDoctor />
       <Blog />
       <Availabe />
