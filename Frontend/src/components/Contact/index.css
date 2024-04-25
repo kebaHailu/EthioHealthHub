@@ -1,0 +1,34 @@
+.info .icon {
+    margin-top: 2px;
+    font-size: 22px;
+    color:#32de8b;
+    padding: 5px;
+    background: #d6e9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+}
+.contact .info h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2c4964;
+}
+.contact .info p {
+    font-size: 14px;
+    color: #1d5b3a;
+}
+.contact .appointment-btn {
+    border: 0 !important;
+    background: #32de8b;
+}
+/* Targeting all input types within the form and textarea specifically */
+ 
+/* More specific selectors for input fields within forms */
+.form-control:focus, textarea.form-control:focus {
+    border: 2px solid #32de8b !important; /* Green border */
+    outline: none; /* Removes the default focus outline */
+}
+

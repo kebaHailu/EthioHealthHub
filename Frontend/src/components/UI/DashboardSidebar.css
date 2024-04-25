@@ -1,0 +1,84 @@
+.profile-sidebar {
+    background-color: #07654b;
+	overflow: hidden;
+   
+    box-shadow: 0 0 8px 10px rgba(8, 8, 8, 0.2);
+}
+.dashboard-menu ul {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-transform: capitalize;
+}
+.dashboard-menu ul li {
+	line-height: inherit;
+   
+}
+.dashboard-menu > ul > li {
+	border-bottom:1px solid #dadada;
+	position: relative;
+}
+.dashboard-menu > ul > li:last-child {
+	border-bottom: 0;
+}
+.dashboard-menu ul li a span,
+.dashboard-menu ul li a i {
+	display: inline-block;
+	vertical-align: middle;
+}
+.dashboard-menu > ul > li > a {
+	 color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+	display: block;
+	padding: 16px 20px;
+    transition: 0.2s ease-in;
+}
+.dashboard-menu > ul > li:hover > a,
+.dashboard-menu > ul > li.active > a {
+	
+    background: #c3bbbb;
+}
+.dashboard-menu > ul > li:hover > a{
+    transform: scale(1.05);
+}
+.active {
+    color: #1977cc !important;
+    background: #fff;
+}
+
+.dashboard-menu ul li a .icon {
+    font-size: 16px;
+    margin-right: 10px;
+    width: 16px;
+}
+.profile-info {
+    display: inline-block;
+    margin: 0 0 15px;
+    width: auto;
+    padding: 8px;
+    border-radius: 50%;
+    
+}
+.profile-info img {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    border: 6px solid #efefef;
+    object-fit: cover;
+}
+.profile-details h5{
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.profile-details p{
+    font-size: 13px;
+}
+.hard-details p{
+    font-size: 14px;
+    color: #ffffff;
+}
