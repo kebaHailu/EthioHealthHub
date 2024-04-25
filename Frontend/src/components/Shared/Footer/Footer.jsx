@@ -31,7 +31,7 @@ const Footer = () => {
 									<li><Link to={'/login'}><FaAngleDoubleRight className='icon' />  Login</Link></li>
 									<li><Link to={'/login'}><FaAngleDoubleRight className='icon' />  Register</Link></li>
 									<li><Link to={'/doctors'}><FaAngleDoubleRight className='icon' />  Booking</Link></li>
-									<li><Link to={'/'}><FaAngleDoubleRight className='icon' />  Patient Dashboard</Link></li>
+									<li><Link to={'/dashboard'}><FaAngleDoubleRight className='icon' />  Patient Dashboard</Link></li>
 								</ul>
 							</div>
 						</div>
@@ -43,7 +43,7 @@ const Footer = () => {
 								<ul>
 									<li><Link to={'/'}><FaAngleDoubleRight className='icon' /> Appointments</Link></li>
 									<li><Link to={'/login'}><FaAngleDoubleRight className='icon' /> Login</Link></li>
-									<li><Link to={'/register'}><FaAngleDoubleRight className='icon' /> Register</Link></li>
+									<li><Link to={'/login'}><FaAngleDoubleRight className='icon' /> Register</Link></li>
 									<li><Link to={'/dashboard'}><FaAngleDoubleRight className='icon' /> Doctor Dashboard</Link></li>
 								</ul>
 							</div>

@@ -1,12 +1,12 @@
 import React from 'react'
 import DoctorDashCard from './doctor/DoctorDashCard';
-import useAuthCheck from '../../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../../redux/hooks/useAuthCheck';
 import DashboardLayout from '../DashboardLayout/DashboardLayout';
 import DashboardPage from './doctor/DashboardPage';
 import PatientDashboard from './PatientDashboard';
 
 const Dashboard = () => {
-    const { role } = useAuthCheck();
+    const role = "doctor";
     return (
         <>
             <DashboardLayout>

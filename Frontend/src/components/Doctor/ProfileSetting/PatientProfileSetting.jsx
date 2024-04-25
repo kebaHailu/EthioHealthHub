@@ -4,14 +4,14 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { bloodGrupOptions } from '../../../constant/global';
 import { useUpdatePatientMutation } from '../../../redux/api/patientApi';
-import useAuthCheck from '../../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../../redux/hooks/useAuthCheck';
 import { message } from 'antd';
 import ImageUpload from '../../UI/form/ImageUpload';
 import pImage from '../../../images/avatar.jpg';
 import { DatePicker } from 'antd';
 
 const PatientProfileSetting = () => {
-    const { data } = useAuthCheck();
+    const data  = ''
     const { register, handleSubmit } = useForm({});
     const [userId, setUserId] = useState('');
     const [selectBloodGroup, setSelectBloodGroup] = useState('');
@@ -117,7 +117,7 @@ const PatientProfileSetting = () => {
                                 <option value={''}>Select</option>
                                 <option className='text-capitalize'>male</option>
                                 <option className='text-capitalize'>female</option>
-                                <option className='text-capitalize'>shemale</option>
+                               
                             </select>
                         </div>
                     </div>

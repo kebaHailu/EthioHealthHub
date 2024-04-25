@@ -40,13 +40,14 @@ import TreatmentEdit from "./components/Doctor/Treatment/TreatmentEdit";
 import ViewAppointment from "./components/Doctor/Appointments/ViewAppointment";
 import ForgotPassword from "./components/Login/ForgotPassword";
 import Dashboard from "./components/Doctor/Dashboard/Dashboard";
-import PrivateOutlet from "./components/Shared/PrivateOutlet";
+// import PrivateOutlet from "./components/Shared/PrivateOutlet";
 import NotFound from "./components/UI/NotFound";
 
 function App() {
   return (
     <Routes>
-      <Route element={<PrivateOutlet />}>
+      {/* element={<PrivateOutlet />} */}
+      <Route>
         <Route path="/dashboard/blogs" element={<Blogs />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/my-patients" element={<MyPatients />} />
@@ -107,7 +108,6 @@ function App() {
       <Route path="/admin/reviews" element={<AdminReviews />} />
       <Route path="/admin/transaction" element={<Transactions />} />
       <Route path="/admin/specialites" element={<Specialites />} />
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

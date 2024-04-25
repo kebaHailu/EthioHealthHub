@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Button, message } from 'antd';
 import DashboardLayout from '../DashboardLayout/DashboardLayout';
-import useAuthCheck from '../../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../../redux/hooks/useAuthCheck';
 import ImageUpload from '../../UI/form/ImageUpload';
 import BlogIcon from '../../../images/blogIcon.png';
 
 const AddBlog = () => {
-    const { data: userData } = useAuthCheck();
+    const { data: userData } = '';
     const [createBlog, { isLoading, isError, error, isSuccess }] = useCreateBlogMutation();
     const { register, handleSubmit } = useForm({});
     const [selectedImage, setSelectedImage] = useState(null);

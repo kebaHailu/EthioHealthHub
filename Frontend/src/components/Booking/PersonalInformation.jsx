@@ -1,11 +1,11 @@
 import { Checkbox, message } from 'antd';
 import { useEffect, useState } from 'react';
-import useAuthCheck from '../../redux/hooks/useAuthCheck';
+// import useAuthCheck from '../../redux/hooks/useAuthCheck';
 
 const PersonalInformation = ({ handleChange, selectValue, setPatientId =() =>{} }) => {
     const { firstName, lastName, email, phone, reasonForVisit, description, address } = selectValue;
     const [checked, setChecked] = useState(false);
-    const { data } = useAuthCheck();
+    const data = ''
 
     const onChange = (e) => {
         setChecked(e.target.checked);
