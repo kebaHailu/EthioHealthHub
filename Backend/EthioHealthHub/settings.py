@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'drf_yasg',
-    "user",
     "rest_framework",
     'rest_framework_simplejwt',
     'djoser',
@@ -92,7 +91,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'EthioHealthHub.wsgi.application'
-AUTH_USER_MODEL = "user.CustomUser"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

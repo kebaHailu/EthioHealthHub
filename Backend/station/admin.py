@@ -7,4 +7,4 @@ from station.models import Station
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'admin_name')
-    search_fields = ('name')
+    search_fields = ('name',)

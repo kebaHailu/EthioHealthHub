@@ -23,8 +23,8 @@ class Patient(models.Model):
         ('F', 'Female')
     ]
 
-    first_name = models.charField(max_length=255)
-    last_name = models.charField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     age = models.IntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     phone_number = models.CharField(max_length=25)
