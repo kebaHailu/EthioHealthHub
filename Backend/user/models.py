@@ -8,15 +8,26 @@ class CustomUser(AbstractUser):
         ('M', 'Male'),
         ('F', 'Female')
     ]
+    ROLE_OPTION = [
+        ('A', 'Administrator'),
+        ('P', 'Patient'),
+        ('D', 'Doctor')
+    ]
+    email = models.EmailField(unique=True, blank=False, null=False)
+    first_name = models.CharField(max_length=250, blank=False, null=False)
+    last_name = models.CharField(max_length=250, blank=False, null=False)
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
-
+    role = models.CharField(max_length=1, choices=ROLE_OPTION, default='P')
+    patient = models.OneToOneField('PatientData', on_delete=models.CASCADE, null=True)
+    doctor = models.OneToOneField('DoctorData', on_delete=models.CASCADE, null=True)
     class Meta:
-        verbose_name = 'Admin'
-        verbose_name_plural = 'Admins'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 
-class Patient(CustomUser):
+class PatientData(models.Model):
     blood_group = models.CharField(max_length=3, null=True, blank=True)
     profile_img = models.CharField(max_length=255, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
@@ -28,7 +39,7 @@ class Patient(CustomUser):
         verbose_name_plural = 'Patients'
 
 
-class Doctor(CustomUser):
+class DoctorData(models.Model):
     about_me = models.TextField(null=True, blank=True)
     address = models.OneToOneField('Address', on_delete=models.CASCADE, null=True)
     pricing = models.PositiveIntegerField()
@@ -37,7 +48,6 @@ class Doctor(CustomUser):
     class Meta:
         verbose_name = 'Doctor'
         verbose_name_plural = 'Doctors'
-
 
 
 class Address(models.Model):

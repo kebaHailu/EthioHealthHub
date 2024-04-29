@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     "user",
     "rest_framework",
-    'blog',
-    'payment',
+    'rest_framework_simplejwt',
+    'djoser',
+    'station',
+    'technician',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,22 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'EthioHealthHub.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'user.serializers.UserCreateSerializer',
+    }
+}
 
 TEMPLATES = [
     {

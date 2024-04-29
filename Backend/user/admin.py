@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient, Doctor, Address, CustomUser
+from .models import CustomUser
 # Register your models here.
 
 
@@ -9,15 +9,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name')
 
 
-@admin.register(Patient)
-class PatientAdmin(admin.ModelAdmin):
-
-    list_display = ('first_name', 'last_name')
-    search_fields = ('first_name', 'last_name')
-
-
-@admin.register(Doctor)
-class DoctorAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
-    search_fields = ('first_name', 'last_name')
 
