@@ -81,3 +81,11 @@
     color: #333;
     font-weight: 600;
 }
+.see-more{
+    border-radius: 10px;
+    padding: 2px;
+    text-align: center;
+    border-color: green;
+    color:black
+     
+}   

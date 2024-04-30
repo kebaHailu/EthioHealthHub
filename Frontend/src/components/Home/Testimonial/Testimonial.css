@@ -1,0 +1,38 @@
+.testimonial-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.testimonial-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0.5rem;
+}
+
+.testimonial-card img {
+  width: 70%;
+  height: 240px; /* Set the height as desired */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 8px;
+}
+
+.text-lg {
+  font-size: 1.25rem;
+}
+
+.text-base {
+  font-size: 1rem;
+}
+.meet::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: #b2c8dd;
+  bottom: 0;
+  left: 0;
+}

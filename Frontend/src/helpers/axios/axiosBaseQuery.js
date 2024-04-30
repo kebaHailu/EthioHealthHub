@@ -1,6 +1,6 @@
 import { instance } from './axiosInstance';
 
-export const axiosBaseQuery =
+export const  axiosBaseQuery =
     ({ baseUrl } = { baseUrl: '' }) =>
         async ({ url, method, data, params, headers }) => {
             try {

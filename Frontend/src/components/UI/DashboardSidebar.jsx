@@ -116,19 +116,9 @@ const DashboardSidebar = () => {
                                     <span>Schedule Timings</span>
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink to={'/dashboard/invoices'} activeClassName="active" end>
-                                    <FaHourglassStart className="icon" />
-                                    <span>Invoices</span>
-                                </NavLink>
-                            </li>
+                           
 
-                            <li>
-                                <NavLink to={'/dashboard/reviews'} activeClassName="active" end>
-                                    <FaRegStar className="icon" />
-                                    <span>Reviews</span>
-                                </NavLink>
-                            </li>
+                           
 
                             <li>
                                 <NavLink to={'/dashboard/profile-setting'} activeClassName="active" end>
@@ -137,12 +127,7 @@ const DashboardSidebar = () => {
                                 </NavLink>
                             </li>
 
-                            <li>
-                                <NavLink to={'/dashboard/blogs'} activeClassName="active" end>
-                                    <FaBlog className="icon" />
-                                    <span>Blogs (Will move to Admin)</span>
-                                </NavLink>
-                            </li>
+                          
 
                             <li>
                                 <NavLink to={'/dashboard/change-password'} activeClassName="active" end>
