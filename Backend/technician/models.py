@@ -29,6 +29,10 @@ class Patient(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     phone_number = models.CharField(max_length=25)
     email = models.EmailField()
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+
 
 
 class ClinicalRecord(models.Model):
@@ -47,6 +51,13 @@ class ClinicalRecord(models.Model):
     follow_up_information = models.TextField(blank=True)
     image_path = models.CharField(max_length=255, blank=True)
     model_result = models.CharField(max_length=255, blank=True)
+    allergies = models.CharField(max_length=255, blank=True)
+    vaccination_status = models.CharField(max_length=255, blank=True)
+    sugar_level = models.CharField(max_length=255, blank=True)
+    blood_pressure = models.CharField(max_length=255, blank=True)
+
+
+
 
 
 class TechnicalReport(models.Model):
