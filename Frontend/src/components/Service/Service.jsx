@@ -31,7 +31,7 @@ const Service = () => {
                 <div className="card shadow border-0 mb-5">
                   <img src={img} alt="" className="img-fluid" style={{ maxHeight: '17rem', objectFit: 'cover' }} />
                   <div className="p-2">
-                    <h4 className="mt-4 mb-2">Child care</h4>
+                    <h4 className="mt-4 mb-2">HealthCare</h4>
                     <p className="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
                   </div>
                 </div>
