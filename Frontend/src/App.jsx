@@ -4,7 +4,7 @@ import Home from "./components/Home/Home/Home";
 import SignInForm from "./components/Login/SignInForm";
 import DoctorBooking from "./components/Booking/DoctorBooking/DoctorBooking";
 import BookingSuccess from "./components/Booking/BookingSuccess";
-import BookingInvoice from "./components/Booking/BookingInvoice/BookingInvoice";
+// import BookingInvoice from "./components/Booking/BookingInvoice/BookingInvoice";
 import DoctorProfile from "./components/Doctor/DoctorProfile/DoctorProfile";
 import Appointments from "./components/Doctor/Appointments/Appointments";
 import MyPatients from "./components/Doctor/MyPatients/MyPatients";
@@ -21,13 +21,9 @@ import Transactions from "./components/Admin/Transactions/Transactions";
 import Specialites from "./components/Admin/Specialites/Specialites";
 import AdminReviews from "./components/Admin/Reviews/Reviews";
 import PatientFavouriteDoctor from "./components/Doctor/PatientFavourite/PatientFavourite";
-import DoctorInvoice from "./components/Doctor/Invoice/DoctorInvoice";
+// import DoctorInvoice from "./components/Doctor/Invoice/DoctorInvoice";
 import SearchDoctor from "./components/Doctor/SearchDoctor/SearchDoctor";
-import Blogs from "./components/Doctor/Blogs/Blogs";
-import BlogsEdit from "./components/Doctor/Blogs/BlogsEdit";
-import AddBlog from "./components/Doctor/Blogs/AddBlog";
-import Blog from "./components/Blog/Blog";
-import BlogDetails from "./components/Blog/BlogDetails";
+import Stations from "./components/Stations/Stations";
 import Contact from "./components/Contact/Contact";
 import About from "./components/About/About";
 import Service from "./components/Service/Service";
@@ -42,13 +38,14 @@ import ForgotPassword from "./components/Login/ForgotPassword";
 import Dashboard from "./components/Doctor/Dashboard/Dashboard";
 // import PrivateOutlet from "./components/Shared/PrivateOutlet";
 import NotFound from "./components/UI/NotFound";
+import PatientProfileSetting from "./components/Doctor/ProfileSetting/PatientProfileSetting";
 
 function App() {
   return (
     <Routes>
       {/* element={<PrivateOutlet />} */}
       <Route>
-        <Route path="/dashboard/blogs" element={<Blogs />} />
+        <Route path="/stations" element={<Stations />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/my-patients" element={<MyPatients />} />
         <Route path="/dashboard/reviews" element={<Reviews />} />
@@ -77,12 +74,12 @@ function App() {
           path="/dashboard/favourite"
           element={<PatientFavouriteDoctor />}
         />
-        <Route path="/dashboard/invoices" element={<DoctorInvoice />} />
+        {/* <Route path="/dashboard/invoices" element={<DoctorInvoice />} /> */}
       </Route>
       <Route path="/login" element={<SignInForm />} />
       <Route path="/" element={<Home />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:id" element={<BlogDetails />} />
+      {/* <Route path="/blog" element={<Blog />} /> */}
+      {/* <Route path="/blog/:id" element={<BlogDetails />} /> */}
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
       <Route path="/service" element={<Service />} />
@@ -94,17 +91,22 @@ function App() {
       <Route path="/track-appointment" element={<TrackAppointment />} />
       <Route path="/doctors" element={<SearchDoctor />} />
       <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
-      <Route path="/dashboard/blogs/:id" element={<BlogsEdit />} />
-      <Route path="/dashboard/blogs/create" element={<AddBlog />} />
+      {/* <Route path="/dashboard/blogs/:id" element={<BlogsEdit />} /> */}
+      {/* <Route path="/dashboard/blogs/create" element={<AddBlog />} /> */}
       <Route path="/booking/:doctorId" element={<DoctorBooking />} />
       <Route path="/booking/success/:id" element={<BookingSuccess />} />
-      <Route path="/booking/invoice/:id" element={<BookingInvoice />} />
+      {/* <Route path="/booking/invoice/:id" element={<BookingInvoice />} /> */}
       {/* Admin Dashboard  */}
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/appointments" element={<AdminAppointments />} />
       <Route path="/admin/doctors" element={<Doctors />} />
       <Route path="/admin/patients" element={<Patients />} />
       <Route path="/admin/profile" element={<Profile />} />
+      <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
+      {/* <Rpite
+        path="/admin/addpatient/:id"
+        element={<PatientCredentialsForm />}
+      /> */}
       <Route path="/admin/reviews" element={<AdminReviews />} />
       <Route path="/admin/transaction" element={<Transactions />} />
       <Route path="/admin/specialites" element={<Specialites />} />

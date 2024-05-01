@@ -30,7 +30,15 @@ class Specialist(models.Model):
     state = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=200, null=True)
 
- 
+
+    def first_name(self):
+        return self.user.first_name
+
+    def last_name(self):
+        return self.user.last_name
+
+    def email(self):
+        return self.user.email
 
 
 class Education(models.Model):
