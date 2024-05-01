@@ -34,17 +34,7 @@ const SignIn = ({ handleResponse }) => {
         setForgotEmail("");
         setShowForgotPassword(false);
     }
-    // useMessageEffect(resetIsLoading, resetIsSuccess, resetIsError, resetError, "Successfully Reset Password, Please check your Email!!")
-    // useEffect(() => {
-    //     if ('') {
-    //         message.error(error?.data?.message)
-    //         setInfoError(error?.data?.message)
-    //     }
-    //     if ('') {
-    //         message.success('Successfully Logged in');
-    //         navigate('/')
-    //     }
-    // }, [navigate])
+
 
     const handleShowForgotPassword = () => {
         setShowForgotPassword(!showForgotPassword);
@@ -75,13 +65,6 @@ const SignIn = ({ handleResponse }) => {
             >
               Stil Remember Password ?
             </div>
-            {/* <button className="iBtn" type="submit" value="sign In">
-              {resetIsLoading ? (
-                <Spinner animation="border" variant="info" />
-              ) : (
-                "Submit"
-              )}
-            </button> */}
           </form>
         ) : (
           <form className="sign-in-form" onSubmit={handleSubmit(onSubmit)}>

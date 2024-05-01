@@ -3,9 +3,12 @@ import {authKey} from '../constant/storageKey';
 import {decodeToken} from '../utils/jwt';
 import { getFromLocalStorage, setLocalStorage } from '../utils/local-storage';
 
-export const Signup = async(formField) => {
+ const Signup = async(formField) => {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/signup', formField)
+        const response = await axios.post(
+          "http://127.0.0.1:8000/auth/users/",
+          formField
+        );
         return response.data;
     } catch (error) {
         console.log(error);
@@ -13,8 +16,9 @@ export const Signup = async(formField) => {
    
 
 }
+export default Signup
 
-export const Login = async(formField) => {
+ export const Login = async(formField) => {
     try {
         const response = await axios.post('http://127.0.0.1:8000/api/login', formField)
         return response.data;
@@ -22,6 +26,7 @@ export const Login = async(formField) => {
         console.log(error);
     }
 }
+
 export const ForgotPassword = async (formField)=>{
     try{
         const response = await axios.post('http://127.0.0.1:8000/api/reset-password', formField)

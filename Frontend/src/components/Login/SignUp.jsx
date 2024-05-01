@@ -4,8 +4,10 @@ import SocialSignUp from './SocialSignUp';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
-// import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
-import { message } from 'antd';
+import { toast } from "react-toastify";
+import Signup from '../../service/auth.service';
+
+
 
 
 
@@ -16,18 +18,18 @@ const SignUp = () => {
     const [infoError, setInfoError] = useState('');
     const [loading, setLoading] = useState(false);
     
-    const [userType, setUserType] = useState("patient");
+    // const [userType, setUserType] = useState("patient");
     const formField = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      role: userType === "doctor" ? "doctor" : "patient",
+    "username": "",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "password": "",
+    "user_role": "SD"
     };
     const [user, setUser] = useState(formField)
    
-    // const [doctorSignUp, { data: dData, isSuccess: dIsSuccess, isError: dIsError, error: dError, isLoading: dIsLoading }] = '';
-    // const [patientSignUp, { data: pData, isSuccess: pIsSuccess, isError: pIsError, error: pError, isLoading: pIsLoading }] = '';
+   
     const [passwordValidation, setPasswordValidation] = useState({
         carLength: false,
         specailChar: false,
@@ -35,18 +37,9 @@ const SignUp = () => {
         numeric: false
     })
 
-    // const handleSignUpSuccess = () => {
-    //     setLoading(false);
-    //     setUser(formField)
-    // }
-
-     useEffect(() => {
-       setUser((prevUser) => ({
-         ...prevUser,
-         role: userType === "doctor" ? "doctor" : "patient",
-       }));
-     }, [userType]);
   
+
+    
 
     const [emailError, setEmailError] = useState({
         emailError: false
@@ -92,49 +85,45 @@ const SignUp = () => {
         }
     }
 
-    const handleUserTypeChange = (e) => {
-        setUserType(e.target.value);
-    }
+    // const handleUserTypeChange = (e) => {
+    //     setUserType(e.target.value);
+    // }
     const hanldeOnSubmit = async (e) => {
         e.preventDefault();
         
-        console.log(user)
-        // setLoading(true);
-        if (userType === "doctor") {
-            doctorSignUp(user);
-        } else {
-            
-            patientSignUp(user)
-        }
+       
 
-        try{
-            const response =await AuthService.Signup(user);
-            if(response.status === 201){
-                swal("Success", "User Created Successfully", "success");
-                Navigate('/login');
-            }
-        }
-        catch(error){
-            console.Error(error.message);
-        }
-        finally{
-            setLoading(false);
-        }
+     setLoading(true);
+     console.log(user)
+
+     try {
+       const response = await Signup(user);
+       if (response.status === 201) {
+         toast.success("Successfully registered");
+         Navigate("/login");
+         console.log('successfuly sent',response)
+       }
+     } catch (error) {
+       console.log("Error:", error.message);
+     } finally {
+       setLoading(false);
+     }
     }
 
     return (
       <form className="sign-up-form" onSubmit={hanldeOnSubmit}>
         <h2 className="title">Sign Up</h2>
+        
         <div className="input-field">
           <span className="fIcon">
             <FaUser />
           </span>
           <input
             placeholder="First Name"
-            name="firstName"
+            name="first_name"
             type="text"
-            onChange={(e) => hanldeOnChange(e)}
-            value={user.firstName}
+            onChange={hanldeOnChange}
+            value={user.first_name}
           />
         </div>
         <div className="input-field">
@@ -143,10 +132,10 @@ const SignUp = () => {
           </span>
           <input
             placeholder="Last Name"
-            name="lastName"
+            name="last_name"
             type="text"
-            onChange={(e) => hanldeOnChange(e)}
-            value={user.lastName}
+            onChange={hanldeOnChange}
+            value={user.last_name}
           />
         </div>
         <div className="input-field">
@@ -155,10 +144,10 @@ const SignUp = () => {
           </span>
           <input
             placeholder="User name"
-            name="userName"
+            name="username"
             type="text"
-            onChange={(e) => hanldeOnChange(e)}
-            value={user.userName}
+            onChange={hanldeOnChange}
+            value={user.username}
           />
         </div>
         <div className="input-field">
@@ -193,8 +182,9 @@ const SignUp = () => {
             onChange={(e) => handleUserTypeChange(e)}
             defaultValue="patient"
           >
-            <option value="patient">Patient</option>
-            <option value="doctor">Doctor</option>
+            <option value="HO">Health Officer</option>
+            <option value="SD">Specialist Doctor</option>
+            <option value="SA">station Admin</option>
           </select>
         </div>
         {error.length && <h6 className="text-danger text-center">{error}</h6>}
