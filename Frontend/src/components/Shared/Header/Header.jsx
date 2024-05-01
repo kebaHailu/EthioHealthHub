@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import img from '../../../images/logo.png';
 import avatar from '../../../images/avatar.jpg';
 import { Button, message } from 'antd';
-import { loggedOut } from '../../../service/auth.service';
+import loginService from "../../../service/auth.service";
 import HeaderNav from './HeaderNav';
 
 const Header = () => {
@@ -35,7 +35,7 @@ const Header = () => {
    
 
     const hanldeSignOut = () => {
-        loggedOut();
+        loginService();
         message.success("Successfully Logged Out")
         setIsLogged(false)
         navigate('/')
