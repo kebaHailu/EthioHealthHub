@@ -4,7 +4,7 @@ import SocialSignUp from './SocialSignUp';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
-// import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
+import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
 import { message } from 'antd';
 
 
