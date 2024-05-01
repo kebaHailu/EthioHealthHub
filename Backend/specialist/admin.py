@@ -20,4 +20,5 @@ class SpecialistAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'email')
     inlines = [EudationInline, ExperienceInline]
 
+    
 
