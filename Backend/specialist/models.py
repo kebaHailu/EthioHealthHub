@@ -1,30 +1,19 @@
 from datetime import timezone
 
 from django.db import models
-
+from django.conf import settings
 # Create your models here.
 
 
 class Specialist(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
-    password = models.CharField(max_length=300)
-    is_verified = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-
-
-
-class SpecialistProfile(models.Model):
 
     GENDER_OPTION = [
         ('M', 'Male'),
         ('F', 'Female')
     ]
+    is_license_verified = models.BooleanField(default=False)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_picture = models.CharField(max_length=500, null=True)
-    specialist = models.OneToOneField(Specialist, on_delete=models.CASCADE)
     phone = models.CharField(max_length=25, null=True)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
@@ -41,16 +30,20 @@ class SpecialistProfile(models.Model):
     state = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=200, null=True)
 
+    def __str__(self):
+        return f'{self.user__first_name} + {self.user__last_name}'
+
+
 
 class Education(models.Model):
-    profile = models.ForeignKey(SpecialistProfile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     type = models.CharField(max_length=255)
     collage = models.CharField(max_length=255)
     year_of_completion = models.DateField()
 
 
 class Experience(models.Model):
-    profile = models.ForeignKey(SpecialistProfile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     hospital_name = models.CharField(max_length=255)
     designation = models.CharField(max_length=255)
     start_date = models.DateField()

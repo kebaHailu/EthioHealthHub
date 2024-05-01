@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'station',
     'specialist',
     'technician',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
 }
+AUTH_USER_MODEL = 'core.User'
 
 DJOSER = {
     'SERIALIZERS': {
