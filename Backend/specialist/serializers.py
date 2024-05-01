@@ -20,15 +20,10 @@ class EducationSerializer(serializers.ModelSerializer):
         model = Education
         fields = ['profile', 'type', 'collage', 'year_of_completion']
 
+
 class ExperienceSerializer(serializers.ModelSerializer):
      class Meta:
         model = Experience
         fields = ['profile', 'hospital_name', 'designation', 'start_date', 'end_date']
 
-        
 
-   #      work_year = serializers.SerializerMethodField(
-   #      method_name='calculate_year')
-
-   #   def calculate_year(self, Experience: Experience):
-   #      return 
