@@ -72,7 +72,7 @@ AUTH_USER_MODEL = 'core.User'
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'user.serializers.UserCreateSerializer',
+        'user_create': 'core.serializers.UserCreateSerializer'
     }
 }
 
