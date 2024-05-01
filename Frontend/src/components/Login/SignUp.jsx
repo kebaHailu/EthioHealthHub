@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa';
 import SocialSignUp from './SocialSignUp';
+import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
 // import { useDoctorSignUpMutation, usePatientSignUpMutation } from '../../redux/api/authApi';
 import { message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -122,79 +123,170 @@ const SignUp = () => {
     }
 
     return (
-        <form className="sign-up-form" onSubmit={hanldeOnSubmit}>
-            <h2 className="title">Sign Up</h2>
-            <div className="input-field">
-                <span className="fIcon"><FaUser /></span>
-                <input placeholder="First Name" name="firstName" type="text" onChange={(e) => hanldeOnChange(e)} value={user.firstName} />
-            </div>
-            <div className="input-field">
-                <span className="fIcon"><FaUser /></span>
-                <input placeholder="Last Name" name="lastName" type="text" onChange={(e) => hanldeOnChange(e)} value={user.lastName} />
-            </div>
-            <div className="input-field">
-                <span className="fIcon"><FaEnvelope /></span>
-                <input placeholder="Email" name="email" type="email" onChange={(e) => hanldeOnChange(e)} value={user.email} />
-            </div>
-            <div className="input-field">
-                <span className="fIcon"><FaLock /></span>
-                <input type="password" name="password" placeholder="password" onChange={(e) => hanldeOnChange(e)} value={user.password} />
-            </div>
-            <div className='input-field d-flex align-items-center gap-2 justify-content-center'>
-                <div className='text-nowrap'>I'M A</div>
-                <select
-                    className="form-select w-50"
-                    aria-label="select"
-                    onChange={(e) => handleUserTypeChange(e)}
-                    defaultValue='patient'
-                >
-                    <option value="patient">Patient</option>
-                    <option value="doctor">Doctor</option>
-                </select>
-            </div>
-            {error.length && <h6 className="text-danger text-center">{error}</h6>}
-            {infoError && <h6 className="text-danger text-center">{infoError}</h6>}
-            <button type="submit"
-                className="btn btn-success btn-block mt-2 iBtn"
-                disabled={
-                    passwordValidation.carLength && passwordValidation.numeric && passwordValidation.upperLowerCase && passwordValidation.specailChar && emailError.emailError ? "" : true
-                }
-            >
-                {loading ? <Spinner animation="border" variant="info" /> : "Sign Up"}
-            </button>
+      <form className="sign-up-form" onSubmit={hanldeOnSubmit}>
+        <h2 className="title">Sign Up</h2>
+        <div className="input-field">
+          <span className="fIcon">
+            <FaUser />
+          </span>
+          <input
+            placeholder="First Name"
+            name="firstName"
+            type="text"
+            onChange={(e) => hanldeOnChange(e)}
+            value={user.firstName}
+          />
+        </div>
+        <div className="input-field">
+          <span className="fIcon">
+            <FaUser />
+          </span>
+          <input
+            placeholder="Last Name"
+            name="lastName"
+            type="text"
+            onChange={(e) => hanldeOnChange(e)}
+            value={user.lastName}
+          />
+        </div>
+        <div className="input-field">
+          <span className="fIcon">
+            <FaUser />
+          </span>
+          <input
+            placeholder="User name"
+            name="userName"
+            type="text"
+            onChange={(e) => hanldeOnChange(e)}
+            value={user.userName}
+          />
+        </div>
+        <div className="input-field">
+          <span className="fIcon">
+            <FaEnvelope />
+          </span>
+          <input
+            placeholder="Email"
+            name="email"
+            type="email"
+            onChange={(e) => hanldeOnChange(e)}
+            value={user.email}
+          />
+        </div>
+        <div className="input-field">
+          <span className="fIcon">
+            <FaLock />
+          </span>
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            onChange={(e) => hanldeOnChange(e)}
+            value={user.password}
+          />
+        </div>
+        <div className="input-field d-flex align-items-center gap-2 justify-content-center">
+          <div className="text-nowrap">I'M A</div>
+          <select
+            className="form-select w-50"
+            aria-label="select"
+            onChange={(e) => handleUserTypeChange(e)}
+            defaultValue="patient"
+          >
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        {error.length && <h6 className="text-danger text-center">{error}</h6>}
+        {infoError && <h6 className="text-danger text-center">{infoError}</h6>}
+        <button
+          type="submit"
+          className="btn btn-success btn-block mt-2 iBtn"
+          disabled={
+            passwordValidation.carLength &&
+            passwordValidation.numeric &&
+            passwordValidation.upperLowerCase &&
+            passwordValidation.specailChar &&
+            emailError.emailError
+              ? ""
+              : true
+          }
+        >
+          {loading ? <Spinner animation="border" variant="info" /> : "Sign Up"}
+        </button>
 
-            <div className="password-validatity mx-auto">
+        <div className="password-validatity mx-auto">
+          <div
+            style={
+              emailError.emailError ? { color: "green" } : { color: "red" }
+            }
+          >
+            <p>
+              {passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
+              <span className="ms-2">Must Have Valid Email.</span>
+            </p>
+          </div>
 
-                <div style={emailError.emailError ? { color: "green" } : { color: "red" }}>
-                    <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
-                        <span className="ms-2">Must Have Valid Email.</span></p>
-                </div>
+          <div
+            style={
+              passwordValidation.carLength
+                ? { color: "green" }
+                : { color: "red" }
+            }
+          >
+            <p>
+              {passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
+              <span className="ms-2">
+                Password Must Have atlast 8 character.
+              </span>
+            </p>
+          </div>
 
-                <div style={passwordValidation.carLength ? { color: "green" } : { color: "red" }}>
-                    <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
-                        <span className="ms-2">Password Must Have atlast 8 character.</span></p>
-                </div>
+          <div
+            style={
+              passwordValidation.specailChar
+                ? { color: "green" }
+                : { color: "red" }
+            }
+          >
+            <p>
+              {passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
+              <span className="ms-2">
+                Password Must Have a special cracter.
+              </span>
+            </p>
+          </div>
 
-                <div style={passwordValidation.specailChar ? { color: "green" } : { color: "red" }}>
-                    <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
-                        <span className="ms-2">Password Must Have a special cracter.</span></p>
-                </div>
+          <div
+            style={
+              passwordValidation.upperLowerCase
+                ? { color: "green" }
+                : { color: "red" }
+            }
+          >
+            <p>
+              {passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
+              <span className="ms-2">
+                Password Must Have uppercase and lower case.
+              </span>
+            </p>
+          </div>
 
-                <div style={passwordValidation.upperLowerCase ? { color: "green" } : { color: "red" }}>
-                    <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
-                        <span className="ms-2">Password Must Have uppercase and lower case.</span></p>
-                </div>
+          <div
+            style={
+              passwordValidation.numeric ? { color: "green" } : { color: "red" }
+            }
+          >
+            <p>
+              {passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
+              <span className="ms-2">Password Must Have Number.</span>
+            </p>
+          </div>
+        </div>
 
-                <div style={passwordValidation.numeric ? { color: "green" } : { color: "red" }}>
-                    <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}
-                        <span className="ms-2">Password Must Have Number.</span></p>
-                </div>
-            </div>
-
-            <p className="social-text">Or Sign up with social account</p>
-            <SocialSignUp />
-        </form>
-
+        <p className="social-text">Or Sign up with social account</p>
+        <SocialSignUp />
+      </form>
     );
 };
 

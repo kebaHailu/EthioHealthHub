@@ -57,7 +57,7 @@ const PatientProfileSetting = ({data}) => {
     const changeData = JSON.stringify(changedValue);
     formData.append("data", changeData);
     updatePatient({ data: formData, id: userId });
-    console.log("Form data:", data);
+    console.log("Form data:", da);
   };
 
   const steps = [
@@ -163,27 +163,7 @@ const PatientProfileSetting = ({data}) => {
                 </div>
               </div>
 
-              <div className="col-md-6">
-                <div className="form-group mb-2">
-                  <label className="form-label">Blood Group</label>
-                  <select
-                    className="form-control select"
-                    onChange={handleChange}
-                    name="bloodGroup"
-                    value={selectBloodGroup}
-                  >
-                    {bloodGrupOptions.map((option, index) => (
-                      <option
-                        key={index}
-                        value={option.value}
-                        className="text-capitalize"
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+            
 
               <div className="col-md-6">
                 <div className="form-group mb-2">
@@ -206,28 +186,13 @@ const PatientProfileSetting = ({data}) => {
                   />
                 </div>
               </div>
-              {/* <div className="col-md-6">
-                        <div className="form-group mb-2 card-label">
-                            <label>Zip Code</label>
-                            <input defaultValue={data?.zipCode} {...register("zipCode")} className="form-control" />
-                        </div>
-                    </div> */}
+            
               <div className="col-md-6">
                 <div className="form-group mb-2 card-label">
                   <label>Country</label>
                   <input
                     defaultValue={data?.country}
                     {...register("country")}
-                    className="form-control"
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group mb-2 card-label">
-                  <label>Address</label>
-                  <input
-                    defaultValue={data?.address}
-                    {...register("address")}
                     className="form-control"
                   />
                 </div>

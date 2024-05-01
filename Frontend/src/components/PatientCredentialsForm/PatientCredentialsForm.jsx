@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./PatientCredentialsForm.css";
+import ImageUpload from "../UI/form/ImageUpload";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -20,23 +21,15 @@ const { Option } = Select;
 const PatientCredentialsForm = () => {
   const [fileList, setFileList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState([]);
   const [isNextDisabled, setIsNextDisabled] = useState(true);
   const [form] = Form.useForm();
 
-  const onSubmit = async (values) => {
-    console.log("Form data:", values);
+  const onSubmit = async () => {
     try {
       const values = await form.validateFields();
-      console.log("Form data:", values);
-      console.log(
-        "Uploaded files:",
-        fileList.map((file) => ({
-          uid: file.uid,
-          name: file.name,
-          type: file.type,
-          size: file.size,
-        }))
-      );
+      const data = { ...formData, ...values, fileList };
+      console.log("Form data:", data);
       message.success("Form submitted successfully!");
     } catch (errorInfo) {
       console.error("Failed to submit form:", errorInfo);
@@ -51,7 +44,7 @@ const PatientCredentialsForm = () => {
     name: "file",
     multiple: true,
     fileList,
-    beforeUpload: () => false, // Prevent files from being uploaded automatically
+    beforeUpload: () => false,
     onChange: handleFileChange,
   };
 
@@ -64,10 +57,16 @@ const PatientCredentialsForm = () => {
   };
 
   const handleFormChange = (_, allFields) => {
+    const newFormData = { ...formData };
+    allFields.forEach((field) => {
+      const [fieldName] = field.name;
+      newFormData[fieldName] = field.value;
+    });
+    setFormData(newFormData);
+
     const isFormValid = allFields.every((field) => !field.errors.length);
     setIsNextDisabled(!isFormValid);
   };
-
   return (
     <div className="form-container">
       <Steps current={currentStep}>
@@ -84,6 +83,7 @@ const PatientCredentialsForm = () => {
         {currentStep === 0 && (
           <>
             <Form.Item
+              className="medical"
               label="Medical History"
               name="medicalHistory"
               rules={[{ required: true }]}
@@ -91,6 +91,7 @@ const PatientCredentialsForm = () => {
               <Input.TextArea rows={2} />
             </Form.Item>
             <Form.Item
+              className="select"
               label="Disease Type"
               name="disease_type"
               rules={[{ required: true }]}
@@ -107,13 +108,7 @@ const PatientCredentialsForm = () => {
             >
               <Input.TextArea rows={2} />
             </Form.Item>
-            <Form.Item
-              label="Pregnancy"
-              name="pregnancy"
-              valuePropName="checked"
-            >
-              <Checkbox>Yes</Checkbox>
-            </Form.Item>
+
             <Form.Item
               label="Symptoms"
               name="symptoms"
@@ -124,6 +119,7 @@ const PatientCredentialsForm = () => {
             <Form.Item
               label="Blood Group"
               name="bloodGroup"
+              className="select"
               rules={[{ required: true }]}
             >
               <Select>
@@ -141,33 +137,29 @@ const PatientCredentialsForm = () => {
             >
               <Input.TextArea rows={2} />
             </Form.Item>
+            <Form.Item
+              label="Pregnancy"
+              name="pregnancy"
+              valuePropName="checked"
+            >
+              <Checkbox>Yes</Checkbox>
+            </Form.Item>
           </>
         )}
         {currentStep === 1 && (
           <>
             <Form.Item
+              className="medical"
               label="Family History"
               name="familyHistory"
               rules={[{ required: true }]}
             >
               <Input.TextArea rows={2} />
             </Form.Item>
-            <Form.Item
-              label="Blood Sugar Level"
-              name="bloodSugarLevel"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={0} step={0.1} />
-            </Form.Item>
-            <Form.Item
-              label="Blood Pressure"
-              name="bloodPressure"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={0} />
-            </Form.Item>
+
             <Form.Item
               label="Vaccination Status"
+              className="select"
               name="vaccinationStatus"
               rules={[{ required: true }]}
             >
@@ -197,23 +189,32 @@ const PatientCredentialsForm = () => {
             >
               <Input.TextArea rows={2} />
             </Form.Item>
+            <Form.Item
+              label="Blood Sugar Level"
+              name="bloodSugarLevel"
+              rules={[{ required: true }]}
+            >
+              <InputNumber min={0} step={0.1} />
+            </Form.Item>
+            <Form.Item
+              label="Blood Pressure"
+              name="bloodPressure"
+              rules={[{ required: true }]}
+            >
+              <InputNumber min={0} />
+            </Form.Item>
           </>
         )}
         {currentStep === 2 && (
           <Form.Item label="Upload Images" className="upload-images-container">
-            <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
-            <div className="image-preview-container">
-              {fileList.map((file) => (
-                <img
-                  key={file.uid}
-                  src={URL.createObjectURL(file.originFileObj)}
-                  alt="Preview"
-                  className="image-preview"
-                />
-              ))}
-            </div>
+            <ImageUpload
+              fileList={fileList}
+              onFileChange={(file) => {
+                // Update form data with the selected file
+                setFileList([...fileList, file]); // Add the selected file to the fileList
+              }}
+            />
+           
           </Form.Item>
         )}
         <div className="button-container">
@@ -233,13 +234,14 @@ const PatientCredentialsForm = () => {
             </Button>
           )}
         </div>
-        <div className="submit-button-container">
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </div>
+        {currentStep === 2 && (
+          <div className="submit-button-container">
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </div>
+        )}
       </Form>
-    
     </div>
   );
 };
