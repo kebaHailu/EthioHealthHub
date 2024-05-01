@@ -20,7 +20,7 @@ class SpecialistAdmin(admin.ModelAdmin):
     search_fields = ('get_first_name', 'get_email')
     inlines = [EudationInline, ExperienceInline]
 
-    def get_first_name(obj):
+    def get_first_name(self,obj):
         return obj.user.first_name
 
     def get_last_name(self, obj):
