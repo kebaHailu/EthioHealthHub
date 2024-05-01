@@ -1,71 +1,88 @@
-import React from 'react';
-import './index.css';
-import { useGetAllReviewsQuery } from '../../../redux/api/reviewsApi';
-import StarRatings from 'react-star-ratings';
-import { truncate } from '../../../utils/truncate';
-import { FaCheckDouble } from "react-icons/fa";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import React, { useEffect } from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import "./Testimonial.css";
+import Abigail from "../../../assets/Abigail.jpg";
+import gebby from "../../../assets/gebby.jpg";
+import Yohanna from "../../../assets/Yohanna.jpg";
+import zahir from "../../../assets/zahir.jpg";
+import solomon from "../../../assets/solomon.jpg";
+import Profile from "../../../assets/Profile.jpg";
+import yeab from "../../../assets/yeab.jpg";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Testimonial = () => {
-    const { data, isLoading, isError } = useGetAllReviewsQuery({});
-    let content = null;
-    if (!isLoading && isError) content = <div>Something Went Wrong !</div>
-    if (!isLoading && !isError && data?.length === 0) content = <div>Empty</div>
-    if (!isLoading && !isError && data?.length > 0) content =
-        <>
-            {
-                data && data.slice(0, 10)?.map((item, key) => (
-                    <SwiperSlide key={item.id + key}>
-                        <div className="card shadow p-3 border-0 my-5" key={item?.id + key} style={{ maxWidth: '600px' }}>
-                            <div className='d-flex gap-2'>
-                                <div className='review-img'>
-                                    {item.patient.img &&<img src={item.patient.img} alt="" className='shadow' />}
-                                </div>
-                                <div>
-                                    <h5 className='text-secondary'>{item?.patient?.firstName + ' ' + item?.patient?.lastName}</h5>
-                                </div>
-                            </div>
+  useEffect(() => {
+    AOS.init({ duration: 2400 });
+  }, []);
 
-                            <p className="text-start text-secondary" style={{minHeight:'72px', overflow:'hidden'}}> {truncate(item?.description, 150)}</p>
-                            <div>
-                                <p className='recomended'><FaCheckDouble /> Recomended</p>
-                                <StarRatings
-                                    rating={5}
-                                    starRatedColor="#f4c150"
-                                    numberOfStars={5}
-                                    name='rating'
-                                    className="star"
-                                    starDimension="20px"
-                                    starSpacing="5px"
-                                />
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                ))
-            }
-        </>
-    return (
-        <div className="container" style={{ marginTop: "10rem", marginBottom: "10rem" }}>
-            <div className='mb-5 section-title text-center'>
-                <h2>TESTIMONIAL</h2>
-                <p className='m-0 text-secondary'>What Our Patients Says.</p>
-            </div>
-            <div className="row d-flex justify-content-center">
-                <Swiper
-                    spaceBetween={10}
-                    slidesPerView={2}
-                    modules={[Navigation, Autoplay]}
-                    navigation={true}
-                    loop={true}
-                    centeredSlides={true}
-                    autoplay={{ delay: 2500, disableOnInteraction: false }}
-                >
-                    {content}
-                </Swiper>
-            </div>
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+
+  return (
+    <div className="testimonial-container">
+      <h3 className="text-3xl text-teal-600 pb-24 meet">MEET THE TEAM</h3>
+      <Carousel responsive={responsive}>
+        <div data-aos="fade-right">
+          <div className="testimonial-card">
+            <img src={Profile} alt="Abigail" />
+            <h3 className="text-lg pb-6">name</h3>
+            <p className="text-base text-neutral-950">Backend</p>
+          </div>
         </div>
-    );
+
+        <div data-aos="zoom-in">
+          <div className="testimonial-card">
+            <img src={Profile} alt="Yohanna" />
+            <h3 className="text-lg pb-6">Yohanna Betsiha</h3>
+            <p className="text-base text-neutral-950">Frontend</p>
+          </div>
+        </div>
+
+        <div data-aos="zoom-in">
+          <div className="testimonial-card">
+            <img src={gebby} alt="Gebrehiwot Tesfaye" />
+            <h3 className="text-lg pb-6">Gebrehiwot Tesfaye</h3>
+            <p className="text-base text-neutral-950">Backend</p>
+          </div>
+        </div>
+
+        <div data-aos="zoom-in">
+          <div className="testimonial-card">
+            <img src={Profile} alt="Zahir Ahmed" />
+            <h3 className="text-lg pb-6">Zahir Ahmed</h3>
+            <p className="text-base text-neutral-950">Backend</p>
+          </div>
+        </div>
+
+        <div data-aos="zoom-in">
+          <div className="testimonial-card">
+            <img src={Profile} alt="Solomon Tadesse" />
+            <h3 className="text-lg pb-6">Solomon Tadesse</h3>
+            <p className="text-base text-neutral-950">Frontend</p>
+          </div>
+        </div>
+      </Carousel>
+    </div>
+  );
 };
 
 export default Testimonial;

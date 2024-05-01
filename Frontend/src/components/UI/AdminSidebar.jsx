@@ -35,47 +35,24 @@ const AdminSidebar = () => {
                 <FaPeopleArrows /> <span>Specialities</span>
               </Link>
             </li>
-            <li>
-              <Link to={"/admin/doctors"}>
+            {/* <li>
+              <Link to={"/doctors/profile/:id"}>
                 <FaUserAstronaut /> <span>Doctors</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to={"/admin/patients"}>
-                <FaRegUser /> <span>Patients</span>
+                <FaRegUser /> <span>Patients List</span>
               </Link>
             </li>
             <li>
-              <Link to={"/admin/reviews"}>
-                <FaRegStar /> <span>Reviews</span>
-              </Link>
-            </li>
-            <li>
-              <Link to={"/admin/transaction"}>
-                <FaBriefcase />
-                <span>Transactions</span>
+              <Link to={"/admin/addpatient"}>
+                <FaUserAstronaut /> <span>Add Patient</span>
               </Link>
             </li>
 
-            <li className="submenu">
-              <a href="#">
-                <i className="fe fe-document"></i> <span> Reports</span>{" "}
-                <span className="menu-arrow"></span>
-              </a>
-              <ul style={{ display: "none" }}>
-                <li>
-                  <a>Invoice Reports</a>
-                </li>
-              </ul>
-            </li>
-            <li className="menu-title">
-              {/* <span>Pages</span> */}
-            </li>
-            <li className="text-white">
-              <Link to={"/admin/profile"}>
-                <FaRegUser /> <span>Profile</span>
-              </Link>
-            </li>
+            <li className="menu-title">{/* <span>Pages</span> */}</li>
+            <li className="text-white"></li>
           </ul>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import AdminLayout from '../AdminLayout/AdminLayout'
 
 import './Appointments.css';
+import { Button } from 'antd/es/radio';
 
 const AdminAppointments = () => {
     return (
@@ -22,7 +23,7 @@ const AdminAppointments = () => {
 													<th>Patient Name</th>
 													<th>Apointment Time</th>
 													<th>Status</th>
-													<th className="text-right">Amount</th>
+													<th className="text-right">Detail</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -48,7 +49,8 @@ const AdminAppointments = () => {
 														</div>
 													</td>
 													<td className="text-right">
-														$200.00
+
+														<Button className="see-more">see more</Button>
 													</td>
 												</tr>
 											</tbody>
