@@ -1,19 +1,17 @@
 from django.db import models
-
+from django.conf import settings
 from station.models import Station
 
 
 # Create your models here.
 
 class Technician(models.Model):
-    name = models.CharField(max_length=255)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     age = models.IntegerField()
-    email = models.EmailField()
     phone_number = models.CharField(max_length=25)
     specialization = models.CharField(max_length=255)
     education = models.TextField(blank=True)
     profile_image = models.CharField(max_length=255, blank=True, null=True)
-    password = models.CharField(max_length=300)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
 
