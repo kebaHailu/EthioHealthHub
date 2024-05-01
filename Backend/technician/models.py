@@ -1,19 +1,17 @@
 from django.db import models
-
+from django.conf import settings
 from station.models import Station
 
 
 # Create your models here.
 
 class Technician(models.Model):
-    name = models.CharField(max_length=255)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     age = models.IntegerField()
-    email = models.EmailField()
     phone_number = models.CharField(max_length=25)
     specialization = models.CharField(max_length=255)
     education = models.TextField(blank=True)
     profile_image = models.CharField(max_length=255, blank=True, null=True)
-    password = models.CharField(max_length=300)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
 
@@ -29,6 +27,10 @@ class Patient(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     phone_number = models.CharField(max_length=25)
     email = models.EmailField()
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+
 
 
 class ClinicalRecord(models.Model):
@@ -47,6 +49,13 @@ class ClinicalRecord(models.Model):
     follow_up_information = models.TextField(blank=True)
     image_path = models.CharField(max_length=255, blank=True)
     model_result = models.CharField(max_length=255, blank=True)
+    allergies = models.CharField(max_length=255, blank=True)
+    vaccination_status = models.CharField(max_length=255, blank=True)
+    sugar_level = models.CharField(max_length=255, blank=True)
+    blood_pressure = models.CharField(max_length=255, blank=True)
+
+
+
 
 
 class TechnicalReport(models.Model):
