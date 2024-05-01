@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { bloodGrupOptions } from "../../constant/global";
 import {
   Form,
   Input,
@@ -11,62 +12,46 @@ import {
   Steps,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useForm } from "react-hook-form";
 import "./PatientCredentialsForm.css";
 
-const { Option } = Select;
 const { Step } = Steps;
-
-const steps = [
-  {
-    title: "Step 1",
-    fields: [
-      "medicalHistory",
-      "diseaseType",
-      "diseaseDescription",
-      "pregnancy",
-      "symptoms",
-      "symptomDescription",
-    ],
-  },
-  {
-    title: "Step 2",
-    fields: [
-      "familyHistory",
-      "bloodSugarLevel",
-      "bloodPressure",
-      "vaccinationStatus",
-      "followUpInformation",
-      "allergies",
-    ],
-  },
-  {
-    title: "Step 3",
-    fields: ["images"],
-  },
-];
+const { Option } = Select;
 
 const PatientCredentialsForm = () => {
-  const [currentStep, setCurrentStep] = useState(0);
   const [fileList, setFileList] = useState([]);
-  const { handleSubmit, control } = useForm();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isNextDisabled, setIsNextDisabled] = useState(true);
+  const [form] = Form.useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
-    console.log("Uploaded files:", fileList);
-    // You can handle form submission logic here
-    message.success("Form submitted successfully!");
+  const onSubmit = async (values) => {
+    console.log("Form data:", values);
+    try {
+      const values = await form.validateFields();
+      console.log("Form data:", values);
+      console.log(
+        "Uploaded files:",
+        fileList.map((file) => ({
+          uid: file.uid,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+        }))
+      );
+      message.success("Form submitted successfully!");
+    } catch (errorInfo) {
+      console.error("Failed to submit form:", errorInfo);
+    }
   };
 
-  const handleFileChange = ({ fileList }) => {
-    setFileList(fileList);
+  const handleFileChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
   };
 
   const uploadProps = {
     name: "file",
     multiple: true,
     fileList,
-    beforeUpload: () => false,
+    beforeUpload: () => false, // Prevent files from being uploaded automatically
     onChange: handleFileChange,
   };
 
@@ -78,48 +63,147 @@ const PatientCredentialsForm = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  const handleFormChange = (_, allFields) => {
+    const isFormValid = allFields.every((field) => !field.errors.length);
+    setIsNextDisabled(!isFormValid);
+  };
+
   return (
-    <Form name="patient-form" onFinish={handleSubmit(onSubmit)}>
-      <Steps current={currentStep} style={{ marginBottom: "20px" }}>
-        {steps.map((item) => (
-          <Step key={item.title} title={item.title} />
-        ))}
+    <div className="form-container">
+      <Steps current={currentStep}>
+        <Step title="Patient Credentials 1" />
+        <Step title="Patient Credentials 2" />
+        <Step title="Image Upload" />
       </Steps>
-      <div className="form-container">
-        {steps[currentStep].fields.map((fieldName) => (
-          <Form.Item
-            key={fieldName}
-            label={fieldName
-              .replace(/([A-Z])/g, " $1")
-              .replace(/^./, function (str) {
-                return str.toUpperCase();
-              })}
-            name={fieldName}
-            rules={[
-              {
-                required: true,
-                message: `Please enter the ${fieldName}`,
-              },
-            ]}
-          >
-            <Input className="input" />
-          </Form.Item>
-        ))}
-      </div>
-      {currentStep < steps.length - 1 && (
-        <div style={{ textAlign: "center" }}>
-          <Button type="primary" onClick={nextStep}>
-            Next
-          </Button>
-        </div>
-      )}
-      {currentStep === steps.length - 1 && (
-        <>
-          <Form.Item className="form" label="Upload Images">
+      <Form
+        form={form}
+        name="patient-form"
+        onFinish={onSubmit}
+        onFieldsChange={handleFormChange}
+      >
+        {currentStep === 0 && (
+          <>
+            <Form.Item
+              label="Medical History"
+              name="medicalHistory"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item
+              label="Disease Type"
+              name="disease_type"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                <Option value="Skin_disease">Skin Disease</Option>
+                <Option value="Eye_disease">Eye Disease</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Disease Description"
+              name="disease_description"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item
+              label="Pregnancy"
+              name="pregnancy"
+              valuePropName="checked"
+            >
+              <Checkbox>Yes</Checkbox>
+            </Form.Item>
+            <Form.Item
+              label="Symptoms"
+              name="symptoms"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item
+              label="Blood Group"
+              name="bloodGroup"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                {bloodGrupOptions.map((option, index) => (
+                  <Option key={index} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Symptoms Description"
+              name="symptoms_description"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+          </>
+        )}
+        {currentStep === 1 && (
+          <>
+            <Form.Item
+              label="Family History"
+              name="familyHistory"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item
+              label="Blood Sugar Level"
+              name="bloodSugarLevel"
+              rules={[{ required: true }]}
+            >
+              <InputNumber min={0} step={0.1} />
+            </Form.Item>
+            <Form.Item
+              label="Blood Pressure"
+              name="bloodPressure"
+              rules={[{ required: true }]}
+            >
+              <InputNumber min={0} />
+            </Form.Item>
+            <Form.Item
+              label="Vaccination Status"
+              name="vaccinationStatus"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                <Option value="vaccinated">Vaccinated</Option>
+                <Option value="notVaccinated">Not Vaccinated</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Follow-up Information"
+              name="follow_up_information"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={3} />
+            </Form.Item>
+            <Form.Item
+              label="Allergies"
+              name="allergies"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item
+              label="Message"
+              name="message"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={2} />
+            </Form.Item>
+          </>
+        )}
+        {currentStep === 2 && (
+          <Form.Item label="Upload Images" className="upload-images-container">
             <Upload {...uploadProps}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
-            {/* Image preview */}
             <div className="image-preview-container">
               {fileList.map((file) => (
                 <img
@@ -131,19 +215,32 @@ const PatientCredentialsForm = () => {
               ))}
             </div>
           </Form.Item>
-          <div style={{ textAlign: "center" }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+        )}
+        <div className="button-container">
+          {currentStep > 0 && (
+            <Button className="button" onClick={prevStep}>
+              Previous
             </Button>
-          </div>
-        </>
-      )}
-      {currentStep > 0 && (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <Button onClick={prevStep}>Previous</Button>
+          )}
+          {currentStep < 2 && (
+            <Button
+              className="button"
+              type="primary"
+              onClick={nextStep}
+              disabled={isNextDisabled}
+            >
+              Next
+            </Button>
+          )}
         </div>
-      )}
-    </Form>
+        <div className="submit-button-container">
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </div>
+      </Form>
+    
+    </div>
   );
 };
 

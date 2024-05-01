@@ -57,6 +57,7 @@ const PatientProfileSetting = ({data}) => {
     const changeData = JSON.stringify(changedValue);
     formData.append("data", changeData);
     updatePatient({ data: formData, id: userId });
+    console.log("Form data:", data);
   };
 
   const steps = [
