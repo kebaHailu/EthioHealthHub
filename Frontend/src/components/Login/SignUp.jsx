@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner'
 import swal from 'sweetalert';
 import { toast } from "react-toastify";
-import Signup from '../../service/auth.service';
+import loginService from '../../service/auth.service';
 
 
 
@@ -97,7 +97,7 @@ const SignUp = () => {
      console.log(user)
 
      try {
-       const response = await Signup(user);
+       const response = await loginService.Signup(user);
        if (response.status === 201) {
          toast.success("Successfully registered");
          Navigate("/login");

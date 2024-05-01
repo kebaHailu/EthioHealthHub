@@ -16,18 +16,30 @@ import { getFromLocalStorage, setLocalStorage } from '../utils/local-storage';
    
 
 }
-export default Signup
 
- export const Login = async(formField) => {
-    try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login', formField)
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
-export const ForgotPassword = async (formField)=>{
+//  export const Login = async(formField) => {
+//     try {
+//         const response = await axios.post('http://127.0.0.1:8000/auth/jwt/create', formField)
+//         return response.data;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+const logIn = async (formField) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/auth/jwt/create",
+      formField
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+
+ export const ForgotPassword = async (formField)=>{
     try{
         const response = await axios.post('http://127.0.0.1:8000/api/reset-password', formField)
         return response.data;
@@ -50,10 +62,24 @@ export const getUserInfo = () => {
         return null
     }
 }
-export const isLoggedIn = () => {
+ export const isLoggedIn = () => {
     const authToken = getFromLocalStorage(authKey);
     return !!authToken;
 }
-export const loggedOut = () => {
+ const loggedOut = () => {
     return localStorage.removeItem(authKey)
 }
+// const Logout = () => {
+//   localStorage.removeItem("Token");
+// };
+
+const loginService = {
+  logIn,
+  Signup,
+  getUserInfo,
+  isLoggedIn,
+  setUserInfo,
+  loggedOut,
+
+};
+export default loginService;
