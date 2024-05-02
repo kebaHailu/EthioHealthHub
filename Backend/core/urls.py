@@ -5,6 +5,7 @@ from . import views
 
 router = SimpleRouter()
 router.register('appointment', views.AppointmentViewSet)
+router.register('prescription', views.PrescriptionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

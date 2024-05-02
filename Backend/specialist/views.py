@@ -16,7 +16,7 @@ from .serializers import SpecialistSerializer, EducationSerializer, ExperienceSe
 # Create your views here.
 
 
-class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+class SpecialistViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Specialist.objects.all()
     serializer_class = SpecialistSerializer
 

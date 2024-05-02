@@ -16,3 +16,5 @@ class Station(models.Model):
     approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='approved_stations')
     description = models.TextField()
 
+    def __str__(self):
+        return self.name

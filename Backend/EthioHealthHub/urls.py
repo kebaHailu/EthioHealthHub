@@ -28,7 +28,7 @@ urlpatterns = [
     path('auth/jwt/create/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path('', include('specialist.urls')),
+    path('specialist/', include('specialist.urls')),
     path('', include('core.urls')),
 
 ]

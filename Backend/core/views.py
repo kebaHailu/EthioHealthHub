@@ -3,10 +3,10 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from core.models import Appointment
-from core.serializers import AppointmentSerializer
+from core.models import Appointment, Prescription
+from core.serializers import AppointmentSerializer, PrescriptionSerializer
 
-# Create your views here.
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
@@ -22,3 +22,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
+
+
+class PrescriptionViewSet(viewsets.ModelViewSet):
+    queryset = Prescription.objects.all()
+    serializer_class = PrescriptionSerializer
