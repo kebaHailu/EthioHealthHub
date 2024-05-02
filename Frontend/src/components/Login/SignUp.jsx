@@ -116,6 +116,7 @@ const SignUp = () => {
           placeholder="First Name"
           name="first_name"
           type="text"
+          className="first_name"
           onChange={hanldeOnChange}
           value={user.first_name}
         />
