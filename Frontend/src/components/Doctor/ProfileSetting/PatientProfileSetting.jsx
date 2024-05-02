@@ -2,23 +2,17 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { bloodGrupOptions } from "../../../constant/global";
-import { useUpdatePatientMutation } from "../../../redux/api/patientApi";
-import { message, Steps, Button } from "antd";
+import { Steps, Button, message } from "antd";
+import { DatePicker } from "antd";
 import ImageUpload from "../../UI/form/ImageUpload";
 import pImage from "../../../images/avatar.jpg";
-import { DatePicker } from "antd";
 import PatientCredentialsForm from "../../PatientCredentialsForm/PatientCredentialsForm";
 
 const { Step } = Steps;
 
-const PatientProfileSetting = ({data}) => {
+const PatientProfileSetting = ({ data }) => {
   const { register, handleSubmit } = useForm({});
-  const [userId, setUserId] = useState("");
-  const [selectBloodGroup, setSelectBloodGroup] = useState("");
   const [selectValue, setSelectValue] = useState({});
-  const [updatePatient, { isSuccess, isError, error, isLoading }] =
-    useUpdatePatientMutation();
   const [date, setDate] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
@@ -28,37 +22,24 @@ const PatientProfileSetting = ({data}) => {
     setDate(moment(dateString).format());
   };
 
-  useEffect(() => {
-    if (!isLoading && isSuccess) {
-      message.success("Successfully Profile Updated");
-      setCurrentStep(currentStep + 1); // Move to the next step upon successful profile update
-    }
-    if (!isLoading && isError) {
-      message.error(error?.data?.message);
-    }
-  }, [isLoading, isSuccess, isError, error, currentStep]);
-
   const handleChange = (e) => {
     setSelectValue({ ...selectValue, [e.target.name]: e.target.value });
-    if (e.target.name === "bloodGroup") {
-      setSelectBloodGroup(e.target.value);
-    }
   };
 
   const onSubmit = (data) => {
     const obj = data;
     const newObj = { ...obj, ...selectValue };
-    date && (newObj["dateOfBirth"] = date);
+    date && (newObj["date_of_birth"] = date);
     const changedValue = Object.fromEntries(
       Object.entries(newObj).filter(([key, value]) => value !== "")
     );
-    const formData = new FormData();
-    selectedImage && formData.append("file", file);
-    const changeData = JSON.stringify(changedValue);
-    formData.append("data", changeData);
-    updatePatient({ data: formData, id: userId });
-    console.log("Form data:", da);
+    console.log("Form data:", changedValue);
+
   };
+
+  useEffect(() => {
+    // Add your success and error handling logic here
+  }, []);
 
   const steps = [
     {
@@ -98,8 +79,10 @@ const PatientProfileSetting = ({data}) => {
                     First Name <span className="text-danger">*</span>
                   </label>
                   <input
-                    defaultValue={data?.firstName}
-                    {...register("firstName")}
+                    defaultValue={data?.first_name}
+                    name="first_name"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
@@ -110,8 +93,10 @@ const PatientProfileSetting = ({data}) => {
                     Last Name <span className="text-danger">*</span>
                   </label>
                   <input
-                    defaultValue={data?.lastName}
-                    {...register("lastName")}
+                    defaultValue={data?.last_name}
+                    name="last_name"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
@@ -121,14 +106,21 @@ const PatientProfileSetting = ({data}) => {
                   <label>
                     Email <span className="text-danger">*</span>
                   </label>
-                  <input defaultValue={data?.email} className="form-control" />
+                  <input
+                    defaultValue={data?.email}
+                    name="email"
+                    type="email"
+                    onChange={handleChange}
+                    className="form-control"
+                  />
                 </div>
               </div>
 
               <div className="col-md-6">
                 <div className="form-group mb-2 card-label">
                   <label>
-                    Date of Birth {moment(data?.dateOfBirth).format("LL")}
+                    Date of Birth{" "}
+                    {moment(data?.date_of_birth).format("YYYY-MM-DD")}
                   </label>
                   <DatePicker
                     onChange={onChange}
@@ -142,8 +134,10 @@ const PatientProfileSetting = ({data}) => {
                 <div className="form-group mb-2 card-label">
                   <label>Phone Number</label>
                   <input
-                    defaultValue={data?.mobile}
-                    {...register("mobile")}
+                    defaultValue={data?.phone}
+                    name="phone"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
@@ -156,21 +150,21 @@ const PatientProfileSetting = ({data}) => {
                     onChange={handleChange}
                     name="gender"
                   >
-                    <option value={""}>Select</option>
-                    <option className="text-capitalize">male</option>
-                    <option className="text-capitalize">female</option>
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </select>
                 </div>
               </div>
-
-            
 
               <div className="col-md-6">
                 <div className="form-group mb-2">
                   <label className="form-label">City</label>
                   <input
                     defaultValue={data?.city}
-                    {...register("city")}
+                    name="city"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
@@ -181,29 +175,29 @@ const PatientProfileSetting = ({data}) => {
                   <label>State</label>
                   <input
                     defaultValue={data?.state}
-                    {...register("state")}
+                    name="state"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
               </div>
-            
+
               <div className="col-md-6">
                 <div className="form-group mb-2 card-label">
                   <label>Country</label>
                   <input
                     defaultValue={data?.country}
-                    {...register("country")}
+                    name="country"
+                    type="text"
+                    onChange={handleChange}
                     className="form-control"
                   />
                 </div>
               </div>
               <div className="text-center">
-                <button
-                  type="submit"
-                  className="btn btn-primary my-3"
-                  disabled={isLoading ? true : false}
-                >
-                  {isLoading ? "Updating.." : "Save Changes"}
+                <button type="submit" className="btn btn-primary my-3">
+                  Save Changes
                 </button>
               </div>
             </form>
