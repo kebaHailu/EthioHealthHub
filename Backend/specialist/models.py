@@ -15,21 +15,20 @@ class Specialist(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_picture = models.CharField(max_length=500, null=True)
     phone = models.CharField(max_length=25, null=True)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     about_me = models.TextField()
-    clinic_name = models.CharField(max_length=200)
-    clinic_address = models.CharField(max_length=250)
-    service = models.CharField(max_length=255)
-    specialization = models.CharField(max_length=255)
-    license_number = models.CharField(max_length=300)
+    clinic_name = models.CharField(max_length=200, null=True)
+    clinic_address = models.CharField(max_length=250, null=True)
+    service = models.CharField(max_length=255, null=True)
+    specialization = models.CharField(max_length=255, null=True)
+    license_number = models.CharField(max_length=300, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     address_line = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)
     state = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=200, null=True)
-
 
     def first_name(self):
         return self.user.first_name
@@ -39,6 +38,9 @@ class Specialist(models.Model):
 
     def email(self):
         return self.user.email
+
+    def username(self):
+        return self.user.username
 
 
 class Education(models.Model):

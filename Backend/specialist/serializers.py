@@ -8,9 +8,13 @@ from datetime import timedelta
 #         fields = ['frist_name', 'last_name', 'email', 'password']
 
 class SpecialistSerializer(serializers.ModelSerializer):
+     username = serializers.CharField(max_length=150)
+     first_name = serializers.CharField(max_length=150)
+     last_name = serializers.CharField(max_length=150)
+     email = serializers.EmailField()
      class Meta:
         model = Specialist
-        fields = ['profile_picture','is_license_verified' , 'phone', 'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization', 'license_number', 'address_line', 'city', 'state', 'country']
+        fields = ['first_name', 'last_name','username', 'email', 'profile_picture','is_license_verified' , 'phone', 'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization', 'license_number', 'address_line', 'city', 'state', 'country']
          
      is_license_verified = serializers.BooleanField(default=False, read_only=True)
         
