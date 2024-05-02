@@ -47,6 +47,18 @@ export const ForgotPassword = async (formField) => {
   }
 };
 
+
+const DoctorProfile =async (formField) => {
+  try {
+    const response = await axios.put(
+      "http://127.0.0.1:8000/specialist/Specialist/me/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 export const setUserInfo = ({ accessToken }) => {
   return setLocalStorage(authKey, accessToken);
 };
@@ -78,5 +90,6 @@ const loginService = {
   isLoggedIn,
   setUserInfo,
   loggedOut,
+  DoctorProfile,
 };
 export default loginService;

@@ -43,28 +43,20 @@ const SignIn = ({ handleResponse }) => {
     console.log("User:", user);
     try {
       const response = await loginService.logIn(user);
+      const { access } = response.data; // Extract access token from response
+      localStorage.setItem("accessToken", access); // Save access token to localStorage
       if (response.status === 200 && response.data.user_role === "SD") {
-        const { access } = response.data; // Extract access token from response
-        localStorage.setItem("accessToken", access); // Save access token to localStorage
+   
         toast.success("Successfully logged in");
         navigate("/");
-      } 
-      else if (response.status === 200 && response.data.user_role === "HO") {
-        const { access } = response.data; // Extract access token from response
-        localStorage.setItem("accessToken", access); // Save access token to localStorage
-        toast.success("Successfully logged in");
-        navigate("/stations");
-      }
-      else if (response.status === 200 && response.data.user_role === "SA") {
-        const { access } = response.data; // Extract access token from response
-        localStorage.setItem("accessToken", access); // Save access token to localStorage
+      } else if (response.status === 200 && response.data.user_role === "HO") {
+      
         toast.success("Successfully logged in");
         navigate("/admin/dashboard");
-      }
-      
-      
-      
-      else {
+      } else if (response.status === 200 && response.data.user_role === "SA") {
+        toast.success("Successfully logged in");
+        navigate("/stations");
+      } else {
         toast.error("Invalid credentials. Please try again.");
       }
     } catch (error) {
