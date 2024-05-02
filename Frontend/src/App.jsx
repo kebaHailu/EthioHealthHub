@@ -39,12 +39,17 @@ import Dashboard from "./components/Doctor/Dashboard/Dashboard";
 // import PrivateOutlet from "./components/Shared/PrivateOutlet";
 import NotFound from "./components/UI/NotFound";
 import PatientProfileSetting from "./components/Doctor/ProfileSetting/PatientProfileSetting";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <Routes>
-      {/* element={<PrivateOutlet />} */}
-      <Route>
+    <div>
+      <ToastContainer />
+
+      <Routes>
+        {/* element={<PrivateOutlet />} */}
+        {/* <Route> */}
         <Route path="/stations" element={<Stations />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/my-patients" element={<MyPatients />} />
@@ -75,43 +80,44 @@ function App() {
           element={<PatientFavouriteDoctor />}
         />
         {/* <Route path="/dashboard/invoices" element={<DoctorInvoice />} /> */}
-      </Route>
-      <Route path="/login" element={<SignInForm />} />
-      <Route path="/" element={<Home />} />
-      {/* <Route path="/blog" element={<Blog />} /> */}
-      {/* <Route path="/blog/:id" element={<BlogDetails />} /> */}
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/service" element={<Service />} />
-      <Route
-        path="/reset-password/:userId/:uniqueString"
-        element={<ForgotPassword />}
-      />
-      <Route path="/appointment" element={<AppointmentPage />} />
-      <Route path="/track-appointment" element={<TrackAppointment />} />
-      <Route path="/doctors" element={<SearchDoctor />} />
-      <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
-      {/* <Route path="/dashboard/blogs/:id" element={<BlogsEdit />} /> */}
-      {/* <Route path="/dashboard/blogs/create" element={<AddBlog />} /> */}
-      <Route path="/booking/:doctorId" element={<DoctorBooking />} />
-      <Route path="/booking/success/:id" element={<BookingSuccess />} />
-      {/* <Route path="/booking/invoice/:id" element={<BookingInvoice />} /> */}
-      {/* Admin Dashboard  */}
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/admin/appointments" element={<AdminAppointments />} />
-      <Route path="/admin/doctors" element={<Doctors />} />
-      <Route path="/admin/patients" element={<Patients />} />
-      <Route path="/admin/profile" element={<Profile />} />
-      <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
-      {/* <Rpite
+        {/* </Route> */}
+        <Route path="/login" element={<SignInForm />} />
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/blog" element={<Blog />} /> */}
+        {/* <Route path="/blog/:id" element={<BlogDetails />} /> */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/service" element={<Service />} />
+        <Route
+          path="/reset-password/:userId/:uniqueString"
+          element={<ForgotPassword />}
+        />
+        <Route path="/appointment" element={<AppointmentPage />} />
+        <Route path="/track-appointment" element={<TrackAppointment />} />
+        <Route path="/doctors" element={<SearchDoctor />} />
+        <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
+        {/* <Route path="/dashboard/blogs/:id" element={<BlogsEdit />} /> */}
+        {/* <Route path="/dashboard/blogs/create" element={<AddBlog />} /> */}
+        <Route path="/booking/:doctorId" element={<DoctorBooking />} />
+        <Route path="/booking/success/:id" element={<BookingSuccess />} />
+        {/* <Route path="/booking/invoice/:id" element={<BookingInvoice />} /> */}
+        {/* Admin Dashboard  */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/appointments" element={<AdminAppointments />} />
+        <Route path="/admin/doctors" element={<Doctors />} />
+        <Route path="/admin/patients" element={<Patients />} />
+        <Route path="/admin/profile" element={<Profile />} />
+        <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
+        {/* <Rpite
         path="/admin/addpatient/:id"
         element={<PatientCredentialsForm />}
       /> */}
-      <Route path="/admin/reviews" element={<AdminReviews />} />
-      <Route path="/admin/transaction" element={<Transactions />} />
-      <Route path="/admin/specialites" element={<Specialites />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="/admin/reviews" element={<AdminReviews />} />
+        <Route path="/admin/transaction" element={<Transactions />} />
+        <Route path="/admin/specialites" element={<Specialites />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
 export default App;
