@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseAdmin
-from .models import User
+from .models import User, Appointment
+
 # Register your models here.
 
 
@@ -15,3 +16,9 @@ class UserAdmin(BaseAdmin):
             },
         ),
     )
+
+
+
+@admin.register(Appointment)
+class AppointmentAdmin(admin.ModelAdmin):
+    list_display = ("status",)

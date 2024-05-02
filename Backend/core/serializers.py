@@ -1,4 +1,8 @@
 from djoser.serializers import UserSerializer, UserCreateSerializer
+from rest_framework import serializers
+from core.models import Appointment
+
+
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password', 'user_role']
@@ -7,4 +11,11 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 class CustomUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         fields = ['id', 'username', 'first_name', 'last_name', 'user_role']
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['id', 'clinical_record', 'technician', 'specialist', 'message', 'appointment_date', 'status', ]
+
 

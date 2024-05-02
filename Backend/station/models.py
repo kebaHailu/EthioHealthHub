@@ -15,5 +15,4 @@ class Station(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='approved_stations')
     description = models.TextField()
-    password = models.CharField(max_length=500)
 
