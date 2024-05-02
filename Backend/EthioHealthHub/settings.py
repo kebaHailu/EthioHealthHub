@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     "rest_framework",
+    "django_filters",
     'rest_framework_swagger',
     'rest_framework_simplejwt',
      'corsheaders',
@@ -77,8 +78,8 @@ AUTH_USER_MODEL = 'core.User'
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'core.serializers.CustomUserCreateSerializer',
-        'current_user': 'core.serializers.CustomUserSerializer'
+        'user_create': 'core.serializers.UserCreateSerializer',
+        'current_user': 'core.serializers.UserSerializer'
     }
 }
 
