@@ -8,5 +8,8 @@ router.register('Specialist', views.SpecialistViewSet)
 router.register('Education', views.EducationViewset)
 router.register('Experience', views.ExperienceViewset)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),
+
+]
 
