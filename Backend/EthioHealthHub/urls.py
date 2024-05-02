@@ -22,7 +22,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('auth/jwt/create', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -31,7 +30,8 @@ urlpatterns = [
 
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path('', include('specialist.urls')),
+    path('specialist/', include('specialist.urls')),
+    path('', include('core.urls')),
 
 ]
 

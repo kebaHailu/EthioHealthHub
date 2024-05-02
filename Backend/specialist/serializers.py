@@ -7,26 +7,34 @@ from datetime import timedelta
 #         model = Specialist
 #         fields = ['frist_name', 'last_name', 'email', 'password']
 
+
 class SpecialistSerializer(serializers.ModelSerializer):
-     username = serializers.CharField(max_length=150)
-     first_name = serializers.CharField(max_length=150)
-     last_name = serializers.CharField(max_length=150)
-     email = serializers.EmailField()
-     class Meta:
+    username = serializers.CharField(max_length=150)
+    first_name = serializers.CharField(max_length=150)
+    last_name = serializers.CharField(max_length=150)
+    email = serializers.EmailField()
+
+    class Meta:
         model = Specialist
-        fields = ['first_name', 'last_name','username', 'email', 'profile_picture','is_license_verified' , 'phone', 'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization', 'license_number', 'address_line', 'city', 'state', 'country']
-         
-     is_license_verified = serializers.BooleanField(default=False, read_only=True)
+        fields = ['first_name', 'last_name','username', 'email', 'profile_picture', 'is_license_verified', 'phone',
+                  'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization',
+                  'license_number', 'address_line', 'city', 'state', 'country']
+
+    is_license_verified = serializers.BooleanField(default=False, read_only=True)
+
+
         
 
 class EducationSerializer(serializers.ModelSerializer):
-     class Meta:
+
+    class Meta:
         model = Education
         fields = ['profile', 'type', 'collage', 'year_of_completion']
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
-     class Meta:
+
+    class Meta:
         model = Experience
         fields = ['profile', 'hospital_name', 'designation', 'start_date', 'end_date']
 
