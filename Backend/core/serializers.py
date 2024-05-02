@@ -1,11 +1,10 @@
-from djoser.serializers import UserSerializer as BaseUserSerializer,UserCreateSerializer as BaseUserCreateSerializer
-
-class UserCreateSerializer(BaseUserCreateSerializer):
-    class Meta(BaseUserCreateSerializer.Meta):
+from djoser.serializers import UserSerializer, UserCreateSerializer
+class CustomUserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password', 'user_role']
 
 
-class UserSerializer(BaseUserSerializer):
-    class Meta(BaseUserSerializer.Meta):
+class CustomUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         fields = ['id', 'username', 'first_name', 'last_name', 'user_role']
 
