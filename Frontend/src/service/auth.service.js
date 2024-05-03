@@ -51,7 +51,7 @@ export const ForgotPassword = async (formField) => {
 const DoctorProfile =async (formField) => {
   try {
     const response = await axios.put(
-      "http://127.0.0.1:8000/specialist/Specialist/me/",
+      "http://127.0.0.1:8000/specialist/profile/me/",
       formField
     );
     return response.data;
