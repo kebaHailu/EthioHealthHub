@@ -66,6 +66,7 @@ const DoctorProfileSetting = () => {
     setFormField({ ...formField, [name]: value });
   };
 
+
   const handleProfieSubmit = async (e, data) => {
     e.preventDefault();
     const combinedFormData = { ...formField, ...data };
@@ -78,6 +79,7 @@ const DoctorProfileSetting = () => {
       message.error("Failed to update profile. Please try again.");
     }
   };
+  
   const handleEducationPopupOpen = () => {
     setIsEducationPopupVisible(true);
   };
@@ -161,7 +163,7 @@ const DoctorProfileSetting = () => {
                   name="last_name"
                   type="text"
                   onChange={handleChange}
-                  value={formField.last_name}
+                  value={formField.last_name || placeholder}
                 />
               </div>
             </div>
@@ -250,7 +252,7 @@ const DoctorProfileSetting = () => {
                       className="form-control"
                       rows={5}
                       onChange={handleChange}
-                      value={formField.about_me}
+                      value={formField.about_me || "about_me"}
                     />
                   </div>
                 </div>

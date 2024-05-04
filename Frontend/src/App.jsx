@@ -73,10 +73,10 @@ function App() {
         />
         <Route path="/dashboard/change-password" element={<ChangePassword />} />
         <Route path="/dashboard/profile-setting" element={<ProfileSetting />} />
-        <Route
+        {/* <Route
           path="/dashboard/favourite"
           element={<PatientFavouriteDoctor />}
-        />
+        /> */}
        
         <Route path="/login" element={<SignInForm />} />
         <Route path="/" element={<Home />} />
