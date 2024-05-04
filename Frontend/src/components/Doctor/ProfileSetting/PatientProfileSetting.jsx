@@ -7,6 +7,7 @@ import { DatePicker } from "antd";
 import ImageUpload from "../../UI/form/ImageUpload";
 import pImage from "../../../images/avatar.jpg";
 import PatientCredentialsForm from "../../PatientCredentialsForm/PatientCredentialsForm";
+import AdminLayout from "../../Admin/AdminLayout/AdminLayout";
 
 const { Step } = Steps;
 
@@ -51,7 +52,11 @@ const PatientProfileSetting = ({ data }) => {
             style={{ background: "#f8f9fa" }}
           >
             <h5 className="text-title mb-2 mt-3">Add Patient Information</h5>{" "}
-            <form className="row form-row" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="row form-row"
+              style={{ marginBottom: "0px" }}
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div className="col-md-12">
                 <div className="form-group">
                   <div className="change-avatar d-flex gap-2 align-items-center">
@@ -74,7 +79,10 @@ const PatientProfileSetting = ({ data }) => {
               </div>
 
               <div className="col-md-6">
-                <div className="form-group mb-2 card-label">
+                <div
+                  className="form-group mb-2 card-label"
+                  style={{ marginBottom: "-60px" }}
+                >
                   <label>
                     First Name <span className="text-danger">*</span>
                   </label>
@@ -217,30 +225,34 @@ const PatientProfileSetting = ({ data }) => {
 
   return (
     <div>
-      <Steps current={currentStep}>
-        {steps.map((item) => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[currentStep].content}</div>
-      <div className="steps-action">
-        {currentStep < steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => setCurrentStep(currentStep + 1)}
-          >
-            Next
-          </Button>
-        )}
-        {currentStep === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => setCurrentStep(currentStep - 1)}
-          >
-            Previous
-          </Button>
-        )}
-      </div>
+      <AdminLayout>
+        <Steps current={currentStep}>
+          {steps.map((item) => (
+            <Step key={item.title} title={item.title} />
+          ))}
+        </Steps>
+        <div className="steps-content">{steps[currentStep].content}</div>
+        <div className="steps-action">
+          {currentStep < steps.length - 1 && (
+            <Button
+              style={{ marginLeft: "908px" }}
+              
+              type="primary"
+              onClick={() => setCurrentStep(currentStep + 1)}
+            >
+              Next
+            </Button>
+          )}
+          {currentStep === steps.length - 1 && (
+            <Button
+              type="primary"
+              onClick={() => setCurrentStep(currentStep - 1)}
+            >
+              Previous
+            </Button>
+          )}
+        </div>
+      </AdminLayout>
     </div>
   );
 };

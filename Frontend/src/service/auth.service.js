@@ -51,7 +51,7 @@ export const ForgotPassword = async (formField) => {
 const DoctorProfile =async (formField) => {
   try {
     const response = await axios.put(
-      "http://127.0.0.1:8000/specialist/profile/me/",
+      "http://127.0.0.1:8000/specialist/profile/1/",
       formField
     );
     return response.data;
@@ -59,6 +59,81 @@ const DoctorProfile =async (formField) => {
     console.log(error);
   }
 }
+
+const DoctorProfileEducation = async (formField) => {
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/specialist/education/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const DoctorProfileEducationUpdate = async (formField) => {
+  try {
+    const response = await axios.put(
+      "http://127.0.0.1:8000/specialist/education/1/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const DoctorProfileExperience = async (formField) => {
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/specialist/experiance/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const DoctorProfileExperienceUpdate = async (formField) => {
+  try {
+    const response = await axios.put(
+      "http://127.0.0.1:8000/specialist/experiance/1/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const   PatientProfile = async (formField) => {
+  try {
+    const response = await axios.put(
+      "http://127.0.0.1:8000/patient/profile/1/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const PatientCredentials = async (formField) => {
+  try {
+    const response = await axios.put(
+      "http://127.0.0.1:8000/patient/credientials/",
+      formField
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 export const setUserInfo = ({ accessToken }) => {
   return setLocalStorage(authKey, accessToken);
 };
@@ -91,5 +166,11 @@ const loginService = {
   setUserInfo,
   loggedOut,
   DoctorProfile,
+  PatientProfile,
+  DoctorProfileEducation,
+  DoctorProfileExperience,
+  DoctorProfileEducationUpdate,
+  DoctorProfileExperienceUpdate,
+  PatientCredentials,
 };
 export default loginService;
