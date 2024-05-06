@@ -101,8 +101,8 @@
       max-width: 380px;
       width: 100%;
       background-color: #f0f0f0;
-      margin: 10px 0;
-      height: 55px;
+      margin: 6px 0;
+     
       border-radius: 55px;
       display: grid;
       grid-template-columns: 15% 85%;
@@ -112,25 +112,29 @@
   
   .input-field .fIcon {
       text-align: center;
-      line-height: 55px;
+      line-height: 35px;
       color: #acacac;
       transition: 0.5s;
-      font-size: 1.1rem;
+      font-size: 0.8rem;
   }
   
   .input-field input {
     padding-right: 0.5rem;
     background-color: #F0F0F0!important;
-    border-radius: 55px;
+    border-radius: 35px;
+  
     outline: none;
     border: none;
     line-height: 1;
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     color: #333;
     width: 100%;
   }
-  
+  .input-field select{
+    font-size: 0.8rem;
+    background-color: #F0F0F0!important;
+  }
   .social-icon {
     height: 46px;
     width: 46px;
@@ -160,10 +164,10 @@
   .text-bold{
     color: #32de8b;
   }
-  
+ 
   .iBtn {
     width: 160px;
-    height: 49px;
+    height: 39px;
     border: none;
     outline: none;
     border-radius: 50px;
@@ -179,7 +183,8 @@
   .iBtn:hover{
     background: #32de8b;
   }
-  
+
+ 
   .social-text {
     padding: 0.7rem 0;
     font-size: 1rem;
@@ -255,7 +260,14 @@
   .right-panel .pImg {
     transform: translateX(800px);
   }
-  
+  .ms-2{
+    font-size: .8em;
+  }
+  .text-nowrap{
+    font-size: .8em;
+    font-weight: 400;
+    
+  }
   
   /* Animation */
   
@@ -366,7 +378,10 @@
       height: 35px;
       font-size: 0.7rem;
     }
-  
+  .btn{
+    font-size: 0.7rem;
+
+  }
     .signin-signup-container::before {
       width: 1500px;
       height: 1500px;
@@ -407,7 +422,7 @@
   
   @media (max-width: 570px) {
     form {
-      padding: 0 1.5rem;
+      padding:  1.5rem;
     }
   
     .pImg {
@@ -429,6 +444,10 @@
       bottom: 28%;
       left: 50%;
     }
+     .form-control{
+    padding: 0;
+  
+  }
   }
   
   
