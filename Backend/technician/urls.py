@@ -4,10 +4,11 @@ from rest_framework.routers import SimpleRouter, DefaultRouter
 from . import views
 
 router = SimpleRouter()
-router.register('appointment', views.AppointmentViewSet)
-router.register('prescription', views.PrescriptionViewSet)
+router.register('patient', views.PatientViewset)
+router.register('clinical-record', views.ClinicalRecordViewset)
+router.register('technician', views.TechnicianViewset)
+
 urlpatterns = [
     path('', include(router.urls)),
 
 ]
-

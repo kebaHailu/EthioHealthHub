@@ -1,7 +1,5 @@
 from specialist.models import Specialist, Education, Experience 
 from rest_framework import serializers
-from datetime import timedelta
-
 # class (serializers.ModelSerializer):
 #      class Meta:
 #         model = Specialist
