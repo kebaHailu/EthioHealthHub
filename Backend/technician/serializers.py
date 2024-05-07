@@ -14,12 +14,12 @@ class TechnicianSerializer(serializers.ModelSerializer):
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ['__all__']
+        fields = '__all__'
 
 
 class ClinicalRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClinicalRecord
-        fields = ['__all__']
+        fields = '__all__'
 
 
