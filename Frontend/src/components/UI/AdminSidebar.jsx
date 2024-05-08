@@ -4,10 +4,10 @@ import { FaHome } from "react-icons/fa";
 import { FaListUl } from "react-icons/fa";
 import { FaPeopleArrows } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
-import { FaUserAstronaut } from "react-icons/fa";
+import { FaUserAstronaut, FaSignOutAlt } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { FaBriefcase } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link,NavLink } from "react-router-dom";
 
 const AdminSidebar = () => {
   return (
@@ -49,6 +49,12 @@ const AdminSidebar = () => {
               <Link to={"/admin/addpatient"}>
                 <FaUserAstronaut /> <span>Add Patient</span>
               </Link>
+            </li>
+            <li>
+              <NavLink to={"/"}>
+                <FaSignOutAlt className="icon" />
+                <span>Logout</span>
+              </NavLink>
             </li>
 
             <li className="menu-title">{/* <span>Pages</span> */}</li>

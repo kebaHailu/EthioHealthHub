@@ -58,12 +58,12 @@ const DashboardSidebar = () => {
                                     <span>Dashboard</span>
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <NavLink to={'/dashboard/favourite'} activeClassName="active">
                                     <FaHouseUser className="icon" />
                                     <span>Favourites</span>
                                 </NavLink>
-                            </li>
+                            </li> */}
                             <li>
                                 <NavLink to={'/dashboard/profile-setting'} activeClassName="active">
                                     <FaUserCog className="icon" />

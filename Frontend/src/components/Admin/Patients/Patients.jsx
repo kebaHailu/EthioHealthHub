@@ -1,67 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminLayout from "../AdminLayout/AdminLayout";
-
 import "./Patients.css";
 import { Link } from "react-router-dom";
-import {
-  FaClock,
-  FaEnvelope,
-  FaLocationArrow,
-  FaPhoneAlt,
-} from "react-icons/fa";
 import { Empty, Button, Select, Modal } from "antd";
+import axios from "axios";
 
 const { Option } = Select;
 
 const Patients = () => {
-  // Sample patient data
-  const patients = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      gender: "Male",
-      diseaseType: "Skin Disease",
-      address: "123 Main St",
-      email: "john@example.com",
-      mobile: "123-456-7890",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      gender: "Female",
-      diseaseType: "Eye Disease",
-      address: "456 Elm St",
-      email: "jane@example.com",
-      mobile: "987-654-3210",
-    },
-    {
-      id: 3,
-      firstName: "Alice",
-      lastName: "Johnson",
-      gender: "Female",
-      diseaseType: "Skin Disease",
-      address: "789 Oak St",
-      email: "alice@example.com",
-      mobile: "555-555-5555",
-    },
-  ];
-
-  const [filteredPatients, setFilteredPatients] = useState([...patients]);
+  const [profileData, setProfileData] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleFilterChange = (value) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/patient/");
+        setProfileData(response.data);
+        setFilteredPatients(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+const handleFilterChange = (value, type) => {
+  if (type === "gender") {
+    // Filter based on gender
     if (value === "All") {
-      setFilteredPatients([...patients]);
+      setFilteredPatients(profileData);
     } else {
-      const filtered = patients.filter(
-        (patient) => patient.diseaseType === value
+      const filtered = profileData.filter(
+        (patient) => patient.gender === value
       );
-      setFilteredPatients([...filtered]);
+      setFilteredPatients(filtered);
     }
-  };
+  } else if (type === "disease_type") {
+    // Filter based on disease type
+    if (value === "All") {
+      setFilteredPatients(profileData);
+    } else {
+      const filtered = profileData.filter(
+        (patient) => patient.disease_type === value
+      );
+      setFilteredPatients(filtered);
+    }
+  }
+};
+
+
 
   const handleViewDetail = (patient) => {
     setSelectedPatient(patient);
@@ -75,7 +64,7 @@ const Patients = () => {
   return (
     <AdminLayout>
       <div className="row">
-        <div className="col-md-6 col-lg-4 col-xl-3">
+        <div className="col-md-12">
           {filteredPatients.length === 0 ? (
             <Empty />
           ) : (
@@ -84,10 +73,26 @@ const Patients = () => {
                 <thead>
                   <tr>
                     <th>Patient Name</th>
-                    <th>Gender</th>
                     <th>
-                      <Select defaultValue="All" onChange={handleFilterChange}>
-                        <Option value="All">diease Type</Option>
+                      <Select
+                        defaultValue="All"
+                        onChange={(value) =>
+                          handleFilterChange(value, "gender")
+                        }
+                      >
+                        <Option value="All">Gender</Option>
+                        <Option value="M">Male</Option>
+                        <Option value="F">Female</Option>
+                      </Select>
+                    </th>
+                    <th>
+                      <Select
+                        defaultValue="All"
+                        onChange={(value) =>
+                          handleFilterChange(value, "disease_type")
+                        }
+                      >
+                        <Option value="All">Disease Type</Option>
                         <Option value="Skin Disease">Skin Disease</Option>
                         <Option value="Eye Disease">Eye Disease</Option>
                       </Select>
@@ -98,23 +103,24 @@ const Patients = () => {
                     <th>Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {filteredPatients.map((patient) => (
-                    <tr key={patient.id}>
+                  {filteredPatients.map((data) => (
+                    <tr key={data.id}>
                       <td>
                         <Link to={"/"} className="patient-name">
-                          <h5>{patient.firstName + " " + patient.lastName}</h5>
+                          {data.first_name + " " + data.last_name}
                         </Link>
                       </td>
-                      <td>{patient.gender}</td>
-                      <td>{patient.diseaseType}</td>
-                      <td>{patient.address}</td>
-                      <td>{patient.email}</td>
-                      <td>{patient.mobile}</td>
+                      <td>{data.gender}</td>
+                      <td>{data.disease_type}</td>
+                      <td>{data.city}</td>
+                      <td>{data.email}</td>
+                      <td>{data.phone_number}</td>
                       <td>
                         <Button
                           type="primary"
-                          onClick={() => handleViewDetail(patient)}
+                          onClick={() => handleViewDetail(data)}
                         >
                           View Detail
                         </Button>
@@ -123,7 +129,6 @@ const Patients = () => {
                   ))}
                 </tbody>
               </table>
-           
             </>
           )}
         </div>
@@ -146,10 +151,10 @@ const Patients = () => {
                 Name: {selectedPatient.firstName} {selectedPatient.lastName}
               </p>
               <p>Gender: {selectedPatient.gender}</p>
-              <p>Disease Type: {selectedPatient.diseaseType}</p>
-              <p>Address: {selectedPatient.address}</p>
+              <p>Disease Type: {selectedPatient.disease_type}</p>
+              <p>Address: {selectedPatient.city}</p>
               <p>Email: {selectedPatient.email}</p>
-              <p>Mobile: {selectedPatient.mobile}</p>
+              <p>Mobile: {selectedPatient.phone_number}</p>
             </div>
           )}
         </Modal>
