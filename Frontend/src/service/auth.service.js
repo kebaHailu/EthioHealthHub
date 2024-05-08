@@ -47,8 +47,7 @@ export const ForgotPassword = async (formField) => {
   }
 };
 
-
-const DoctorProfile =async (formField) => {
+const DoctorProfile = async (formField) => {
   try {
     const response = await axios.put(
       "http://127.0.0.1:8000/specialist/profile/1/",
@@ -58,12 +57,12 @@ const DoctorProfile =async (formField) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const DoctorProfileEducation = async (formField) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/specialist/education/",
+      "http://127.0.0.1:8000/specialist/education/1/",
       formField
     );
     return response.data;
@@ -86,7 +85,7 @@ const DoctorProfileEducationUpdate = async (formField) => {
 const DoctorProfileExperience = async (formField) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/specialist/experiance/",
+      "http://127.0.0.1:8000/specialist/experience/1/",
       formField
     );
     return response.data;
@@ -94,12 +93,11 @@ const DoctorProfileExperience = async (formField) => {
     console.log(error);
   }
 };
-
 
 const DoctorProfileExperienceUpdate = async (formField) => {
   try {
     const response = await axios.put(
-      "http://127.0.0.1:8000/specialist/experiance/1/",
+      "http://127.0.0.1:8000/specialist/experience/1/",
       formField
     );
     return response.data;
@@ -108,10 +106,10 @@ const DoctorProfileExperienceUpdate = async (formField) => {
   }
 };
 
-const   PatientProfile = async (formField) => {
+const PatientProfile = async (formField) => {
   try {
-    const response = await axios.put(
-      "http://127.0.0.1:8000/patient/profile/1/",
+    const response = await axios.post(
+      "http://127.0.0.1:8000/patient/",
       formField
     );
     return response.data;
@@ -122,8 +120,8 @@ const   PatientProfile = async (formField) => {
 
 const PatientCredentials = async (formField) => {
   try {
-    const response = await axios.put(
-      "http://127.0.0.1:8000/patient/credientials/",
+    const response = await axios.post(
+      "http://127.0.0.1:8000/clinical-record/",
       formField
     );
     return response.data;
@@ -131,8 +129,6 @@ const PatientCredentials = async (formField) => {
     console.log(error);
   }
 };
-
-
 
 export const setUserInfo = ({ accessToken }) => {
   return setLocalStorage(authKey, accessToken);
