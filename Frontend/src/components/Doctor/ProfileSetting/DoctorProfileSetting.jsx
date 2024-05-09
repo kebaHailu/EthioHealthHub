@@ -55,6 +55,15 @@ const DoctorProfileSetting = () => {
     city: "",
     state: "",
     country: "",
+
+    type: "",
+    collage: "",
+    year_of_completion: "",
+
+    hospital_name: "",
+    designation: "",
+    start_date: "",
+    end_date: "",
   });
 
   const onChange = (date, dateString) => {
@@ -71,14 +80,20 @@ const DoctorProfileSetting = () => {
     e.preventDefault();
     const combinedFormData = { ...formField, ...data };
     try {
-      const response = await loginService.DoctorProfile(combinedFormData);
+      const [response, educationalResponse, experianceResponse] = await Promise.all ([
+        loginService.DoctorProfile(combinedFormData),
+        loginService.DoctorProfileEducationUpdate(combinedFormData),
+        loginService.DoctorProfileExperienceUpdate(combinedFormData),
+      ]);
       message.success("Profile updated successfully!");
       console.log("response", combinedFormData);
+     
     } catch (error) {
       console.error("Error updating profile:", error);
       message.error("Failed to update profile. Please try again.");
     }
   };
+
   
   const handleEducationPopupOpen = () => {
     setIsEducationPopupVisible(true);
@@ -110,24 +125,34 @@ const DoctorProfileSetting = () => {
   // const decoded = jwtDecode(token);
 
   // console.log(decoded.user_id);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const [profileResponse, educationResponse, experienceResponse] =
+        await Promise.all([
+          axios.get("http://127.0.0.1:8000/specialist/profile/1/"),
+          axios.get("http://127.0.0.1:8000/specialist/education/1/"),
+          axios.get("http://127.0.0.1:8000/specialist/experience/1/"),
+        ]);
+      setFormField(educationResponse.data);
+      setProfileData(educationResponse.data);
+      setFormField(experienceResponse.data);
+      setProfileData(experienceResponse.data)
+      setProfileData(profileResponse.data);
+      setFormField(profileResponse.data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/specialist/profile/1/"
-        );
-        const data = response.data;
-        setProfileData(data);
-        setFormField(data); // Initialize formField with fetched data
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+      console.log("Profile Data:", profileResponse.data);
+      console.log("Education Data:", educationResponse.data);
+      console.log("Experience Data:", experienceResponse.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
+
+
 
   return (
     <div style={{ marginBottom: "10rem" }}>
@@ -148,7 +173,7 @@ const DoctorProfileSetting = () => {
                   name="first_name"
                   type="text"
                   onChange={handleChange}
-                  value={formField?.first_name || ""}
+                  value={formField.first_name}
                 />
               </div>
             </div>
@@ -163,7 +188,7 @@ const DoctorProfileSetting = () => {
                   name="last_name"
                   type="text"
                   onChange={handleChange}
-                  value={formField.last_name || placeholder}
+                  value={formField.last_name}
                 />
               </div>
             </div>
@@ -252,7 +277,7 @@ const DoctorProfileSetting = () => {
                       className="form-control"
                       rows={5}
                       onChange={handleChange}
-                      value={formField.about_me || "about_me"}
+                      value={formField.about_me}
                     />
                   </div>
                 </div>
@@ -435,11 +460,11 @@ const DoctorProfileSetting = () => {
                     <div className="form-group mb-2 card-label">
                       <label>Education level</label>
                       <input
-                        placeholder="Specialization"
-                        name="education_level"
+                        placeholder="education_level"
+                        name="type"
                         type="text"
                         onChange={handleChange}
-                        value={formField.education_level}
+                        value={formField.type}
                         className="input-tags form-control"
                       />
                     </div>
@@ -448,20 +473,28 @@ const DoctorProfileSetting = () => {
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
                       <label>College/Institute</label>
+
                       <input
-                        defaultValue={data?.college}
-                        {...register("college")}
-                        className="form-control"
+                        placeholder="collage"
+                        name="collage"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.collage}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
                       <label>Year of Completion</label>
+
                       <input
-                        defaultValue={data?.completionYear}
-                        {...register("completionYear")}
-                        className="form-control"
+                        placeholder="year_of_completion"
+                        name="year_of_completion"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.year_of_completion}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>
@@ -488,20 +521,28 @@ const DoctorProfileSetting = () => {
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
                       <label>Hospital Name</label>
+
                       <input
-                        defaultValue={data?.experienceHospitalName}
-                        {...register("experienceHospitalName")}
-                        className="form-control"
+                        placeholder="hospital_name"
+                        name="hospital_name"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.hospital_name}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
                       <label>From</label>
+
                       <input
-                        defaultValue={data?.expericenceStart}
-                        {...register("expericenceStart")}
-                        className="form-control"
+                        placeholder="start_date"
+                        name="start_date"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.start_date}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>
@@ -509,9 +550,12 @@ const DoctorProfileSetting = () => {
                     <div className="form-group mb-2 card-label">
                       <label>To</label>
                       <input
-                        defaultValue={data?.expericenceEnd}
-                        {...register("expericenceEnd")}
-                        className="form-control"
+                        placeholder="end_date"
+                        name="end_date"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.end_date}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>
@@ -519,9 +563,12 @@ const DoctorProfileSetting = () => {
                     <div className="form-group mb-2 card-label">
                       <label>Designation</label>
                       <input
-                        defaultValue={data?.designation}
-                        {...register("designation")}
-                        className="form-control"
+                        placeholder="designation"
+                        name="designation"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.designation}
+                        className="input-tags form-control"
                       />
                     </div>
                   </div>

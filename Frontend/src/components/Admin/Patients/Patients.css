@@ -1,11 +1,12 @@
 .my-patients-table {
-  width: 90%;
+  width: 80%;
   border-collapse: collapse;
+
 }
 
 .my-patients-table th,
 .my-patients-table td {
-  padding: 18px;
+  padding: 5px;
   border: 1px solid #ddd;
   white-space: nowrap; /* Prevent text from wrapping */
 }
@@ -23,6 +24,7 @@
 .my-patients-table th:last-child,
 .my-patients-table td:last-child {
   padding-right: 16px;
+ 
 }
 
 .my-patients-table tr:hover {

@@ -8,6 +8,8 @@ import ImageUpload from "../../UI/form/ImageUpload";
 import pImage from "../../../images/avatar.jpg";
 import PatientCredentialsForm from "../../PatientCredentialsForm/PatientCredentialsForm";
 import AdminLayout from "../../Admin/AdminLayout/AdminLayout";
+import loginService from "../../../service/auth.service";
+import axios from "axios";
 
 const { Step } = Steps;
 
@@ -18,29 +20,71 @@ const PatientProfileSetting = ({ data }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const[profileData,setProfileData]=useState(null)
+
+  const [formField, setFormField] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    age: "",
+    phone_number: "",
+    //  date_of_birth: moment().format("YYYY-MM-DD"), // Initialize date_of_birth with current date in "MM-DD-YYYY"
+    gender: "",
+    city: "",
+    state: "",
+    country: "",
+  });
 
   const onChange = (date, dateString) => {
     setDate(moment(dateString).format());
   };
 
   const handleChange = (e) => {
-    setSelectValue({ ...selectValue, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormField({ ...formField, [name]: value });
   };
-
-  const onSubmit = (data) => {
-    const obj = data;
-    const newObj = { ...obj, ...selectValue };
-    date && (newObj["date_of_birth"] = date);
-    const changedValue = Object.fromEntries(
-      Object.entries(newObj).filter(([key, value]) => value !== "")
-    );
-    console.log("Form data:", changedValue);
-
+  const onSubmit = async (e, data) => {
+   
+      e.preventDefault();
+      const combinedFormData = { ...formField, ...data };
+      try {
+        const response = await loginService.PatientProfile(combinedFormData);
+        message.success("Profile updated successfully!");
+        console.log("response", combinedFormData);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        message.error("Failed to update profile. Please try again.");
+      }
   };
 
   useEffect(() => {
-    // Add your success and error handling logic here
-  }, []);
+    // Define an async function to fetch data
+    const fetchData = async () => {
+      try {
+       
+        // Make the HTTP request using Axios
+        const response = await axios.get(
+          'http://127.0.0.1:8000/patient/'
+        );
+        // Extract the data from the response
+        const data = response.data;
+        // Set the fetched data to the state
+        setProfileData(data);
+        // Log the data to the console
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        // Log any errors to the console
+        console.error("There was a problem fetching the data:", error.message);
+      }
+    };
+
+    // Call the async function to fetch data when the component mounts
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // E
+  console.log(profileData);
 
   const steps = [
     {
@@ -55,7 +99,8 @@ const PatientProfileSetting = ({ data }) => {
             <form
               className="row form-row"
               style={{ marginBottom: "0px" }}
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={onSubmit}
+              onChange={handleChange}
             >
               <div className="col-md-12">
                 <div className="form-group">
@@ -87,10 +132,11 @@ const PatientProfileSetting = ({ data }) => {
                     First Name <span className="text-danger">*</span>
                   </label>
                   <input
-                    defaultValue={data?.first_name}
+                    placeholder="First Name"
                     name="first_name"
                     type="text"
                     onChange={handleChange}
+                    value={formField.first_name}
                     className="form-control"
                   />
                 </div>
@@ -101,10 +147,11 @@ const PatientProfileSetting = ({ data }) => {
                     Last Name <span className="text-danger">*</span>
                   </label>
                   <input
-                    defaultValue={data?.last_name}
+                    placeholder="Last Name"
                     name="last_name"
                     type="text"
                     onChange={handleChange}
+                    value={formField.last_name}
                     className="form-control"
                   />
                 </div>
@@ -115,10 +162,11 @@ const PatientProfileSetting = ({ data }) => {
                     Email <span className="text-danger">*</span>
                   </label>
                   <input
-                    defaultValue={data?.email}
+                    placeholder="email"
                     name="email"
                     type="email"
                     onChange={handleChange}
+                    value={formField.email}
                     className="form-control"
                   />
                 </div>
@@ -127,13 +175,15 @@ const PatientProfileSetting = ({ data }) => {
               <div className="col-md-6">
                 <div className="form-group mb-2 card-label">
                   <label>
-                    Date of Birth{" "}
-                    {moment(data?.date_of_birth).format("YYYY-MM-DD")}
+                    Age <span className="text-danger">*</span>
                   </label>
-                  <DatePicker
-                    onChange={onChange}
-                    format={"YYYY-MM-DD"}
-                    style={{ width: "100%", padding: "6px" }}
+                  <input
+                    placeholder="age"
+                    name="age"
+                    type="number"
+                    onChange={handleChange}
+                    value={formField.age}
+                    className="form-control"
                   />
                 </div>
               </div>
@@ -142,10 +192,11 @@ const PatientProfileSetting = ({ data }) => {
                 <div className="form-group mb-2 card-label">
                   <label>Phone Number</label>
                   <input
-                    defaultValue={data?.phone}
-                    name="phone"
-                    type="text"
+                    placeholder="Phone Number"
+                    name="phone_number"
+                    type="number"
                     onChange={handleChange}
+                    value={formField.phone_number}
                     className="form-control"
                   />
                 </div>
@@ -156,11 +207,12 @@ const PatientProfileSetting = ({ data }) => {
                   <select
                     className="form-control select"
                     onChange={handleChange}
+                    value={formField.gender}
                     name="gender"
                   >
                     <option value="">Select</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
                   </select>
                 </div>
               </div>
@@ -169,10 +221,11 @@ const PatientProfileSetting = ({ data }) => {
                 <div className="form-group mb-2">
                   <label className="form-label">City</label>
                   <input
-                    defaultValue={data?.city}
+                    placeholder="City"
                     name="city"
                     type="text"
                     onChange={handleChange}
+                    value={formField.city}
                     className="form-control"
                   />
                 </div>
@@ -182,10 +235,11 @@ const PatientProfileSetting = ({ data }) => {
                 <div className="form-group mb-2 card-label">
                   <label>State</label>
                   <input
-                    defaultValue={data?.state}
+                    placeholder="State"
                     name="state"
                     type="text"
                     onChange={handleChange}
+                    onchange={formField.state}
                     className="form-control"
                   />
                 </div>
@@ -195,10 +249,11 @@ const PatientProfileSetting = ({ data }) => {
                 <div className="form-group mb-2 card-label">
                   <label>Country</label>
                   <input
-                    defaultValue={data?.country}
+                    placeholder="Country"
                     name="country"
                     type="text"
                     onChange={handleChange}
+                    value={formField.country}
                     className="form-control"
                   />
                 </div>
@@ -236,7 +291,6 @@ const PatientProfileSetting = ({ data }) => {
           {currentStep < steps.length - 1 && (
             <Button
               style={{ marginLeft: "908px" }}
-              
               type="primary"
               onClick={() => setCurrentStep(currentStep + 1)}
             >
