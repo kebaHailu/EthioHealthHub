@@ -1,27 +1,26 @@
 from specialist.models import Specialist, Education, Experience 
 from rest_framework import serializers
-# class (serializers.ModelSerializer):
-#      class Meta:
-#         model = Specialist
-#         fields = ['frist_name', 'last_name', 'email', 'password']
+from core.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+     class Meta:
+        ref_name = "SpecialistUser"
+        model = User
+        fields = ['first_name', 'username', 'last_name', 'email']
 
 
 class SpecialistSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=150)
-    first_name = serializers.CharField(max_length=150)
-    last_name = serializers.CharField(max_length=150)
-    email = serializers.EmailField()
+    # user = UserSerializer(read_only=True)
 
     class Meta:
         model = Specialist
-        fields = ['first_name', 'last_name','username', 'email', 'profile_picture', 'is_license_verified', 'phone',
+
+        fields = ['user', 'profile_picture', 'is_license_verified', 'phone',
                   'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization',
                   'license_number', 'address_line', 'city', 'state', 'country']
 
     is_license_verified = serializers.BooleanField(default=False, read_only=True)
 
-
-        
 
 class EducationSerializer(serializers.ModelSerializer):
 
@@ -31,7 +30,6 @@ class EducationSerializer(serializers.ModelSerializer):
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Experience
         fields = ['profile', 'hospital_name', 'designation', 'start_date', 'end_date']
