@@ -24,6 +24,7 @@ import PatientFavouriteDoctor from "./components/Doctor/PatientFavourite/Patient
 
 import SearchDoctor from "./components/Doctor/SearchDoctor/SearchDoctor";
 import Stations from "./components/Stations/Stations";
+import StationAdmin from "./components/StationAdminDashboard/StationAdmin";
 import Contact from "./components/Contact/Contact";
 import About from "./components/About/About";
 import Service from "./components/Service/Service";
@@ -41,14 +42,19 @@ import NotFound from "./components/UI/NotFound";
 import PatientProfileSetting from "./components/Doctor/ProfileSetting/PatientProfileSetting";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "./components/Shared/Header/Header";
+import Footer from "./components/Shared/Footer/Footer";
 
 function App() {
   return (
     <div>
       <ToastContainer />
 
-      <Routes>
-        <Route path="/stations" element={<Stations />} />
+ {/* <Header/> */}
+     <Routes>
+        <Route path="/stations" element={<Stations />} /> 
+        <Route path="/station-admin" element={<StationAdmin />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/my-patients" element={<MyPatients />} />
       
@@ -106,6 +112,7 @@ function App() {
         <Route path="/admin/specialites" element={<Specialites />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+     
     </div>
   );
 }

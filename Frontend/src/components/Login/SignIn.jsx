@@ -48,14 +48,14 @@ const SignIn = ({ handleResponse }) => {
       if (response.status === 200 && response.data.user_role === "SD") {
    
         toast.success("Successfully logged in");
-        navigate("/");
+        navigate("/dashboard");
       } else if (response.status === 200 && response.data.user_role === "HO") {
       
         toast.success("Successfully logged in");
         navigate("/admin/dashboard");
       } else if (response.status === 200 && response.data.user_role === "SA") {
         toast.success("Successfully logged in");
-        navigate("/stations");
+        navigate("/station-admin");
       } else {
         toast.error("Invalid credentials. Please try again.");
       }

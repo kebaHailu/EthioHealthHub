@@ -102,26 +102,7 @@ const PatientProfileSetting = ({ data }) => {
               onSubmit={onSubmit}
               onChange={handleChange}
             >
-              <div className="col-md-12">
-                <div className="form-group">
-                  <div className="change-avatar d-flex gap-2 align-items-center">
-                    <Link to={"/"} className="my-3 patient-img">
-                      <img
-                        src={
-                          selectedImage ? selectedImage : data?.img || pImage
-                        }
-                        alt=""
-                      />
-                    </Link>
-                    <div className="mt-3">
-                      <ImageUpload
-                        setSelectedImage={setSelectedImage}
-                        setFile={setFile}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
 
               <div className="col-md-6">
                 <div

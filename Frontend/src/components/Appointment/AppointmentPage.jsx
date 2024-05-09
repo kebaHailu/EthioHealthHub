@@ -30,6 +30,7 @@ const AppointmentPage = () => {
 
   const steps = [
     {
+      className: "step-1",
       title: "Select Appointment Date & Time",
       content: (
         <SelectApppointment
@@ -45,7 +46,7 @@ const AppointmentPage = () => {
   return (
     <div
       className="container"
-      style={{ marginTop: "8rem", marginBottom: "12rem" }}
+      style={{ marginTop: "1rem", marginBottom: "12rem" }}
     >
       <Steps current={current} items={steps} />
       <div className="mb-5 mt-3 mx-3">{steps[current].content}</div>
