@@ -8,6 +8,7 @@ import BookingSuccess from "./components/Booking/BookingSuccess";
 import DoctorProfile from "./components/Doctor/DoctorProfile/DoctorProfile";
 import Appointments from "./components/Doctor/Appointments/Appointments";
 import MyPatients from "./components/Doctor/MyPatients/MyPatients";
+import Calendly from "./components/Calendly/Calendly";
 
 import Schedule from "./components/Doctor/Schedule/Schedule";
 import ProfileSetting from "./components/Doctor/ProfileSetting/ProfileSetting";
@@ -97,6 +98,7 @@ function App() {
         <Route path="/appointment" element={<AppointmentPage />} />
        
         <Route path="/doctors" element={<SearchDoctor />} />
+        <Route path='/calendly' element={<Calendly />} />
         <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
       
         <Route path="/booking/:doctorId" element={<DoctorBooking />} />

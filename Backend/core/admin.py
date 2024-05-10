@@ -7,6 +7,7 @@ from .models import User, Appointment
 
 @admin.register(User)
 class UserAdmin(BaseAdmin):
+    list_display = ['user_role', 'first_name', 'last_name', 'email', 'username', 'date_joined']
     add_fieldsets = (
         (
             None,
