@@ -3,6 +3,7 @@ import moment from "moment";
 import { useForm } from "react-hook-form";
 import { Button, Select, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import pImage from "../../../images/avatar.jpg";
 import { Link } from "react-router-dom";
 // import { useUpdateDoctorMutation } from "../../../redux/api/doctorApi";
 // import useAuthCheck from '../../../redux/hooks/useAuthCheck';
@@ -21,7 +22,7 @@ const DoctorProfileSetting = () => {
   const [isExperiencePopupVisible, setIsExperiencePopupVisible] =
     useState(false);
 
-  const [selectedItems, setSelectedItems] = useState([]);
+
 
   // const { data } = useAuthCheck();
   const { data } = "";
@@ -69,6 +70,22 @@ const DoctorProfileSetting = () => {
   const onChange = (date, dateString) => {
     setDate(moment(dateString).format());
   };
+
+   
+ 
+
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+        setFile(file);
+      }
+    };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -163,6 +180,27 @@ useEffect(() => {
         <h5 className="text-title mb-2 mt-3">Update Your Information</h5>
         {profileData && (
           <form className="row form-row" onSubmit={handleProfieSubmit}>
+            <div className="col-md-12">
+              <div className="form-group">
+                <div className="change-avatar d-flex gap-2 align-items-center">
+                  <Link to={"/doctor"} className="my-3 patient-img">
+                    <img
+                      src={selectedImage ? selectedImage : data?.img || pImage}
+                      alt=""
+                    />
+                  </Link>
+                  <div className="mt-3">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>
@@ -177,7 +215,6 @@ useEffect(() => {
                 />
               </div>
             </div>
-
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>
@@ -206,7 +243,6 @@ useEffect(() => {
                 />
               </div>
             </div>
-
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>Email</label>
@@ -219,7 +255,6 @@ useEffect(() => {
                 />
               </div>
             </div>
-
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>Phone Number</label>
@@ -232,7 +267,6 @@ useEffect(() => {
                 />
               </div>
             </div>
-
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>Gender</label>
@@ -247,7 +281,6 @@ useEffect(() => {
                 </select>
               </div>
             </div>
-
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>
@@ -264,7 +297,6 @@ useEffect(() => {
                 />
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 mt-2">
                 <div className="card-body">
@@ -283,7 +315,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <h6 className="card-title text-secondary">Clinic Info</h6>
@@ -318,7 +349,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <h6 className="card-title text-secondary">Contact Details</h6>
@@ -380,7 +410,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <h6 className="card-title text-secondary">Licence</h6>
@@ -402,7 +431,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <h6 className="card-title text-secondary">
@@ -440,7 +468,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <div className="text-end">
@@ -501,7 +528,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="col-md-12">
               <div className="card mb-2 p-3 mt-2">
                 <div className="text-end">
@@ -575,7 +601,6 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
             <div className="text-center my-3">
               <Button htmlType="submit" type="primary" size="large">
                 Save Changes
