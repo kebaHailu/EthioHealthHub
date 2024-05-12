@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Button, Select, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import pImage from "../../../images/avatar.jpg";
@@ -14,7 +14,7 @@ import { DatePicker } from "antd";
 import AdditionalEducationPopup from "./AdditionalEducationPopup";
 import AdditionalExperiance from "./AdditionalExperience";
 import loginService from "../../../service/auth.service";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 const DoctorProfileSetting = () => {
@@ -22,7 +22,11 @@ const DoctorProfileSetting = () => {
   const [isExperiencePopupVisible, setIsExperiencePopupVisible] =
     useState(false);
 
+  const token = localStorage.getItem("accessToken");
+  // const token = "eyJ0eXAiO.../// jwt token";
+  const decoded = jwtDecode(token);
 
+  console.log(decoded.user_id);
 
   // const { data } = useAuthCheck();
   const { data } = "";
@@ -33,6 +37,7 @@ const DoctorProfileSetting = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
   const [profileData, setProfileData] = useState(null);
+  const [error, setError] = useState(null);
 
   const [formField, setFormField] = useState({
     first_name: "",
@@ -71,47 +76,43 @@ const DoctorProfileSetting = () => {
     setDate(moment(dateString).format());
   };
 
-   
- 
-
-    const handleImageUpload = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setSelectedImage(reader.result);
-        };
-        reader.readAsDataURL(file);
-        setFile(file);
-      }
-    };
-
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormField({ ...formField, [name]: value });
   };
 
-
   const handleProfieSubmit = async (e, data) => {
     e.preventDefault();
     const combinedFormData = { ...formField, ...data };
     try {
-      const [response, educationalResponse, experianceResponse] = await Promise.all ([
-        loginService.DoctorProfile(combinedFormData),
-        loginService.DoctorProfileEducationUpdate(combinedFormData),
-        loginService.DoctorProfileExperienceUpdate(combinedFormData),
-      ]);
+      const [response, educationalResponse, experianceResponse] =
+        await Promise.all([
+          loginService.DoctorProfile(combinedFormData),
+          loginService.DoctorProfileEducationUpdate(combinedFormData),
+          loginService.DoctorProfileExperienceUpdate(combinedFormData),
+        ]);
       message.success("Profile updated successfully!");
       console.log("response", combinedFormData);
-     
     } catch (error) {
       console.error("Error updating profile:", error);
       message.error("Failed to update profile. Please try again.");
+      message.faild("Not found")
+      setError(error);
     }
   };
 
-  
   const handleEducationPopupOpen = () => {
     setIsEducationPopupVisible(true);
   };
@@ -138,38 +139,43 @@ const DoctorProfileSetting = () => {
     console.log("Experience Data:", experienceData);
   };
   // const token = localStorage.getItem("token");
-  // const token = "eyJ0eXAiO.../// jwt token";
+  // // const token = "eyJ0eXAiO.../// jwt token";
   // const decoded = jwtDecode(token);
 
-  // console.log(decoded.user_id);
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [profileResponse, educationResponse, experienceResponse] =
-        await Promise.all([
-          axios.get("http://127.0.0.1:8000/specialist/profile/1/"),
-          axios.get("http://127.0.0.1:8000/specialist/education/1/"),
-          axios.get("http://127.0.0.1:8000/specialist/experience/1/"),
-        ]);
-      setFormField(educationResponse.data);
-      setProfileData(educationResponse.data);
-      setFormField(experienceResponse.data);
-      setProfileData(experienceResponse.data)
-      setProfileData(profileResponse.data);
-      setFormField(profileResponse.data);
+  console.log(decoded.user_id);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profileResponse, educationResponse, experienceResponse] =
+          await Promise.all([
+            axios.get(
+              `http://127.0.0.1:8000/specialist/profile/${decoded.user_id}/`
+            ),
+            axios.get(
+              `http://127.0.0.1:8000/specialist/education/${decoded.user_id}/`
+            ),
+            axios.get(
+              `http://127.0.0.1:8000/specialist/experience/${decoded.user_id}/`
+            ),
+          ]);
+        setFormField(educationResponse.data);
+        setProfileData(educationResponse.data);
+        setFormField(experienceResponse.data);
+        setProfileData(experienceResponse.data);
+        setProfileData(profileResponse.data);
+        setFormField(profileResponse.data);
+        setError(null);
 
-      console.log("Profile Data:", profileResponse.data);
-      console.log("Education Data:", educationResponse.data);
-      console.log("Experience Data:", experienceResponse.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+        console.log("Profile Data:", profileResponse.data);
+        console.log("Education Data:", educationResponse.data);
+        console.log("Experience Data:", experienceResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  fetchData();
-}, []);
-
-
+    fetchData();
+  }, []);
 
   return (
     <div style={{ marginBottom: "10rem" }}>
@@ -178,6 +184,7 @@ useEffect(() => {
         style={{ background: "#f8f9fa" }}
       >
         <h5 className="text-title mb-2 mt-3">Update Your Information</h5>
+
         {profileData && (
           <form className="row form-row" onSubmit={handleProfieSubmit}>
             <div className="col-md-12">
@@ -198,9 +205,8 @@ useEffect(() => {
                   </div>
                 </div>
               </div>
-             
             </div>
-          
+           
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>

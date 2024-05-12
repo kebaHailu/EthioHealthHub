@@ -54,7 +54,7 @@ const DoctorsList = () => {
             <button className="view_detail"onClick={() => openDetailsPopup(doctor)}>
               View Details
             </button>
-            <Link to="/appointment">
+            <Link to="/calendly">
               <button className="appointment-btn">Make Appointment</button>
             </Link>
           </div>

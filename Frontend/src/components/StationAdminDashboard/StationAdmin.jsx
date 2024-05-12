@@ -8,6 +8,7 @@ const StationAdmin = () => {
   const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingTechnician, setEditingTechnician] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   const [stationInfo, setStationInfo] = useState({
     name: "XYZ Station",
@@ -18,125 +19,59 @@ const StationAdmin = () => {
   });
   const [technicians, setTechnicians] = useState([]);
 
- const columns = [
-   {
-     title: "Technician Name",
-     dataIndex: "name",
-     key: "name",
-     render: (text, record) =>
-     editingTechnician && record.key === editingTechnician?.key ? (
-         <Input
-           defaultValue={`${record.firstName} ${record.lastName}`}
-           onChange={(e) =>
-             handleTechnicianInputChange(e.target.value, "name", record)
-           }
-         />
-       ) : (
-         `${record.firstName} ${record.lastName}`
-       ),
-   },
-   {
-     title: "Email",
-     dataIndex: "email",
-     key: "email",
-     render: (text, record) =>
-       editingTechnician && record.key === editingTechnician?.key ? (
-         <Input
-           defaultValue={record.email}
-           onChange={(e) =>
-             handleTechnicianInputChange(e.target.value, "email", record)
-           }
-         />
-       ) : (
-         record.email
-       ),
-   },
-   {
-     title: "Phone Number",
-     dataIndex: "phone",
-     key: "phone",
-     render: (text, record) =>
-       editingTechnician && record.key === editingTechnician?.key ? (
-         <Input
-           defaultValue={record.phone}
-           onChange={(e) =>
-             handleTechnicianInputChange(e.target.value, "phone", record)
-           }
-         />
-       ) : (
-         record.phone
-       ),
-   },
-   {
-     title: "Education",
-     dataIndex: "education",
-     key: "education",
-     render: (text, record) =>
-       editingTechnician && record.key === editingTechnician?.key ? (
-         <Input
-           defaultValue={record.education}
-           onChange={(e) =>
-             handleTechnicianInputChange(e.target.value, "education", record)
-           }
-         />
-       ) : (
-         record.education
-       ),
-   },
-   {
-     title: "Age",
-     dataIndex: "age",
-     key: "age",
-     render: (text, record) =>
-       editingTechnician && record.key === editingTechnician?.key ? (
-         <Input
-           defaultValue={record.age}
-           onChange={(e) =>
-             handleTechnicianInputChange(e.target.value, "age", record)
-           }
-         />
-       ) : (
-         record.age
-       ),
-   },
-   {
-     title: "Registred Date",
-     dataIndex: "createdAt",
-     key: "createdAt",
-   },
-   {
-     title: "Action",
-     key: "action",
-     render: (_, record) =>
-       editingTechnician ? (
-         <span>
-           {record.key === editingTechnician?.key && (
-             <>
-               <Button type="primary" onClick={() => handleSave(record)}>
-                 Save
-               </Button>{" "}
-               <Button onClick={() => handleCancel(record)}>Cancel</Button>
-             </>
-           )}
-         </span>
-       ) : (
-         <span>
-           <Button
-             type="link"
-             icon={<EditOutlined />}
-             className="edit-button"
-             onClick={() => handleEditTechnician(record)}
-           />
-           <Button
-             type="link"
-             icon={<DeleteOutlined />}
-             className="delete-button"
-             onClick={() => handleDeleteTechnician(record)}
-           />
-         </span>
-       ),
-   },
- ];
+  const columns = [
+    {
+      title: "Technician Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => `${record.firstName} ${record.lastName}`,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Education",
+      dataIndex: "education",
+      key: "education",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Registred Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <span>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            className="edit-button"
+            onClick={() => handleEditTechnician(record)}
+          />
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            className="delete-button"
+            onClick={() => handleDeleteTechnician(record)}
+          />
+        </span>
+      ),
+    },
+  ];
 
   const handleEdit = () => {
     setEditMode(true);
@@ -171,7 +106,6 @@ const StationAdmin = () => {
   };
 
   const handleAddTechnicianFormSubmit = (values) => {
-    
     const newTechnician = {
       ...values,
       createdAt: new Date().toLocaleString(),
@@ -180,17 +114,33 @@ const StationAdmin = () => {
     setShowAddForm(false);
   };
 
+    const handleProfileImageChange = (e) => {
+      const file = e.target.files[0];
+      setProfileImage(file);
+    };
+
   return (
     <div className="station-admin-container">
       <div className="left-sidebar sticky">
         {/* Station Info */}
-        <img
-          src={stationInfo.coverImage}
-          alt="Station Cover"
-          className="station-covers"
-          // Add onClick handler for cover image edit
-          onClick={() => console.log("Edit cover image")}
-        />
+        <label htmlFor="profileImage">
+          <img className="cover-image"
+            src={
+              profileImage
+                ? URL.createObjectURL(profileImage)
+                : "https://via.placeholder.com/220"
+            }
+            alt="Station Cover"
+           
+          />
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleProfileImageChange}
+          />
+        </label>
         <p>
           <strong>Station Name:</strong>{" "}
           {editMode ? (
@@ -311,9 +261,7 @@ const StationAdmin = () => {
           >
             <Input />
           </Form.Item>
-          <Button 
-          className="add-technician-button"
-          htmlType="submit">
+          <Button className="add-technician-button" htmlType="submit">
             Add Technician
           </Button>
         </Form>
@@ -321,5 +269,4 @@ const StationAdmin = () => {
     </div>
   );
 };
-
 export default StationAdmin;

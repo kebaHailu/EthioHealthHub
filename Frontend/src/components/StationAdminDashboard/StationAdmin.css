@@ -1,3 +1,5 @@
+/* CSS file */
+
 .station-admin-container {
   display: flex;
   flex-wrap: wrap;
@@ -22,22 +24,34 @@
   background-color: #4CAF50;
   color: white;
   padding-bottom: 14px;
-  margin: 8px 2px;
+  margin: 4px 2px;
   border: none;
   cursor: pointer;
   text-align: center;
-  width: 100%;
+  width: 90%;
 }
 
-.station-covers {
+.cover-image{
   width: 100%;
+  height: 300px;
+}
+
+.station-info input {
+  border: 1px solid #4CAF50; /* Green border for input fields */
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.station-info input:focus {
+  outline: none; /* Remove default focus outline */
+  border-color: #4CAF50; /* Change border color on focus */
 }
 
 .right-sidebar {
   flex: 1 1 auto; /* Initially take up remaining space */
-  padding: 20px;
+  padding: 10px;
   background-color: #e0e0e0;
-  margin: 10px;
+  margin: 5px;
   max-width: 100%; /* Limit maximum width */
 }
 
@@ -50,6 +64,7 @@
   cursor: pointer;
   width: 100%;
 }
+
 .add-technician-button {
   background-color: #4CAF50;
   color: white;
@@ -59,6 +74,7 @@
   cursor: pointer;
   width: 100%;
 }
+
 /* Media Queries for responsiveness */
 
 @media only screen and (max-width: 577px) {
