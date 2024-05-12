@@ -8,6 +8,7 @@ import { Empty } from 'antd';
 import { Pagination } from 'antd';
 import Header from '../../Shared/Header/Header';
 import SubHeader from '../../Shared/SubHeader';
+import DoctorsList from '../../DoctorsList/DoctorsList';
 
 const SearchDoctor = () => {
     const query = {};
@@ -48,25 +49,25 @@ const SearchDoctor = () => {
         setPriceRange({});
     }
 
-    if (!!debounced) { query.searchTerm = debounced }
+    // if (!!debounced) { query.searchTerm = debounced }
 
-    const { data, isLoading, isError } = useGetDoctorsQuery({ ...query })
-    const doctorsData = data?.doctors;
-    const meta = data?.meta;
+    // const { data, isLoading, isError } = useGetDoctorsQuery({ ...query })
+    // const doctorsData = data?.doctors;
+    // const meta = data?.meta;
 
     //what to render
-    let content = null;
-    if (isLoading) content = <>Loading ...</>;
-    if (!isLoading && isError) content = <div>Something Went Wrong !</div>
-    if (!isLoading && !isError && doctorsData.length === 0) content = <div><Empty /></div>
-    if (!isLoading && !isError && doctorsData.length > 0) content =
-        <>
-            {
-                doctorsData && doctorsData?.map((item, id) => (
-                    <SearchContent key={id + item.id} data={item} />
-                ))
-            }
-        </>
+    // let content = null;
+    // if (isLoading) content = <>Loading ...</>;
+    // if (!isLoading && isError) content = <div>Something Went Wrong !</div>
+    // if (!isLoading && !isError && doctorsData.length === 0) content = <div><Empty /></div>
+    // if (!isLoading && !isError && doctorsData.length > 0) content =
+        // <>
+        //     {
+        //         doctorsData && doctorsData?.map((item, id) => (
+        //             <SearchContent key={id + item.id} data={item} />
+        //         ))
+        //     }
+        // </>
 
     const onShowSizeChange = (current, pageSize) => {
         setPage(page);
@@ -89,12 +90,13 @@ const SearchDoctor = () => {
                             query={query}
                         />
                         <div className="col-md-12 col-lg-8 col-xl-9">
-                            {content}
+                            {/* {content} */}
+                            <DoctorsList/>
                             <div className='text-center mt-5 mb-5'>
                                 <Pagination
                                     showSizeChanger
                                     onShowSizeChange={onShowSizeChange}
-                                    total={meta?.total}
+                                    // total={meta?.total}
                                     pageSize={size}
                                 />
                             </div>

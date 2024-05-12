@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Button, Select, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import pImage from "../../../images/avatar.jpg";
 import { Link } from "react-router-dom";
-import { useUpdateDoctorMutation } from "../../../redux/api/doctorApi";
+// import { useUpdateDoctorMutation } from "../../../redux/api/doctorApi";
 // import useAuthCheck from '../../../redux/hooks/useAuthCheck';
 import { doctorSpecialistOptions } from "../../../constant/global";
 import ImageUpload from "../../UI/form/ImageUpload";
 import dImage from "../../../images/avatar.jpg";
-import { DatePicker} from "antd";
+import { DatePicker } from "antd";
 import AdditionalEducationPopup from "./AdditionalEducationPopup";
 import AdditionalExperiance from "./AdditionalExperience";
+import loginService from "../../../service/auth.service";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const DoctorProfileSetting = () => {
-   const [isEducationPopupVisible, setIsEducationPopupVisible] =
-     useState(false);
-   const [isExperiencePopupVisible, setIsExperiencePopupVisible] =
-     useState(false);
+  const [isEducationPopupVisible, setIsEducationPopupVisible] = useState(false);
+  const [isExperiencePopupVisible, setIsExperiencePopupVisible] =
+    useState(false);
 
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [updateDoctor, { isLoading, isSuccess, isError, error }] =
-    useUpdateDoctorMutation();
+  const token = localStorage.getItem("accessToken");
+  // const token = "eyJ0eXAiO.../// jwt token";
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
+
   // const { data } = useAuthCheck();
   const { data } = "";
   const { register, handleSubmit } = useForm({});
@@ -30,79 +36,147 @@ const DoctorProfileSetting = () => {
   const [date, setDate] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (data) {
-      const { id, services } = data;
-      setUserId(id);
-      setSelectedItems(services?.split(","));
-    }
-  }, [data]);
+  const [formField, setFormField] = useState({
+    first_name: "",
+    last_name: "",
+    username: "",
+    email: "",
+    profile_picture: "",
 
-  const handleChange = (e) => {
-    setSelectValue({ ...selectValue, [e.target.name]: e.target.value });
-  };
+    phone: "",
+    date_of_birth: moment().format("YYYY-MM-DD"), // Initialize date_of_birth with current date in "MM-DD-YYYY"
+    gender: "",
+    about_me: "",
+    clinic_name: "",
+
+    clinic_address: "",
+    service: "",
+    specialization: "",
+    license_number: "",
+    address_line: "",
+
+    city: "",
+    state: "",
+    country: "",
+
+    type: "",
+    collage: "",
+    year_of_completion: "",
+
+    hospital_name: "",
+    designation: "",
+    start_date: "",
+    end_date: "",
+  });
+
   const onChange = (date, dateString) => {
     setDate(moment(dateString).format());
   };
 
-  const onSubmit = (data) => {
-    const obj = data;
-    obj.price && obj.price.toString();
-    const newObj = { ...obj, ...selectValue };
-    date && (newObj["dob"] = date);
-    newObj["services"] = Array.isArray(selectedItems)
-      ? selectedItems.join(",")
-      : null;
-    const changedValue = Object.fromEntries(
-      Object.entries(newObj).filter(([key, value]) => value !== "")
-    );
-    const formData = new FormData();
-    selectedImage && formData.append("file", file);
-    const changeData = JSON.stringify(changedValue);
-    formData.append("data", changeData);
-    updateDoctor({ data: formData, id: userId });
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
+    }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormField({ ...formField, [name]: value });
+  };
+
+  const handleProfieSubmit = async (e, data) => {
+    e.preventDefault();
+    const combinedFormData = { ...formField, ...data };
+    try {
+      const [response, educationalResponse, experianceResponse] =
+        await Promise.all([
+          loginService.DoctorProfile(combinedFormData),
+          loginService.DoctorProfileEducationUpdate(combinedFormData),
+          loginService.DoctorProfileExperienceUpdate(combinedFormData),
+        ]);
+      message.success("Profile updated successfully!");
+      console.log("response", combinedFormData);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      message.error("Failed to update profile. Please try again.");
+      message.faild("Not found")
+      setError(error);
+    }
+  };
+
+  const handleEducationPopupOpen = () => {
+    setIsEducationPopupVisible(true);
+  };
+
+  const handleEducationPopupClose = () => {
+    setIsEducationPopupVisible(false);
+  };
+
+  const handleExperiencePopupOpen = () => {
+    setIsExperiencePopupVisible(true);
+  };
+
+  const handleExperiencePopupClose = () => {
+    setIsExperiencePopupVisible(false);
+  };
+
+  const handleAddEducation = (educationData) => {
+    // Handle adding education data here
+    console.log("Education Data:", educationData);
+  };
+
+  const handleAddExperience = (experienceData) => {
+    // Handle adding experience data here
+    console.log("Experience Data:", experienceData);
+  };
+  // const token = localStorage.getItem("token");
+  // // const token = "eyJ0eXAiO.../// jwt token";
+  // const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
   useEffect(() => {
-    if (!isLoading && isError) {
-      message.error(error?.data?.message);
-    }
-    if (isSuccess) {
-      message.success("Successfully Changed Saved !");
-    }
-  }, [isLoading, isError, error, isSuccess]);
+    const fetchData = async () => {
+      try {
+        const [profileResponse, educationResponse, experienceResponse] =
+          await Promise.all([
+            axios.get(
+              `http://127.0.0.1:8000/specialist/profile/${decoded.user_id}/`
+            ),
+            axios.get(
+              `http://127.0.0.1:8000/specialist/education/${decoded.user_id}/`
+            ),
+            axios.get(
+              `http://127.0.0.1:8000/specialist/experience/${decoded.user_id}/`
+            ),
+          ]);
+        setFormField(educationResponse.data);
+        setProfileData(educationResponse.data);
+        setFormField(experienceResponse.data);
+        setProfileData(experienceResponse.data);
+        setProfileData(profileResponse.data);
+        setFormField(profileResponse.data);
+        setError(null);
 
-  //  const [isPopupVisible, setIsPopupVisible] = useState(false);
+        console.log("Profile Data:", profileResponse.data);
+        console.log("Education Data:", educationResponse.data);
+        console.log("Experience Data:", experienceResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-    
+    fetchData();
+  }, []);
 
-     const handleEducationPopupOpen = () => {
-       setIsEducationPopupVisible(true);
-     };
-
-     const handleEducationPopupClose = () => {
-       setIsEducationPopupVisible(false);
-     };
-
-     const handleExperiencePopupOpen = () => {
-       setIsExperiencePopupVisible(true);
-     };
-
-     const handleExperiencePopupClose = () => {
-       setIsExperiencePopupVisible(false);
-     };
-
-
-       const handleAddEducation = (educationData) => {
-         // Handle adding education data here
-         console.log("Education Data:", educationData);
-       };
-
-       const handleAddExperience = (experienceData) => {
-         // Handle adding experience data here
-         console.log("Experience Data:", experienceData);
-       };
   return (
     <div style={{ marginBottom: "10rem" }}>
       <div
@@ -110,266 +184,445 @@ const DoctorProfileSetting = () => {
         style={{ background: "#f8f9fa" }}
       >
         <h5 className="text-title mb-2 mt-3">Update Your Information</h5>
-        <form className="row form-row" onSubmit={handleSubmit(onSubmit)}>
-          <div className="col-md-12 mb-5">
-            <div className="form-group">
-              <div className="change-avatar d-flex gap-2 align-items-center">
-                <Link to={"/"} className="my-3 patient-img">
-                  <img
-                    src={selectedImage ? selectedImage : data?.img || dImage}
-                    alt=""
-                  />
-                </Link>
-                <div className="mt-3">
-                  <ImageUpload
-                    setSelectedImage={setSelectedImage}
-                    setFile={setFile}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>
-                First Name <span className="text-danger">*</span>
-              </label>
-              <input
-                defaultValue={data?.firstName}
-                {...register("firstName")}
-                className="form-control"
-              />
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>
-                Last Name <span className="text-danger">*</span>
-              </label>
-              <input
-                defaultValue={data?.lastName}
-                {...register("lastName")}
-                className="form-control"
-              />
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>Email</label>
-              <input
-                defaultValue={data?.email}
-                {...register("email")}
-                className="form-control"
-              />
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>Phone Number</label>
-              <input
-                defaultValue={data?.phone}
-                {...register("phone")}
-                className="form-control"
-              />
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>Gender</label>
-              <select
-                className="form-control select"
-                onChange={handleChange}
-                name="gender"
-              >
-                <option value={""}>Select</option>
-                <option className="text-capitalize">male</option>
-                <option className="text-capitalize">female</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group mb-2 card-label">
-              <label>Date of Birth {moment(data?.dob).format("LL")}</label>
-              <DatePicker
-                onChange={onChange}
-                format={"YYYY-MM-DD"}
-                style={{ width: "100%", padding: "6px" }}
-              />
-            </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 mt-2">
-              <div className="card-body">
-                <h6 className="card-title text-secondary">About Me</h6>
-                <div className="form-group mb-2 card-label">
-                  <label>Biography</label>
-                  <textarea
-                    defaultValue={data?.biography}
-                    {...register("biography")}
-                    className="form-control"
-                    rows={5}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <h6 className="card-title text-secondary">Clinic Info</h6>
-              <div className="row form-row">
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>Clinic Name</label>
+        {profileData && (
+          <form className="row form-row" onSubmit={handleProfieSubmit}>
+            <div className="col-md-12">
+              <div className="form-group">
+                <div className="change-avatar d-flex gap-2 align-items-center">
+                  <Link to={"/doctor"} className="my-3 patient-img">
+                    <img
+                      src={selectedImage ? selectedImage : data?.img || pImage}
+                      alt=""
+                    />
+                  </Link>
+                  <div className="mt-3">
                     <input
-                      defaultValue={data?.clinicName}
-                      {...register("clinicName")}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>
+                  First Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  placeholder="First Name"
+                  name="first_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.first_name}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>
+                  Last Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  placeholder="Last Name"
+                  name="last_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.last_name}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>
+                  User Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  placeholder="username"
+                  name="username"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.username}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Email</label>
+                <input
+                  placeholder="Email"
+                  name="email"
+                  type="email"
+                  onChange={handleChange}
+                  value={formField.email}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Phone Number</label>
+                <input
+                  placeholder="Phone Number"
+                  name="phone"
+                  type="tel"
+                  onChange={handleChange}
+                  value={formField.phone}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Gender</label>
+                <select
+                  className="form-control select"
+                  onChange={handleChange}
+                  name="gender"
+                >
+                  <option value="">Select</option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                </select>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>
+                  Date of Birth{" "}
+                  {formField.date_of_birth &&
+                    moment(formField.date_of_birth).format("LL")}
+                </label>
+                <DatePicker
+                  onChange={(date, dateString) =>
+                    setFormField({ ...formField, date_of_birth: dateString })
+                  }
+                  format={"YYYY-MM-DD"}
+                  style={{ width: "100%", padding: "6px" }}
+                />
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="card mb-2 mt-2">
+                <div className="card-body">
+                  <h6 className="card-title text-secondary">About Me</h6>
+                  <div className="form-group mb-2 card-label">
+                    <label>Biography</label>
+                    <textarea
+                      placeholder="Biography"
+                      name="about_me"
                       className="form-control"
                       rows={5}
+                      onChange={handleChange}
+                      value={formField.about_me}
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <h6 className="card-title text-secondary">Clinic Info</h6>
+                <div className="row form-row">
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>Clinic Name</label>
+                      <input
+                        placeholder="Clinic Name"
+                        name="clinic_name"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.clinic_name}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
 
-                <div className="col-md-6">
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>Clinic Address</label>
+                      <input
+                        placeholder="Clinic Address"
+                        name="clinic_address"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.clinic_address}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <h6 className="card-title text-secondary">Contact Details</h6>
+                <div className="row form-row">
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>Address Line</label>
+                      <input
+                        placeholder="Address Line"
+                        name="address_line"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.address_line}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>City</label>
+                      <input
+                        placeholder="City"
+                        name="city"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.city}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>State / Province</label>
+                      <input
+                        placeholder="State / Province"
+                        name="state"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.state}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>Country</label>
+                      <input
+                        placeholder="Country"
+                        name="country"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.country}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <h6 className="card-title text-secondary">Licence</h6>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group mb-2 card-label">
+                      <label>Licence Number</label>
+                      <input
+                        placeholder="Licence Number"
+                        name="license_number"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.license_number}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <h6 className="card-title text-secondary">
+                  Services and Specialization
+                </h6>
+                <div className="row form-row">
                   <div className="form-group mb-2 card-label">
-                    <label>Clinic Address</label>
+                    <label>Services</label>
                     <input
+                      placeholder="field of speciality"
+                      name="service"
                       type="text"
-                      defaultValue={data?.clinicAddress}
-                      {...register("clinicAddress")}
-                      className="form-control"
+                      onChange={handleChange}
+                      value={formField.service}
+                      className="input-tags form-control"
                     />
+                    <small className="form-text text-muted">
+                      Note : Type & Press enter to add new services
+                    </small>
+                  </div>
+                  <div className="form-group mb-2 card-label">
+                    <label>Specialization</label>
+                    <input
+                      placeholder="Specialization"
+                      name="specialization"
+                      type="text"
+                      onChange={handleChange}
+                      value={formField.specialization}
+                      className="input-tags form-control"
+                    />
+                    <small className="form-text text-muted">
+                      Note : Type & Press enter to add new specialization
+                    </small>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <h6 className="card-title text-secondary">Contact Details</h6>
-              <div className="row form-row">
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>Address Line</label>
-                    <input
-                      defaultValue={data?.address}
-                      {...register("address")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>City</label>
-                    <input
-                      defaultValue={data?.city}
-                      {...register("city")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>State / Province</label>
-                    <input
-                      defaultValue={data?.state}
-                      {...register("state")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>Country</label>
-                    <input
-                      defaultValue={data?.country}
-                      {...register("country")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>Postal Code</label>
-                    <input
-                      defaultValue={data?.postalCode}
-                      {...register("postalCode")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <h6 className="card-title text-secondary">Licence</h6>
-
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group mb-2 card-label">
-                    <label>licence_id</label>
-                    <input
-                      defaultValue={data?.price}
-                      {...register("uniqueId")}
-                      type="string"
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <h6 className="card-title text-secondary">
-                Services and Specialization
-              </h6>
-              <div className="row form-row">
-                <div className="form-group mb-2 card-label">
-                  <label>Services</label>
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
-                    value={selectedItems}
-                    onChange={setSelectedItems}
-                    options={doctorSpecialistOptions}
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <div className="text-end">
+                  <PlusCircleOutlined
+                    style={{ fontSize: "24px", cursor: "pointer" }}
+                    onClick={handleEducationPopupOpen}
                   />
-                  <small className="form-text text-muted">
-                    Note : Type & Press enter to add new services
-                  </small>
                 </div>
-                <div className="form-group mb-2 card-label">
-                  <label>Specialization </label>
-                  <input
-                    defaultValue={data?.specialization}
-                    {...register("specialization")}
-                    className="input-tags form-control"
-                    placeholder="Enter Specialization"
-                  />
-                  <small className="form-text text-muted">
-                    Note : Type & Press enter to add new specialization
-                  </small>
+                <AdditionalEducationPopup
+                  visible={isEducationPopupVisible}
+                  onCancel={handleEducationPopupClose}
+                  onAdd={handleAddEducation}
+                />
+                <h6 className="card-title text-secondary">Education</h6>
+                <div className="row form-row">
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>Education level</label>
+                      <input
+                        placeholder="education_level"
+                        name="type"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.type}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>College/Institute</label>
+
+                      <input
+                        placeholder="collage"
+                        name="collage"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.collage}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>Year of Completion</label>
+
+                      <input
+                        placeholder="year_of_completion"
+                        name="year_of_completion"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.year_of_completion}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="col-md-12">
+              <div className="card mb-2 p-3 mt-2">
+                <div className="text-end">
+                  <PlusCircleOutlined
+                    style={{ fontSize: "24px", cursor: "pointer" }}
+                    onClick={handleExperiencePopupOpen}
+                  />
+                </div>
+                <AdditionalExperiance
+                  visible={isExperiencePopupVisible}
+                  onCancel={handleExperiencePopupClose}
+                  onAdd={handleAddExperience}
+                />
 
-          <div className="col-md-12">
+                <h6 className="card-title text-secondary">Experience</h6>
+                <div className="row form-row">
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>Hospital Name</label>
+
+                      <input
+                        placeholder="hospital_name"
+                        name="hospital_name"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.hospital_name}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>From</label>
+
+                      <input
+                        placeholder="start_date"
+                        name="start_date"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.start_date}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>To</label>
+                      <input
+                        placeholder="end_date"
+                        name="end_date"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.end_date}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 col-lg-4">
+                    <div className="form-group mb-2 card-label">
+                      <label>Designation</label>
+                      <input
+                        placeholder="designation"
+                        name="designation"
+                        type="text"
+                        onChange={handleChange}
+                        value={formField.designation}
+                        className="input-tags form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="text-center my-3">
+              <Button htmlType="submit" type="primary" size="large">
+                Save Changes
+              </Button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DoctorProfileSetting;
+
+/*
+ <div className="col-md-12">
             <div className="card mb-2 p-3 mt-2">
               <div className="text-end">
                 <PlusCircleOutlined
@@ -479,21 +732,5 @@ const DoctorProfileSetting = () => {
             </div>
           </div>
 
-          <div className="text-center my-3">
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              loading={isLoading}
-              disabled={isLoading ? true : false}
-            >
-              {isLoading ? "Saving ..." : "Save Changes"}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
 
-export default DoctorProfileSetting;
+*/

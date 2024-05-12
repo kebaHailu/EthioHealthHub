@@ -39,6 +39,9 @@ class Specialist(models.Model):
     exp_start_date = models.DateField(null=True)
     exp_end_date = models.DateField(null=True)
 
+    def __str__(self):
+        return self.first_name() + " " + self.last_name()
+
     def first_name(self):
         return self.user.first_name
 

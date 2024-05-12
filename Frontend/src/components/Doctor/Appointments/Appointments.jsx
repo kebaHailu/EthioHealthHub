@@ -1,113 +1,90 @@
-import React, { useEffect } from 'react'
-import DashboardLayout from '../DashboardLayout/DashboardLayout'
-import img from '../../../images/doc/doctor 3.jpg';
-import './Appointments.css';
-import { useGetDoctorAppointmentsQuery, useUpdateAppointmentMutation } from '../../../redux/api/appointmentApi';
-import moment from 'moment';
-import { Button, Empty, message, Tag, Tooltip } from 'antd';
-import { FaEye, FaCheck, FaTimes } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import { FaClock, FaEnvelope, FaLocationArrow, FaPhoneAlt, FaBriefcaseMedical } from "react-icons/fa";
-import { clickToCopyClipBoard } from '../../../utils/copyClipBoard';
+import React, { useEffect } from "react";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
+import img from "../../../images/doc/doctor 3.jpg";
+import "./Appointments.css";
+import moment from "moment";
+import { Button, Empty, message, Tag, Tooltip } from "antd";
+import {
+  FaEye,
+  FaCheck,
+  FaTimes,
+  FaClock,
+  FaEnvelope,
+  FaLocationArrow,
+  FaPhoneAlt,
+  FaBriefcaseMedical,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { clickToCopyClipBoard } from "../../../utils/copyClipBoard";
 
 const Appointments = () => {
-    const { data, isError, isLoading } = useGetDoctorAppointmentsQuery({});
-    const [updateAppointment, { isError: updateIsError, isSuccess, error }] = useUpdateAppointmentMutation();
+  const appointments = [
+    {
+      id: 1,
+      patientName: "John Doe",
+      date: "2024-05-04",
+      time: "10:00 AM",
+      gender: "Male",
+      stationName: "Station 1",
+      technicianName: "Dr. Smith",
+    },
+    {
+      id: 2,
+      patientName: "Jane Smith",
+      date: "2024-05-05",
+      time: "11:30 AM",
+      gender: "Female",
+      stationName: "Station 2",
+      technicianName: "Dr. Johnson",
+    },
+    {
+      id: 3,
+      patientName: "Alice Johnson",
+      date: "2024-05-06",
+      time: "02:00 PM",
+      gender: "Female",
+      stationName: "Station 3",
+      technicianName: "Dr. Brown",
+    },
+  ];
 
-    const updatedApppointmentStatus = (id, type) => {
-        const changeObj = {
-            status: type
-        }
-        if (id) {
-            updateAppointment({ id, data: changeObj })
-        }
-    }
+  return (
+    <DashboardLayout>
+      <table className="appointments-table">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Appointment Date & Time</th>
+            <th>Gender</th>
+            <th>Station Name</th>
+            <th>Technician Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointments.map((appointment) => (
+            <tr key={appointment.id}>
+              <td>{appointment.patientName}</td>
+              <td>
+                {moment(appointment.date).format("MMM Do YY")}{" "}
+                {appointment.time}
+              </td>
+              <td>{appointment.gender}</td>
+              <td>{appointment.stationName}</td>
+              <td>{appointment.technicianName}</td>
+              <td>
+                <Link to={`/dashboard/appointments/${appointment.id}`}>
+                  <Button type="primary" icon={<FaEye />} size="small">
+                    View
+                  </Button>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </DashboardLayout>
+  );
+};
 
-    useEffect(() => {
-        if (isSuccess) {
-            message.success("Succcessfully Appointment Updated")
-        }
-        if (isError) {
-            message.error(error?.data?.message);
-        }
-    }, [isSuccess, updateIsError, error])
-
-    let content = null;
-    if (!isLoading && isError) content = <div>Something Went Wrong !</div>
-    if (!isLoading && !isError && data?.length === 0) content = <Empty/>
-    if (!isLoading && !isError && data?.length > 0) content =
-        <>
-            {
-                data && data.map((item) => (
-                    <div className="w-100 mb-3 rounded p-3" style={{ background: '#f8f9fa' }} key={item.id}>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center gap-3">
-                                <Link to={`/`} className="patient-img">
-                                    <img src={img} alt="" />
-                                </Link>
-                                <div className="patients-info">
-                                    <h5>{item?.patient?.firstName + ' ' + item?.patient?.lastName}</h5>
-                                    <Tooltip title="Copy Tracking Id">
-                                        <Button>
-                                            <h6>Tracking<Tag color="#87d068" className='ms-2 text-uppercase' onClick={() => clickToCopyClipBoard(item?.trackingId)}>{item?.trackingId}</Tag></h6>
-                                        </Button>
-                                    </Tooltip>
-
-                                    <div className="info">
-                                        <p><FaClock className='icon' /> {moment(item?.appointmentTime).format("MMM Do YY")} </p>
-                                        <p><FaLocationArrow className='icon' /> {item?.patient?.address}</p>
-                                        <p><FaEnvelope className='icon' /> {item?.patient?.email}</p>
-                                        <p><FaPhoneAlt className='icon' /> {item?.patient?.mobile}</p>
-
-                                    </div>
-                                </div>
-                                <div className='appointment-status card p-3 border-primary'>
-                                    <p>Current Status - <Tag color="#f50" className='text-uppercase'>{item?.status}</Tag></p>
-                                    <p>Patient Status - <Tag color="#2db7f5" className='text-uppercase'>{item?.patientType}</Tag></p>
-                                    <p>Is Follow Up - <Tag color="#f50" className='text-uppercase'>{item?.isFollowUp ? "Yes" : "No"}</Tag></p>
-                                    <p> Is Paid - <Tag color="#87d068" className='text-uppercase'>{item?.paymentStatus}</Tag></p>
-                                    <p> Prescribed - <Tag color="#2db7f5" className='text-uppercase'>{item?.prescriptionStatus}</Tag></p>
-                                </div>
-                            </div>
-                            <div className='d-flex gap-2'>
-                                <Link to={`/dashboard/appointments/${item?.id}`}>
-                                    <Button type="primary" icon={<FaEye />} size="small">View</Button>
-                                </Link>
-                                {
-                                    item.prescriptionStatus === 'notIssued'
-                                        ?
-                                        <Link to={`/dashboard/appointment/treatment/${item?.id}`}>
-                                            <Button type="primary" icon={<FaBriefcaseMedical />} size="small">Treatment</Button>
-                                        </Link>
-                                        :
-                                        <Link to={`/dashboard/prescription/${item?.prescription[0]?.id}`}>
-                                            <Button type="primary" icon={<FaEye />} size="small" >Prescription</Button>
-                                        </Link>
-                                }
-                                {
-                                    item?.isFollowUp && <Link to={`/dashboard/appointment/treatment/edit/${item?.prescription[0]?.id}`}>
-                                        <Button type="primary" icon={<FaBriefcaseMedical />} size="small">Follow Up</Button>
-                                    </Link>
-                                }
-
-                                {
-                                    item?.status === 'pending' &&
-                                    <>
-                                        <Button type="primary" icon={<FaCheck />} size="small" onClick={() => updatedApppointmentStatus(item.id, 'scheduled')}>Accept</Button>
-                                        <Button type='primary' icon={<FaTimes />} size="small" danger onClick={() => updatedApppointmentStatus(item.id, 'cancel')}>Cancel</Button>
-                                    </>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                ))
-            }
-        </>
-    return (
-        <DashboardLayout>
-            {content}
-        </DashboardLayout>
-    )
-}
-
-export default Appointments
+export default Appointments;

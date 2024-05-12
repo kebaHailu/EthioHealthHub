@@ -43,11 +43,19 @@ const SignIn = ({ handleResponse }) => {
     console.log("User:", user);
     try {
       const response = await loginService.logIn(user);
-      if (response.status === 200) {
-        const { access } = response.data; // Extract access token from response
-        localStorage.setItem("accessToken", access); // Save access token to localStorage
+      const { access } = response.data; // Extract access token from response
+      localStorage.setItem("accessToken", access); // Save access token to localStorage
+      if (response.status === 200 && response.data.user_role === "SD") {
+   
         toast.success("Successfully logged in");
-        navigate("/");
+        navigate("/dashboard");
+      } else if (response.status === 200 && response.data.user_role === "HO") {
+      
+        toast.success("Successfully logged in");
+        navigate("/admin/dashboard");
+      } else if (response.status === 200 && response.data.user_role === "SA") {
+        toast.success("Successfully logged in");
+        navigate("/station-admin");
       } else {
         toast.error("Invalid credentials. Please try again.");
       }
@@ -61,7 +69,7 @@ const SignIn = ({ handleResponse }) => {
 
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
-   
+
     setShowForgotPassword(false);
   };
 

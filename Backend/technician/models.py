@@ -14,6 +14,18 @@ class Technician(models.Model):
     profile_image = models.CharField(max_length=255, blank=True, null=True)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name
+
+    def first_name(self):
+        return self.user.first_name
+
+    def last_name(self):
+        return self.user.last_name
+
+    def email(self):
+        return self.user.email
+
 
 class Patient(models.Model):
     GENDER_OPTION = [
@@ -31,6 +43,9 @@ class Patient(models.Model):
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.first_name
+
 
 
 class ClinicalRecord(models.Model):
@@ -47,12 +62,21 @@ class ClinicalRecord(models.Model):
     disease_type = models.CharField(max_length=1, choices=DISEASE_OPTION, default='E')
     disease_description = models.TextField(blank=True)
     follow_up_information = models.TextField(blank=True)
-    image_path = models.CharField(max_length=255, blank=True)
-    model_result = models.CharField(max_length=255, blank=True)
+    image_path = models.ImageField(upload_to="images/", null=True, blank=True)  # Field(max_length=255, blank=True)
+    model_result = models.TextField()
     allergies = models.CharField(max_length=255, blank=True)
     vaccination_status = models.CharField(max_length=255, blank=True)
     sugar_level = models.CharField(max_length=255, blank=True)
     blood_pressure = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.patient.first_name + " " + self.patient.last_name
+
+    def first_name(self):
+        return self.patient.first_name
+
+    def last_name(self):
+        return self.patient.last_name
 
 
 

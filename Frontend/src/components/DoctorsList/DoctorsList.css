@@ -1,0 +1,94 @@
+/* DoctorsList.css */
+
+/* Container styles */
+.doctors-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.doctor-card {
+  width: calc(34.33% - 15px);
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column; /* Change to column layout */
+}
+
+/* Popup styles */
+.popup {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  width: 50%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Button styles */
+.appointment-btn,
+.view_detail {
+  background-color: #4CAF50;
+  font-size: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px; /* Adjust margin as needed */
+  margin-left: auto; /* Align to the right */
+}
+.appointment-btn {
+  margin-left: 20px; /* Add space between buttons */
+}
+
+.view-detail-btn {
+  margin-right: 10px; /* Add space between buttons */
+}
+
+/* Additional styling */
+.basic-details {
+  display: flex;
+  flex-direction: column; /* Change to column layout */
+}
+
+.basic-details .profile-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: #4CAF50;
+  margin-bottom: 10px; 
+  /* Move the profile picture down */
+}
+
+.basic-details .info {
+  display: flex;
+  flex-direction: column; /* Change to column layout */
+}
+
+.basic-details .info h3 {
+  margin-bottom: 5px;
+}

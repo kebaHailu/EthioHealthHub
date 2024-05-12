@@ -1,0 +1,65 @@
+/* AppointmentPage.css */
+
+
+
+
+.mx-3 {
+  margin-left: 1.5rem; /* Reduced horizontal margin */
+  margin-right: 1.5rem; /* Reduced horizontal margin */
+}
+
+.text-end {
+  text-align: right; /* Align to the right */
+}
+
+/* Steps component styles */
+
+/* Button styles */
+.ant-btn-primary {
+  background-color: #52c41a; /* Green button background color */
+  border-color: #52c41a; /* Green button border color */
+  font-size: 16px; /* Reduced font size */
+}
+
+.ant-btn-primary:hover {
+  background-color: #73d13d; /* Green button hover background color */
+  border-color: #73d13d; /* Green button hover border color */
+}
+
+.ant-btn-primary:active,
+.ant-btn-primary:focus {
+  background-color: #389e0d; /* Green button active/focus background color */
+  border-color: #389e0d; /* Green button active/focus border color */
+}
+
+/* Disabled button styles */
+.ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary[disabled]:active,
+.ant-btn-primary[disabled]:focus {
+  background-color: #b7eb8f; /* Green disabled button background color */
+  border-color: #b7eb8f; /* Green disabled button border color */
+  color: rgba(0, 0, 0, 0.25); /* Disabled button text color */
+  cursor: not-allowed; /* Disabled button cursor */
+}
+
+/* Success message styles */
+.success-message {
+  margin-left: 10px;
+  color: #52c41a; /* Green success message color */
+}
+/* AppointmentPage.css */
+
+body {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+  /* Adjust as needed */
+     margin: 0 auto;
+ 
+  /* Prevent vertical scrolling */
+}
+
+
+
+/* Rest of the CSS styles remain unchanged */
