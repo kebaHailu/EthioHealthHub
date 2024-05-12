@@ -1,16 +1,7 @@
 from django.shortcuts import render
-
-# Create your views here.
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        data['user_role'] = self.user.user_role
-        return data
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+from rest_framework import viewsets
+from .models import Appointment, Prescription
+from .serializers import AppointmentSerializer, PrescriptionSerializer
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):

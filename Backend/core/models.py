@@ -4,8 +4,6 @@ from specialist.models import Specialist
 from technician.models import ClinicalRecord, Patient, Technician
 
 
-
-
 class Appointment(models.Model):
     clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.CASCADE)
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE)
@@ -25,6 +23,7 @@ class Prescription(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
     prescription_medicine = models.CharField(max_length=300)
     follow_update = models.TextField()
+
     archived = models.BooleanField(default=False)
 
 
