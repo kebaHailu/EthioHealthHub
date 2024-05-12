@@ -10,8 +10,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 # from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 # from .filters import ProductFilter
-from .models import Specialist, Education, Experience
-from .serializers import SpecialistSerializer, EducationSerializer, ExperienceSerializer
+from .models import Specialist
+from .serializers import SpecialistSerializer
 
 # Create your views here.
 
@@ -37,12 +37,3 @@ class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Up
         #     special = Specialist.objects.get_or_create(user_id=request.user.id)
 
 
-class EducationViewset(ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
-    queryset = Education.objects.all()
-    serializer_class = EducationSerializer
-
-
-class ExperienceViewset(ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
-    queryset = Experience.objects.all()
-    serializer_class = ExperienceSerializer
-   

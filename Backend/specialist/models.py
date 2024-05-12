@@ -30,6 +30,15 @@ class Specialist(models.Model):
     state = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=200, null=True)
 
+    edu_type = models.CharField(max_length=255, null=True)
+    edu_collage = models.CharField(max_length=255, null=True)
+    edu_year_of_completion = models.DateField(null=True)
+
+    exp_hospital_name = models.CharField(max_length=255, null=True)
+    exp_designation = models.CharField(max_length=255, null=True)
+    exp_start_date = models.DateField(null=True)
+    exp_end_date = models.DateField(null=True)
+
     def first_name(self):
         return self.user.first_name
 
@@ -42,20 +51,6 @@ class Specialist(models.Model):
     def username(self):
         return self.user.username
 
-
-class Education(models.Model):
-    profile = models.ForeignKey(Specialist, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255)
-    collage = models.CharField(max_length=255)
-    year_of_completion = models.DateField()
-
-
-class Experience(models.Model):
-    profile = models.ForeignKey(Specialist, on_delete=models.CASCADE)
-    hospital_name = models.CharField(max_length=255)
-    designation = models.CharField(max_length=255)
-    start_date = models.DateField()
-    end_date = models.DateField()
 
 
 

@@ -42,12 +42,13 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_swagger',
     'rest_framework_simplejwt',
-     'corsheaders',
+    'corsheaders',
     'djoser',
+    'core',
     'station',
     'specialist',
     'technician',
-    'core'
+    'user'
 ]
 
 MIDDLEWARE = [
@@ -73,12 +74,12 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'user.User'
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'core.serializers.CustomUserCreateSerializer',
-        'current_user': 'core.serializers.CustomUserSerializer'
+        'user_create': 'user.serializers.CustomUserCreateSerializer',
+        'current_user': 'user.serializers.CustomUserSerializer'
     }
 }
 

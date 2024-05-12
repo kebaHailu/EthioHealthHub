@@ -5,8 +5,6 @@ from . import views
 
 router = SimpleRouter()
 router.register('specialist', views.SpecialistViewSet)
-router.register('education', views.EducationViewset)
-router.register('experience', views.ExperienceViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
