@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
+import pprint
 from rest_framework.filters import SearchFilter, OrderingFilter
 # from rest_framework.response import Response
 # from rest_framework.viewsets import ModelViewSet
@@ -20,12 +21,24 @@ class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Up
     queryset = Specialist.objects.all()
     serializer_class = SpecialistSerializer
 
+    # def perform_create(self, serializer):
+    #     # Check if the Specialist table exists for the user
+    #     if Specialist.objects.filter(user=self.request.user).exists():
+    #         # If the Specialist table exists, update the existing instance
+    #         specialist_instance = Specialist.objects.get(user=self.request.user)
+    #         serializer.save(instance=specialist_instance)
+    #     else:
+    #         # If the Specialist table doesn't exist, create a new instance
+    #         serializer.save(user=self.request.user)
+
     @action(detail=False, methods=['GET', 'PUT'])
-    def me(self, request):
-        specialist, status_result = Specialist.objects.get_or_create(user_id = request.user.id)
+    def profile(self, request):
+        specialist, status_result = Specialist.objects.get_or_create(user=request.user)
+
         if request.method == "GET":
             serializer = SpecialistSerializer(specialist)
             return Response(serializer.data)
+
         elif request.method == "PUT":
             serializer = SpecialistSerializer(specialist, data=request.data)
             serializer.is_valid(raise_exception=True)
