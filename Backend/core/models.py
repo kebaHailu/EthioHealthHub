@@ -4,18 +4,6 @@ from specialist.models import Specialist
 from technician.models import ClinicalRecord, Patient, Technician
 
 
-class User(AbstractUser):
-
-    USER_TYPE_CHOICES = (
-        ('SD', 'Specialist Doctor'),
-        ('HO', 'Health Officer'),
-        ('SA', 'Station Administrator')
-
-    )
-    email = models.EmailField(unique=True)
-    user_role = models.CharField(max_length=2, choices=USER_TYPE_CHOICES, default='SD')
-
-
 class Appointment(models.Model):
     clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.CASCADE)
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE)
@@ -35,6 +23,7 @@ class Prescription(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
     prescription_medicine = models.CharField(max_length=300)
     follow_update = models.TextField()
+
     archived = models.BooleanField(default=False)
 
 

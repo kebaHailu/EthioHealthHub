@@ -1,37 +1,25 @@
-from specialist.models import Specialist, Education, Experience 
+from specialist.models import Specialist
 from rest_framework import serializers
-from core.models import User
-
-class UserSerializer(serializers.ModelSerializer):
-     class Meta:
-        ref_name = "SpecialistUser"
-        model = User
-        fields = ['first_name', 'username', 'last_name', 'email']
 
 
 class SpecialistSerializer(serializers.ModelSerializer):
-    # user = UserSerializer(read_only=True)
+    username = serializers.CharField(max_length=150)
+    first_name = serializers.CharField(max_length=150)
+    last_name = serializers.CharField(max_length=150)
+    email = serializers.EmailField()
 
     class Meta:
         model = Specialist
-
-        fields = ['user', 'profile_picture', 'is_license_verified', 'phone',
-                  'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service', 'specialization',
-                  'license_number', 'address_line', 'city', 'state', 'country']
+        fields = [
+            'first_name', 'last_name','username', 'email', 'profile_picture','is_license_verified' ,
+            'phone', 'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service',
+            'specialization', 'license_number', 'address_line', 'city', 'state', 'country',
+            'edu_type','edu_collage','edu_year_of_completion','exp_hospital_name','exp_designation','exp_start_date',
+            'exp_end_date'
+        ]
 
     is_license_verified = serializers.BooleanField(default=False, read_only=True)
 
-
-class EducationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Education
-        fields = ['profile', 'type', 'collage', 'year_of_completion']
-
-
-class ExperienceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Experience
-        fields = ['profile', 'hospital_name', 'designation', 'start_date', 'end_date']
+        
 
 

@@ -1,25 +1,13 @@
-from djoser.serializers import UserSerializer, UserCreateSerializer
-from rest_framework import serializers
-from core.models import Appointment, Prescription
+from rest_framework.serializers import ModelSerializer
+from .models import Appointment, Prescription
 
 
-class CustomUserCreateSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password', 'user_role']
-
-
-class CustomUserSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
-        fields = ['id', 'username', 'first_name', 'last_name', 'user_role']
-
-
-class AppointmentSerializer(serializers.ModelSerializer):
+class AppointmentSerializer(ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['id', 'clinical_record', 'technician', 'specialist', 'message', 'appointment_date', 'status', ]
+        fields = '__all__'
 
-
-class PrescriptionSerializer(serializers.ModelSerializer):
+class PrescriptionSerializer(ModelSerializer):
     class Meta:
         model = Prescription
-        fields = ['appointment', 'prescription_medicine', 'follow_update', 'archived']
+        fields = '__all__'

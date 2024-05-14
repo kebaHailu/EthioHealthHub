@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     "django_filters",
     'rest_framework_swagger',
     'rest_framework_simplejwt',
-     'corsheaders',
+    'corsheaders',
     'djoser',
+    'user',
+    'core',
     'station',
     'specialist',
     'technician',
-    'core'
 ]
 
 MIDDLEWARE = [
@@ -74,12 +75,12 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'user.User'
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'core.serializers.UserCreateSerializer',
-        'current_user': 'core.serializers.UserSerializer'
+        'user_create': 'user.serializers.CustomUserCreateSerializer',
+        'current_user': 'user.serializers.CustomUserSerializer'
     }
 }
 
