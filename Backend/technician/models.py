@@ -63,7 +63,6 @@ class ClinicalRecord(models.Model):
     disease_description = models.TextField(blank=True)
     follow_up_information = models.TextField(blank=True)
     image_path = models.ImageField(upload_to="images/", null=True, blank=True)  # Field(max_length=255, blank=True)
-    # model_result = models.TextField()
     allergies = models.CharField(max_length=255, blank=True)
     vaccination_status = models.CharField(max_length=255, blank=True)
     sugar_level = models.CharField(max_length=255, blank=True)

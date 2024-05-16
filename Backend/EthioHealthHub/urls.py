@@ -31,7 +31,10 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('specialist/', include('specialist.urls')),
     path('', include('core.urls')),
-    path('', include('technician.urls'))
+    path('', include('technician.urls')),
+    path('', include('station.urls'))
+
+
 
 ]
 

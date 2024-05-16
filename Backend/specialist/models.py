@@ -13,7 +13,7 @@ class Specialist(models.Model):
     ]
     is_license_verified = models.BooleanField(default=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    profile_picture = models.CharField(max_length=500, null=True)
+    profile_picture = models.ImageField(upload_to='images/', null=True, blank=True)
     phone = models.CharField(max_length=25, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
