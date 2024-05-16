@@ -148,7 +148,7 @@ const handleFilterChange = (value, type) => {
           {selectedPatient && (
             <div>
               <p>
-                Name: {selectedPatient.firstName} {selectedPatient.lastName}
+                Name: {selectedPatient.first_name} {selectedPatient.last_name}
               </p>
               <p>Gender: {selectedPatient.gender}</p>
               <p>Disease Type: {selectedPatient.disease_type}</p>

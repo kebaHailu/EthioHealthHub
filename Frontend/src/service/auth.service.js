@@ -26,7 +26,7 @@ const Signup = async (formField) => {
 const logIn = async (formField) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/auth/jwt/create",
+      "http://127.0.0.1:8000/auth/jwt/create/",
       formField
     );
     return response;
@@ -49,9 +49,16 @@ export const ForgotPassword = async (formField) => {
 
 const DoctorProfile = async (formField) => {
   try {
+    const token = localStorage.getItem("accessToken");
     const response = await axios.put(
-      "http://127.0.0.1:8000/specialist/profile/1/",
-      formField
+      "http://127.0.0.1:8000/specialist/profile/",
+
+      formField,
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {
