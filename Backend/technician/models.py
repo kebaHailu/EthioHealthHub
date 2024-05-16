@@ -63,7 +63,6 @@ class ClinicalRecord(models.Model):
     disease_description = models.TextField(blank=True)
     follow_up_information = models.TextField(blank=True)
     image_path = models.ImageField(upload_to="images/", null=True, blank=True)  # Field(max_length=255, blank=True)
-    model_result = models.TextField()
     allergies = models.CharField(max_length=255, blank=True)
     vaccination_status = models.CharField(max_length=255, blank=True)
     sugar_level = models.CharField(max_length=255, blank=True)
@@ -78,6 +77,11 @@ class ClinicalRecord(models.Model):
     def last_name(self):
         return self.patient.last_name
 
+
+class MLModel(models.Model):
+    clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    model_result = models.TextField()
 
 
 
