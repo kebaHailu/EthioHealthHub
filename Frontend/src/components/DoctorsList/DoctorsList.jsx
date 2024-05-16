@@ -1,28 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import "./DoctorsList.css";
 
 const DoctorsList = () => {
+  const [doctorsData, setDoctorsData] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
-  const doctorsData = [
-    {
-      first_name: "John",
-      last_name: "Doe",
-      email: "tesfau@gmil.com"
-      // other fields...
-    },
-    {
-      first_name: "Jane",
-      last_name: "Smith",
-      // other fields...
-    },
-    {
-      first_name: "David",
-      last_name: "Brown",
-      // other fields...
-    },
-  ];
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/specialist/");
+        setDoctorsData(response.data);
+      } catch (error) {
+        console.error("Error fetching doctors data:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const openDetailsPopup = (doctor) => {
     setSelectedDoctor(doctor);
@@ -44,14 +40,27 @@ const DoctorsList = () => {
               <h3>
                 {doctor.first_name} {doctor.last_name}
               </h3>
-              <p>Specialization: {doctor.specialization}</p>
-              <p>Address: {doctor.clinic_address}</p>
-              <p>City: {doctor.city}</p>
-              <p>Experience: {doctor.experience} years</p>
+              <p>
+                <strong>email:</strong> {doctor.email}
+              </p>
+              <p>
+                <strong>Specialization:</strong> {doctor.specialization}
+              </p>
+              <p>
+                <strong>Address:</strong> {doctor.clinic_address}
+              </p>
+
+              <p>
+                <strong>Experience: </strong>
+                {doctor.experience} years
+              </p>
             </div>
           </div>
           <div className="doctor-actions">
-            <button className="view_detail"onClick={() => openDetailsPopup(doctor)}>
+            <button
+              className="view_detail"
+              onClick={() => openDetailsPopup(doctor)}
+            >
               View Details
             </button>
             <Link to="/calendly">
