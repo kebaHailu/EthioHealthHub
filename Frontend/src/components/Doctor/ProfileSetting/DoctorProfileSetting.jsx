@@ -62,14 +62,13 @@ const DoctorProfileSetting = () => {
     state: "",
     country: "",
 
-    type: "",
-    collage: "",
-    year_of_completion: "",
-
-    hospital_name: "",
-    designation: "",
-    start_date: "",
-    end_date: "",
+    edu_type: "",
+    edu_collage: "",
+    edu_year_of_completion: moment().format("YYYY-MM-DD"),
+    exp_hospital_name: "",
+    exp_designation: "",
+    exp_start_date: moment().format("YYYY-MM-DD"),
+    exp_end_date: moment().format("YYYY-MM-DD"),
   });
 
   const onChange = (date, dateString) => {
@@ -97,18 +96,19 @@ const DoctorProfileSetting = () => {
     e.preventDefault();
     const combinedFormData = { ...formField, ...data };
     try {
-      const [response, educationalResponse, experianceResponse] =
-        await Promise.all([
-          loginService.DoctorProfile(combinedFormData),
-          loginService.DoctorProfileEducationUpdate(combinedFormData),
-          loginService.DoctorProfileExperienceUpdate(combinedFormData),
-        ]);
+      const response = await loginService.DoctorProfile(combinedFormData);
+
+      // const [response, educationalResponse, experianceResponse] =
+      //   await Promise.all([
+      //     loginService.DoctorProfile(combinedFormData),
+      //     loginService.DoctorProfileEducationUpdate(combinedFormData),
+      //     loginService.DoctorProfileExperienceUpdate(combinedFormData),
+      //   ]);
       message.success("Profile updated successfully!");
       console.log("response", combinedFormData);
     } catch (error) {
       console.error("Error updating profile:", error);
-      message.error("Failed to update profile. Please try again.");
-      message.faild("Not found")
+
       setError(error);
     }
   };
@@ -131,12 +131,12 @@ const DoctorProfileSetting = () => {
 
   const handleAddEducation = (educationData) => {
     // Handle adding education data here
-    console.log("Education Data:", educationData);
+    // console.log("Education Data:", educationData);
   };
 
   const handleAddExperience = (experienceData) => {
     // Handle adding experience data here
-    console.log("Experience Data:", experienceData);
+    // console.log("Experience Data:", experienceData);
   };
   // const token = localStorage.getItem("token");
   // // const token = "eyJ0eXAiO.../// jwt token";
@@ -146,29 +146,21 @@ const DoctorProfileSetting = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileResponse, educationResponse, experienceResponse] =
-          await Promise.all([
-            axios.get(
-              `http://127.0.0.1:8000/specialist/profile/${decoded.user_id}/`
-            ),
-            axios.get(
-              `http://127.0.0.1:8000/specialist/education/${decoded.user_id}/`
-            ),
-            axios.get(
-              `http://127.0.0.1:8000/specialist/experience/${decoded.user_id}/`
-            ),
-          ]);
-        setFormField(educationResponse.data);
-        setProfileData(educationResponse.data);
-        setFormField(experienceResponse.data);
-        setProfileData(experienceResponse.data);
-        setProfileData(profileResponse.data);
-        setFormField(profileResponse.data);
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/specialist/profile/",
+          {
+            headers: {
+              Authorization: `JWT ${token}`, // Update the token format
+            },
+          }
+        );
+
+        setProfileData(response.data);
+        setFormField(response.data);
         setError(null);
 
-        console.log("Profile Data:", profileResponse.data);
-        console.log("Education Data:", educationResponse.data);
-        console.log("Experience Data:", experienceResponse.data);
+        console.log("Profile Data:", response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -206,7 +198,7 @@ const DoctorProfileSetting = () => {
                 </div>
               </div>
             </div>
-           
+
             <div className="col-md-6">
               <div className="form-group mb-2 card-label">
                 <label>
@@ -494,10 +486,10 @@ const DoctorProfileSetting = () => {
                       <label>Education level</label>
                       <input
                         placeholder="education_level"
-                        name="type"
+                        name="edu_type"
                         type="text"
                         onChange={handleChange}
-                        value={formField.type}
+                        value={formField.edu_type}
                         className="input-tags form-control"
                       />
                     </div>
@@ -509,25 +501,30 @@ const DoctorProfileSetting = () => {
 
                       <input
                         placeholder="collage"
-                        name="collage"
+                        name="edu_collage"
                         type="text"
                         onChange={handleChange}
-                        value={formField.collage}
+                        value={formField.edu_collage}
                         className="input-tags form-control"
                       />
                     </div>
                   </div>
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
-                      <label>Year of Completion</label>
-
-                      <input
-                        placeholder="year_of_completion"
-                        name="year_of_completion"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.year_of_completion}
-                        className="input-tags form-control"
+                      <label>
+                        Year of Completion{" "}
+                        {formField.edu_year_of_completion &&
+                          moment(formField.edu_year_of_completion).format("LL")}
+                      </label>
+                      <DatePicker
+                        onChange={(date, dateString) =>
+                          setFormField({
+                            ...formField,
+                            edu_year_of_completion: dateString,
+                          })
+                        }
+                        format={"YYYY-MM-DD"}
+                        style={{ width: "100%", padding: "6px" }}
                       />
                     </div>
                   </div>
@@ -556,38 +553,49 @@ const DoctorProfileSetting = () => {
 
                       <input
                         placeholder="hospital_name"
-                        name="hospital_name"
+                        name="exp_hospital_name"
                         type="text"
                         onChange={handleChange}
-                        value={formField.hospital_name}
+                        value={formField.exp_hospital_name}
                         className="input-tags form-control"
                       />
                     </div>
                   </div>
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
-                      <label>From</label>
-
-                      <input
-                        placeholder="start_date"
-                        name="start_date"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.start_date}
-                        className="input-tags form-control"
+                      <label>
+                        From{" "}
+                        {formField.exp_start_date &&
+                          moment(formField.exp_start_date).format("LL")}
+                      </label>
+                      <DatePicker
+                        onChange={(date, dateString) =>
+                          setFormField({
+                            ...formField,
+                            exp_start_date: dateString,
+                          })
+                        }
+                        format={"YYYY-MM-DD"}
+                        style={{ width: "100%", padding: "6px" }}
                       />
                     </div>
                   </div>
                   <div className="col-12 col-md-6 col-lg-4">
                     <div className="form-group mb-2 card-label">
-                      <label>To</label>
-                      <input
-                        placeholder="end_date"
-                        name="end_date"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.end_date}
-                        className="input-tags form-control"
+                      <label>
+                        TO{" "}
+                        {formField.exp_end_date &&
+                          moment(formField.exp_end_date).format("LL")}
+                      </label>
+                      <DatePicker
+                        onChange={(date, dateString) =>
+                          setFormField({
+                            ...formField,
+                            exp_end_date: dateString,
+                          })
+                        }
+                        format={"YYYY-MM-DD"}
+                        style={{ width: "100%", padding: "6px" }}
                       />
                     </div>
                   </div>
@@ -596,10 +604,10 @@ const DoctorProfileSetting = () => {
                       <label>Designation</label>
                       <input
                         placeholder="designation"
-                        name="designation"
+                        name="exp_designation"
                         type="text"
                         onChange={handleChange}
-                        value={formField.designation}
+                        value={formField.eexp_designation}
                         className="input-tags form-control"
                       />
                     </div>
@@ -620,117 +628,3 @@ const DoctorProfileSetting = () => {
 };
 
 export default DoctorProfileSetting;
-
-/*
- <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <div className="text-end">
-                <PlusCircleOutlined
-                  style={{ fontSize: "24px", cursor: "pointer" }}
-                  onClick={handleEducationPopupOpen}
-                />
-              </div>
-              <AdditionalEducationPopup
-                visible={isEducationPopupVisible}
-                onCancel={handleEducationPopupClose}
-                onAdd={handleAddEducation}
-              />
-              <h6 className="card-title text-secondary">Education</h6>
-              <div className="row form-row">
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>Degree</label>
-                    <input
-                      defaultValue={data?.degree}
-                      {...register("degree")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>College/Institute</label>
-                    <input
-                      defaultValue={data?.college}
-                      {...register("college")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>Year of Completion</label>
-                    <input
-                      defaultValue={data?.completionYear}
-                      {...register("completionYear")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-12">
-            <div className="card mb-2 p-3 mt-2">
-              <div className="text-end">
-                <PlusCircleOutlined
-                  style={{ fontSize: "24px", cursor: "pointer" }}
-                  onClick={handleExperiencePopupOpen}
-                />
-              </div>
-              <AdditionalExperiance
-                visible={isExperiencePopupVisible}
-                onCancel={handleExperiencePopupClose}
-                onAdd={handleAddExperience}
-              />
-
-              <h6 className="card-title text-secondary">Experience</h6>
-              <div className="row form-row">
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>Hospital Name</label>
-                    <input
-                      defaultValue={data?.experienceHospitalName}
-                      {...register("experienceHospitalName")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>From</label>
-                    <input
-                      defaultValue={data?.expericenceStart}
-                      {...register("expericenceStart")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>To</label>
-                    <input
-                      defaultValue={data?.expericenceEnd}
-                      {...register("expericenceEnd")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div className="form-group mb-2 card-label">
-                    <label>Designation</label>
-                    <input
-                      defaultValue={data?.designation}
-                      {...register("designation")}
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-*/

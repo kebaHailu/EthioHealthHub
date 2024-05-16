@@ -78,11 +78,6 @@ class ClinicalRecord(models.Model):
         return self.patient.last_name
 
 
-class MLModel(models.Model):
-    clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    model_result = models.TextField()
-
 
 
 

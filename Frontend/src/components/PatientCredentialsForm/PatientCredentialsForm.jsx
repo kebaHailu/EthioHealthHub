@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { bloodGrupOptions } from "../../constant/global";
 import {
   Form,
@@ -22,11 +22,39 @@ const { Option } = Select;
 const PatientCredentialsForm = () => {
   const [fileList, setFileList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
+  const [profileData, setProfileData] = useState(null);
+  
+ 
   const [formData, setFormData] = useState({
     pregnancy_condition: false, // Default value set to false
   });
   const [isNextDisabled, setIsNextDisabled] = useState(true);
   const [form] = Form.useForm();
+
+     useEffect(() => {
+     // Define an async function to fetch data
+     const fetchData = async () => {
+       try {
+         // Make the HTTP request using Axios
+         const response = await axios.get("http://127.0.0.1:8000/patient/");
+         // Extract the data from the response
+         const data = response.data;
+         // Set the fetched data to the state
+         setProfileData(data);
+         // Log the data to the console
+         console.log(data);
+       } catch (error) {
+         console.log(error);
+         // Log any errors to the console
+         console.error("There was a problem fetching the data:", error.message);
+       }
+     };
+     
+     // Call the async function to fetch data when the component mounts
+     fetchData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []); // E
+   console.log(profileData);
   // const [formField, setFormField] = useState({
   //   family_history: "",
   //   blood_type: "",
@@ -99,6 +127,11 @@ const PatientCredentialsForm = () => {
     setIsNextDisabled(!isFormValid);
   };
 
+
+
+   
+
+
   return (
     <div className="form-container">
       <Steps current={currentStep}>
@@ -116,9 +149,24 @@ const PatientCredentialsForm = () => {
           {currentStep === 0 && (
             <>
               <Form.Item
+                label="Select Patient"
+                name="patient"
+                rules={[
+                  { required: true, message: "Please select a patient!" },
+                ]}
+              >
+                <Select placeholder="Select a patient">
+                  {profileData?.map((patient) => (
+                    <Option key={patient.id} value={patient.id}>
+                      {patient.first_name} {patient.last_name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
                 className="medical"
                 label="Medical History"
-                name="medicalHistory"
+                name="medical_history"
                 rules={[{ required: true }]}
               >
                 <Input.TextArea rows={2} />
@@ -150,7 +198,7 @@ const PatientCredentialsForm = () => {
               </Form.Item>
               <Form.Item
                 label="Blood Group"
-                name="bloodGroup"
+                name="blood_type"
                 className="select"
                 rules={[{ required: true }]}
               >
@@ -184,7 +232,7 @@ const PatientCredentialsForm = () => {
               <Form.Item
                 className="medical"
                 label="Family History"
-                name="familyHistory"
+                name="family_history"
                 rules={[{ required: true }]}
               >
                 <Input.TextArea rows={2} />
@@ -192,7 +240,7 @@ const PatientCredentialsForm = () => {
               <Form.Item
                 label="Vaccination Status"
                 className="select"
-                name="vaccinationStatus"
+                name="vaccination_status"
                 rules={[{ required: true }]}
               >
                 <Select>
@@ -223,14 +271,14 @@ const PatientCredentialsForm = () => {
               </Form.Item>
               <Form.Item
                 label="Blood Sugar Level"
-                name="bloodSugarLevel"
+                name="sugar_level"
                 rules={[{ required: true }]}
               >
                 <InputNumber min={0} step={0.1} />
               </Form.Item>
               <Form.Item
                 label="Blood Pressure"
-                name="bloodPressure"
+                name="blood_pressure"
                 rules={[{ required: true }]}
               >
                 <InputNumber min={0} />
