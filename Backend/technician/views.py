@@ -67,7 +67,7 @@ def send_registration_email(request):
             user=user, station_id=station_id
         )
 
-        current_site = 'https://localhost:5173/login'
+        current_site = 'localhost:5173/login'
         email_subject = 'complete your account registration'
         email_message = f'Your current username is {username} and your password is {password}. login using the link {current_site} and Change your username and  password'
         send_mail(email_subject, email_message, settings.DEFAULT_FROM_EMAIL, [email])

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
@@ -9,78 +9,60 @@ const StationAdmin = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingTechnician, setEditingTechnician] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-
-  const [stationInfo, setStationInfo] = useState({
-    name: "XYZ Station",
-    location: "XYZ Location",
-    verificationStatus: "Verified",
-    adminName: "John Doe",
-    coverImage: "https://via.placeholder.com/220", // Add coverImage
-  });
+  const [stationInfo, setStationInfo] = useState({});
   const [technicians, setTechnicians] = useState([]);
 
-  const columns = [
-    {
-      title: "Technician Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text, record) => `${record.firstName} ${record.lastName}`,
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Education",
-      dataIndex: "education",
-      key: "education",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Registred Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <span>
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            className="edit-button"
-            onClick={() => handleEditTechnician(record)}
-          />
-          <Button
-            type="link"
-            icon={<DeleteOutlined />}
-            className="delete-button"
-            onClick={() => handleDeleteTechnician(record)}
-          />
-        </span>
-      ),
-    },
-  ];
+  useEffect(() => {
+    // Fetch station data
+    fetchStationData();
+  }, []);
+
+  const fetchStationData = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/station/");
+      const data = await response.json();
+      if (data.length > 0) {
+        setStationInfo(data[0]); // Assuming data is an array and taking the first item
+      }
+    } catch (error) {
+      console.error("Error fetching station data:", error);
+    }
+  };
 
   const handleEdit = () => {
     setEditMode(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setEditMode(false);
-    // Update station info
-    // You can send updated data to backend or update state based on your requirements
+    // Send updated data to backend
+    try {
+      const formData = new FormData();
+      formData.append("name", stationInfo.name);
+      formData.append('user',stationInfo.user);
+      formData.append("location", stationInfo.location);
+      formData.append("latitude", stationInfo.latitude);
+      formData.append("longitude", stationInfo.longitude);
+      formData.append("description", stationInfo.description);
+      formData.append("is_approved", stationInfo.is_approved);
+      if (profileImage) {
+        formData.append("cover_image", profileImage);
+      }
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/station/${stationInfo.id}/`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update station data");
+      }
+    } catch (error) {
+      console.error("Error updating station data:", error);
+    }
   };
 
   const handleEditTechnician = (record) => {
@@ -114,24 +96,79 @@ const StationAdmin = () => {
     setShowAddForm(false);
   };
 
-    const handleProfileImageChange = (e) => {
-      const file = e.target.files[0];
-      setProfileImage(file);
-    };
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file);
+  };
+
+  const columns = [
+    {
+      title: "Technician Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => `${record.firstName} ${record.lastName}`,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Education",
+      dataIndex: "education",
+      key: "education",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Registered Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <span>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            className="edit-button"
+            onClick={() => handleEditTechnician(record)}
+          />
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            className="delete-button"
+            onClick={() => handleDeleteTechnician(record)}
+          />
+        </span>
+      ),
+    },
+  ];
 
   return (
     <div className="station-admin-container">
       <div className="left-sidebar sticky">
         {/* Station Info */}
         <label htmlFor="profileImage">
-          <img className="cover-image"
+          <img
+            className="cover-image"
             src={
               profileImage
-                ? URL.createObjectURL(profileImage)
+              
+                ? `http://127.0.0.1:8000/${stationInfo.cover_image}`
                 : "https://via.placeholder.com/220"
             }
             alt="Station Cover"
-           
           />
           <input
             type="file"
@@ -168,19 +205,60 @@ const StationAdmin = () => {
           )}
         </p>
         <p>
-          <strong>Verification Status:</strong>{" "}
+          <strong>Latitude:</strong>{" "}
           {editMode ? (
             <Input
-              value={stationInfo.verificationStatus}
+              value={stationInfo.latitude}
               onChange={(e) =>
-                setStationInfo({
-                  ...stationInfo,
-                  verificationStatus: e.target.value,
-                })
+                setStationInfo({ ...stationInfo, latitude: e.target.value })
               }
             />
           ) : (
-            stationInfo.verificationStatus
+            stationInfo.latitude
+          )}
+        </p>
+        <p>
+          <strong>Longitude:</strong>{" "}
+          {editMode ? (
+            <Input
+              value={stationInfo.longitude}
+              onChange={(e) =>
+                setStationInfo({ ...stationInfo, longitude: e.target.value })
+              }
+            />
+          ) : (
+            stationInfo.longitude
+          )}
+        </p>
+        <p>
+          <strong>Description:</strong>{" "}
+          {editMode ? (
+            <Input
+              value={stationInfo.description}
+              onChange={(e) =>
+                setStationInfo({ ...stationInfo, description: e.target.value })
+              }
+            />
+          ) : (
+            stationInfo.description
+          )}
+        </p>
+        <p>
+          <strong>Verification Status:</strong>{" "}
+          {editMode ? (
+            <Input
+              value={stationInfo.is_approved ? "Approved" : "Not Approved"}
+              onChange={(e) =>
+                setStationInfo({
+                  ...stationInfo,
+                  is_approved: e.target.value === "Approved",
+                })
+              }
+            />
+          ) : stationInfo.is_approved ? (
+            "Approved"
+          ) : (
+            "Not Approved"
           )}
         </p>
         <p>
@@ -269,4 +347,5 @@ const StationAdmin = () => {
     </div>
   );
 };
+
 export default StationAdmin;
