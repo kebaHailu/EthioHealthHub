@@ -6,9 +6,10 @@ from . import views
 router = SimpleRouter()
 router.register('patient', views.PatientViewset)
 router.register('clinical-record', views.ClinicalRecordViewset)
-router.register('technician', views.TechnicianViewset)
+router.register('technician', views.TechnicianViewset, 'technician')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('send_email', views.send_registration_email),
 
 ]
