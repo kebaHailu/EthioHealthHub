@@ -78,12 +78,12 @@ const DoctorsList = () => {
               &times;
             </span>
             <div className="popup-details">
-              <div className="profile-image">
+              {/* <div className="profile-image">
                 <img
                   src={selectedDoctor.profile_picture}
                   alt={selectedDoctor.username}
                 />
-              </div>
+              </div> */}
               <div className="doctor-info">
                 <h3>
                   {selectedDoctor.first_name} {selectedDoctor.last_name}

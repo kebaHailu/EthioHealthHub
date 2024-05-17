@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Select, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import pImage from "../../../images/avatar.jpg";
 import { Link } from "react-router-dom";
-// import { useUpdateDoctorMutation } from "../../../redux/api/doctorApi";
-// import useAuthCheck from '../../../redux/hooks/useAuthCheck';
-import { doctorSpecialistOptions } from "../../../constant/global";
-import ImageUpload from "../../UI/form/ImageUpload";
-import dImage from "../../../images/avatar.jpg";
 import { DatePicker } from "antd";
 import AdditionalEducationPopup from "./AdditionalEducationPopup";
 import AdditionalExperiance from "./AdditionalExperience";
 import loginService from "../../../service/auth.service";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 
 const DoctorProfileSetting = () => {
@@ -23,13 +18,10 @@ const DoctorProfileSetting = () => {
     useState(false);
 
   const token = localStorage.getItem("accessToken");
-  // const token = "eyJ0eXAiO.../// jwt token";
   const decoded = jwtDecode(token);
 
   console.log(decoded.user_id);
 
-  // const { data } = useAuthCheck();
-  const { data } = "";
   const { register, handleSubmit } = useForm({});
   const [userId, setUserId] = useState("");
   const [selectValue, setSelectValue] = useState({});
@@ -47,7 +39,7 @@ const DoctorProfileSetting = () => {
     profile_picture: "",
 
     phone: "",
-    date_of_birth: moment().format("YYYY-MM-DD"), // Initialize date_of_birth with current date in "MM-DD-YYYY"
+    date_of_birth: moment().format("YYYY-MM-DD"),
     gender: "",
     about_me: "",
     clinic_name: "",
@@ -92,23 +84,24 @@ const DoctorProfileSetting = () => {
     setFormField({ ...formField, [name]: value });
   };
 
-  const handleProfieSubmit = async (e, data) => {
-    e.preventDefault();
+  const handleProfileSubmit = async (data) => {
     const combinedFormData = { ...formField, ...data };
-    try {
-      const response = await loginService.DoctorProfile(combinedFormData);
+    const formData = new FormData();
 
-      // const [response, educationalResponse, experianceResponse] =
-      //   await Promise.all([
-      //     loginService.DoctorProfile(combinedFormData),
-      //     loginService.DoctorProfileEducationUpdate(combinedFormData),
-      //     loginService.DoctorProfileExperienceUpdate(combinedFormData),
-      //   ]);
+    Object.keys(combinedFormData).forEach((key) => {
+      formData.append(key, combinedFormData[key]);
+    });
+
+    if (file) {
+      formData.append("profile_picture", file);
+    }
+
+    try {
+      const response = await loginService.DoctorProfile(formData);
       message.success("Profile updated successfully!");
       console.log("response", combinedFormData);
     } catch (error) {
       console.error("Error updating profile:", error);
-
       setError(error);
     }
   };
@@ -138,9 +131,6 @@ const DoctorProfileSetting = () => {
     // Handle adding experience data here
     // console.log("Experience Data:", experienceData);
   };
-  // const token = localStorage.getItem("token");
-  // // const token = "eyJ0eXAiO.../// jwt token";
-  // const decoded = jwtDecode(token);
 
   console.log(decoded.user_id);
   useEffect(() => {
@@ -151,7 +141,7 @@ const DoctorProfileSetting = () => {
           "http://127.0.0.1:8000/specialist/profile/",
           {
             headers: {
-              Authorization: `JWT ${token}`, // Update the token format
+              Authorization: `JWT ${token}`,
             },
           }
         );
@@ -178,13 +168,20 @@ const DoctorProfileSetting = () => {
         <h5 className="text-title mb-2 mt-3">Update Your Information</h5>
 
         {profileData && (
-          <form className="row form-row" onSubmit={handleProfieSubmit}>
+          <form
+            className="row form-row"
+            onSubmit={handleSubmit(handleProfileSubmit)}
+          >
             <div className="col-md-12">
               <div className="form-group">
                 <div className="change-avatar d-flex gap-2 align-items-center">
                   <Link to={"/doctor"} className="my-3 patient-img">
                     <img
-                      src={selectedImage ? selectedImage : data?.img || pImage}
+                      src={
+                        selectedImage
+                          ? selectedImage
+                          : formField.profile_picture || pImage
+                      }
                       alt=""
                     />
                   </Link>
@@ -299,223 +296,144 @@ const DoctorProfileSetting = () => {
               <div className="card mb-2 mt-2">
                 <div className="card-body">
                   <h6 className="card-title text-secondary">About Me</h6>
-                  <div className="form-group mb-2 card-label">
-                    <label>Biography</label>
+                  <div className="form-group mb-0">
                     <textarea
-                      placeholder="Biography"
-                      name="about_me"
                       className="form-control"
-                      rows={5}
+                      rows="5"
+                      name="about_me"
                       onChange={handleChange}
                       value={formField.about_me}
-                    />
+                    ></textarea>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <h6 className="card-title text-secondary">Clinic Info</h6>
-                <div className="row form-row">
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>Clinic Name</label>
-                      <input
-                        placeholder="Clinic Name"
-                        name="clinic_name"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.clinic_name}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>Clinic Address</label>
-                      <input
-                        placeholder="Clinic Address"
-                        name="clinic_address"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.clinic_address}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <h6 className="card-title text-secondary">Contact Details</h6>
-                <div className="row form-row">
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>Address Line</label>
-                      <input
-                        placeholder="Address Line"
-                        name="address_line"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.address_line}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>City</label>
-                      <input
-                        placeholder="City"
-                        name="city"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.city}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>State / Province</label>
-                      <input
-                        placeholder="State / Province"
-                        name="state"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.state}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>Country</label>
-                      <input
-                        placeholder="Country"
-                        name="country"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.country}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <h6 className="card-title text-secondary">Licence</h6>
-
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group mb-2 card-label">
-                      <label>Licence Number</label>
-                      <input
-                        placeholder="Licence Number"
-                        name="license_number"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.license_number}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <h6 className="card-title text-secondary">
-                  Services and Specialization
-                </h6>
-                <div className="row form-row">
-                  <div className="form-group mb-2 card-label">
-                    <label>Services</label>
-                    <input
-                      placeholder="field of speciality"
-                      name="service"
-                      type="text"
-                      onChange={handleChange}
-                      value={formField.service}
-                      className="input-tags form-control"
-                    />
-                    <small className="form-text text-muted">
-                      Note : Type & Press enter to add new services
-                    </small>
-                  </div>
-                  <div className="form-group mb-2 card-label">
-                    <label>Specialization</label>
-                    <input
-                      placeholder="Specialization"
-                      name="specialization"
-                      type="text"
-                      onChange={handleChange}
-                      value={formField.specialization}
-                      className="input-tags form-control"
-                    />
-                    <small className="form-text text-muted">
-                      Note : Type & Press enter to add new specialization
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <div className="text-end">
-                  <PlusCircleOutlined
-                    style={{ fontSize: "24px", cursor: "pointer" }}
-                    onClick={handleEducationPopupOpen}
-                  />
-                </div>
-                <AdditionalEducationPopup
-                  visible={isEducationPopupVisible}
-                  onCancel={handleEducationPopupClose}
-                  onAdd={handleAddEducation}
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Clinic Name</label>
+                <input
+                  className="form-control"
+                  name="clinic_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.clinic_name}
                 />
-                <h6 className="card-title text-secondary">Education</h6>
-                <div className="row form-row">
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
-                      <label>Education level</label>
-                      <input
-                        placeholder="education_level"
-                        name="edu_type"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.edu_type}
-                        className="input-tags form-control"
-                      />
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Clinic Address</label>
+                <input
+                  className="form-control"
+                  name="clinic_address"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.clinic_address}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Service</label>
+                <input
+                  className="form-control"
+                  name="service"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.service}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Specialization</label>
+                <input
+                  className="form-control"
+                  name="specialization"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.specialization}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>License Number</label>
+                <input
+                  className="form-control"
+                  name="license_number"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.license_number}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Address Line</label>
+                <input
+                  className="form-control"
+                  name="address_line"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.address_line}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>City</label>
+                <input
+                  className="form-control"
+                  name="city"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.city}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>State / Province</label>
+                <input
+                  className="form-control"
+                  name="state"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.state}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group mb-2 card-label">
+                <label>Country</label>
+                <input
+                  className="form-control"
+                  name="country"
+                  type="text"
+                  onChange={handleChange}
+                  value={formField.country}
+                />
+              </div>
+            </div>
 
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
+            <div className="card education-sec">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h4 className="text-secondary">Education</h4>
+                    <div className="form-group">
                       <label>College/Institute</label>
-
                       <input
-                        placeholder="collage"
-                        name="edu_collage"
+                        className="form-control"
                         type="text"
+                        name="edu_collage"
                         onChange={handleChange}
                         value={formField.edu_collage}
-                        className="input-tags form-control"
                       />
                     </div>
-                  </div>
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
-                      <label>
-                        Year of Completion{" "}
-                        {formField.edu_year_of_completion &&
-                          moment(formField.edu_year_of_completion).format("LL")}
-                      </label>
+                    <div className="form-group">
+                      <label>Year of Completion</label>
                       <DatePicker
                         onChange={(date, dateString) =>
                           setFormField({
@@ -531,43 +449,34 @@ const DoctorProfileSetting = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-12">
-              <div className="card mb-2 p-3 mt-2">
-                <div className="text-end">
-                  <PlusCircleOutlined
-                    style={{ fontSize: "24px", cursor: "pointer" }}
-                    onClick={handleExperiencePopupOpen}
-                  />
-                </div>
-                <AdditionalExperiance
-                  visible={isExperiencePopupVisible}
-                  onCancel={handleExperiencePopupClose}
-                  onAdd={handleAddExperience}
-                />
 
-                <h6 className="card-title text-secondary">Experience</h6>
-                <div className="row form-row">
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
+            <div className="card experience-sec">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h4 className="text-secondary">Experience</h4>
+                    <div className="form-group">
                       <label>Hospital Name</label>
-
                       <input
-                        placeholder="hospital_name"
-                        name="exp_hospital_name"
+                        className="form-control"
                         type="text"
+                        name="exp_hospital_name"
                         onChange={handleChange}
                         value={formField.exp_hospital_name}
-                        className="input-tags form-control"
                       />
                     </div>
-                  </div>
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
-                      <label>
-                        From{" "}
-                        {formField.exp_start_date &&
-                          moment(formField.exp_start_date).format("LL")}
-                      </label>
+                    <div className="form-group">
+                      <label>Designation</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="exp_designation"
+                        onChange={handleChange}
+                        value={formField.exp_designation}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>From</label>
                       <DatePicker
                         onChange={(date, dateString) =>
                           setFormField({
@@ -579,14 +488,8 @@ const DoctorProfileSetting = () => {
                         style={{ width: "100%", padding: "6px" }}
                       />
                     </div>
-                  </div>
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
-                      <label>
-                        TO{" "}
-                        {formField.exp_end_date &&
-                          moment(formField.exp_end_date).format("LL")}
-                      </label>
+                    <div className="form-group">
+                      <label>To</label>
                       <DatePicker
                         onChange={(date, dateString) =>
                           setFormField({
@@ -599,30 +502,29 @@ const DoctorProfileSetting = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-12 col-md-6 col-lg-4">
-                    <div className="form-group mb-2 card-label">
-                      <label>Designation</label>
-                      <input
-                        placeholder="designation"
-                        name="exp_designation"
-                        type="text"
-                        onChange={handleChange}
-                        value={formField.eexp_designation}
-                        className="input-tags form-control"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
-            <div className="text-center my-3">
-              <Button htmlType="submit" type="primary" size="large">
+
+            <div className="col-md-12 mt-3">
+              <Button type="primary" htmlType="submit">
                 Save Changes
               </Button>
             </div>
           </form>
         )}
       </div>
+
+      <AdditionalEducationPopup
+        visible={isEducationPopupVisible}
+        onClose={handleEducationPopupClose}
+        onAdd={handleAddEducation}
+      />
+      <AdditionalExperiance
+        visible={isExperiencePopupVisible}
+        onClose={handleExperiencePopupClose}
+        onAdd={handleAddExperience}
+      />
     </div>
   );
 };

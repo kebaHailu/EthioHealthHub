@@ -37,3 +37,9 @@
 .patient-name:hover {
   text-decoration: underline;
 }
+/* Add this CSS to your MyPatients.css file */
+
+.my-patients-table th {
+  font-weight: normal;
+  color: inherit;
+}

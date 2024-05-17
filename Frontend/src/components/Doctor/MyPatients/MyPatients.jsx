@@ -1,112 +1,3 @@
-// import React from "react";
-// import DashboardLayout from "../DashboardLayout/DashboardLayout";
-// import moment from "moment";
-// import './MyPatients.css'
-// import { Link } from "react-router-dom";
-// import {
-//   FaClock,
-//   FaEnvelope,
-//   FaLocationArrow,
-//   FaPhoneAlt,
-// } from "react-icons/fa";
-// import { Empty, Button } from "antd";
-
-// const MyPatients = () => {
-//   // Sample patient data
-//   const patients = [
-//     {
-//       id: 1,
-//       firstName: "John",
-//       lastName: "Doe",
-//       gender: "Male",
-//       appointmentTime: "2024-05-04",
-//       address: "123 Main St",
-//       email: "john@example.com",
-//       mobile: "123-456-7890",
-//     },
-//     {
-//       id: 2,
-//       firstName: "Jane",
-//       lastName: "Smith",
-//       gender: "Female",
-//       appointmentTime: "2024-05-05",
-//       address: "456 Elm St",
-//       email: "jane@example.com",
-//       mobile: "987-654-3210",
-//     },
-//     {
-//       id: 3,
-//       firstName: "Alice",
-//       lastName: "Johnson",
-//       gender: "Female",
-//       appointmentTime: "2024-05-06",
-//       address: "789 Oak St",
-//       email: "alice@example.com",
-//       mobile: "555-555-5555",
-//     },
-//   ];
-
-//   const handleViewDetail = (patient) => {
-//     // Handle view detail action here
-//     console.log("View detail for patient:", patient);
-//     // You can add logic to display detailed information about the patient
-//   };
-
-//   let content = null;
-//   if (patients.length === 0) content = <Empty />;
-//   if (patients.length > 0)
-//     content = (
-//       <>
-//         <table className="my-patients-table">
-//           <thead>
-//             <tr>
-//               <th>Patient Name</th>
-//               <th>Gender</th>
-//               <th>Appointment Time</th>
-//               <th>Address</th>
-//               <th>Email</th>
-//               <th>Mobile</th>
-//               <th>Action</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {patients.map((patient) => (
-//               <tr key={patient.id}>
-//                 <td>
-//                   <Link to={"/"} className="patient-name">
-//                     <h5>{patient.firstName + " " + patient.lastName}</h5>
-//                   </Link>
-//                 </td>
-//                 <td>{patient.gender}</td>
-//                 <td>{moment(patient.appointmentTime).format("MMM Do YY")}</td>
-//                 <td>{patient.address}</td>
-//                 <td>{patient.email}</td>
-//                 <td>{patient.mobile}</td>
-//                 <td>
-//                   <Button
-//                     type="primary"
-//                     onClick={() => handleViewDetail(patient)}
-//                   >
-//                     View Detail
-//                   </Button>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </>
-//     );
-//   return (
-//     <DashboardLayout>
-//       <div className="row">
-//         <div className="col-md-6 col-lg-4 col-xl-3">{content}</div>
-//       </div>
-//     </DashboardLayout>
-//   );
-// };
-
-// export default MyPatients;
-
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import "./MyPatients.css";
@@ -125,7 +16,9 @@ const MyPatients = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/patient/");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/clinical-record/"
+        );
         setProfileData(response.data);
         setFilteredPatients(response.data);
       } catch (error) {
@@ -136,27 +29,21 @@ const MyPatients = () => {
   }, []);
 
   const handleFilterChange = (value, type) => {
+    let filtered;
     if (type === "gender") {
       // Filter based on gender
-      if (value === "All") {
-        setFilteredPatients(profileData);
-      } else {
-        const filtered = profileData.filter(
-          (patient) => patient.gender === value
-        );
-        setFilteredPatients(filtered);
-      }
+      filtered =
+        value === "All"
+          ? profileData
+          : profileData.filter((patient) => patient.patient.gender === value);
     } else if (type === "disease_type") {
       // Filter based on disease type
-      if (value === "All") {
-        setFilteredPatients(profileData);
-      } else {
-        const filtered = profileData.filter(
-          (patient) => patient.disease_type === value
-        );
-        setFilteredPatients(filtered);
-      }
+      filtered =
+        value === "All"
+          ? profileData
+          : profileData.filter((patient) => patient.disease_type === value);
     }
+    setFilteredPatients(filtered);
   };
 
   const handleViewDetail = (patient) => {
@@ -200,8 +87,8 @@ const MyPatients = () => {
                         }
                       >
                         <Option value="All">Disease Type</Option>
-                        <Option value="Skin Disease">Skin Disease</Option>
-                        <Option value="Eye Disease">Eye Disease</Option>
+                        <Option value="S">Skin Disease</Option>
+                        <Option value="E">Eye Disease</Option>
                       </Select>
                     </th>
                     <th>Address</th>
@@ -215,15 +102,13 @@ const MyPatients = () => {
                   {filteredPatients.map((data) => (
                     <tr key={data.id}>
                       <td>
-                        <Link to={"/"} className="patient-name">
-                          {data.first_name + " " + data.last_name}
-                        </Link>
+                        {data.patient.first_name + " " + data.patient.last_name}
                       </td>
-                      <td>{data.gender}</td>
+                      <td>{data.patient.gender}</td>
                       <td>{data.disease_type}</td>
-                      <td>{data.city}</td>
-                      <td>{data.email}</td>
-                      <td>{data.phone_number}</td>
+                      <td>{data.patient.city}</td>
+                      <td>{data.patient.email}</td>
+                      <td>{data.patient.phone_number}</td>
                       <td>
                         <Button
                           type="primary"
@@ -255,13 +140,29 @@ const MyPatients = () => {
           {selectedPatient && (
             <div>
               <p>
-                Name: {selectedPatient.firstName} {selectedPatient.lastName}
+                Name: {selectedPatient.patient.first_name}{" "}
+                {selectedPatient.patient.last_name}
               </p>
-              <p>Gender: {selectedPatient.gender}</p>
+              <p>Gender: {selectedPatient.patient.gender}</p>
               <p>Disease Type: {selectedPatient.disease_type}</p>
-              <p>Address: {selectedPatient.city}</p>
-              <p>Email: {selectedPatient.email}</p>
-              <p>Mobile: {selectedPatient.phone_number}</p>
+              <p>Address: {selectedPatient.patient.city}</p>
+              <p>Email: {selectedPatient.patient.email}</p>
+              <p>Mobile: {selectedPatient.patient.phone_number}</p>
+            
+              <p>Family_history: {selectedPatient.family_history}</p>
+              <p>Blood_type: {selectedPatient.blood_type}</p>
+              <p>Pregnancy_condition: {selectedPatient.pregnancy_condition}</p>
+              <p>Symptoms: {selectedPatient.symptoms}</p>
+              <p>Symptoms_description: {selectedPatient.symptoms_description}</p>
+              <p>Disease_description: {selectedPatient.disease_description}</p>
+              <p>Follow_up_information: {selectedPatient.follow_up_information}</p>
+              <p>Image_path: {selectedPatient.image_path}</p>
+              <p>Allergies: {selectedPatient.allergies}</p>
+              <p>Vaccination_status: {selectedPatient.vaccination_status}</p>
+              <p>Sugar_level: {selectedPatient.sugar_level}</p>
+              <p>Blood_pressure: {selectedPatient.blood_pressure}</p>
+
+
             </div>
           )}
         </Modal>
