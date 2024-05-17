@@ -288,9 +288,9 @@ const PatientCredentialsForm = () => {
           {currentStep === 2 && (
             <Form.Item label="Upload Images">
               <ImageUpload
-                fileList={fileList}
+                image_path={image_path}
                 onFileChange={(file) => {
-                  setFileList([...fileList, file]);
+                  setFileList([...image_path, file]);
                 }}
               />
             </Form.Item>
