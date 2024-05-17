@@ -7,16 +7,18 @@ from station.models import Station
 
 class Technician(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    age = models.IntegerField()
-    phone_number = models.CharField(max_length=25)
-    specialization = models.CharField(max_length=255)
-    education = models.TextField(blank=True)
-    profile_image = models.CharField(max_length=255, blank=True, null=True)
+    age = models.IntegerField(null=True, blank=True)
+    phone_number = models.CharField(max_length=25, null=True, blank=True)
+    specialization = models.CharField(max_length=255, null=True, blank=True)
+    education = models.TextField(blank=True, null=True)
+    profile_image = models.ImageField(upload_to="images/", null=True, blank=True)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
 
+    def username(self):
+        return self.user.username
     def first_name(self):
         return self.user.first_name
 

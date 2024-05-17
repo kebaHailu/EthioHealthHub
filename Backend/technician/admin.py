@@ -8,7 +8,7 @@ from technician.models import Technician, ClinicalRecord, Patient
 
 @admin.register(Technician)
 class TechnicianAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email')
+    list_display = ('username', 'email')
 
 
 @admin.register(Patient)
