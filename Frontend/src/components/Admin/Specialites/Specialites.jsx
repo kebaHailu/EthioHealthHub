@@ -11,48 +11,44 @@ const Specialites = () => {
   const [filteredSpecialists, setFilteredSpecialists] = useState([]);
   const [selectedSpecialist, setSelectedSpecialist] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/specialist/profile/1/"
-      );
-      const data = response.data;
-      setProfileData(data);
-      setFilteredSpecialists([data]); // Wrap the single data object in an array
-    } catch (error) {
-      console.error("Error fetching data:", error);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/specialist/");
+        const data = response.data;
+        setProfileData(data);
+        setFilteredSpecialists(data); // Ensure filteredSpecialists is set with the fetched data
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleFilterChange = (value, type) => {
+    let filteredData = profileData;
+
+    // Filter by specialization
+    if (type === "specialization") {
+      if (value !== "All") {
+        filteredData = profileData.filter(
+          (data) => data.specialization === value
+        );
+      }
     }
+
+    // Filter by gender
+    if (type === "gender") {
+      if (value !== "All") {
+        filteredData = profileData.filter(
+          (data) => data.gender.toLowerCase() === value.toLowerCase()
+        );
+      }
+    }
+
+    setFilteredSpecialists(filteredData);
   };
-  fetchData();
-}, []);
-
-
-
- const handleFilterChange = (value, type) => {
-   let filteredData = profileData;
-
-   // Filter by specialization
-   if (type === "specialization") {
-     if (value !== "All") {
-       filteredData = profileData.filter(
-         (data) => data.specialization === value
-       );
-     }
-   }
-
-   // Filter by gender
-   if (type === "gender") {
-     if (value !== "All") {
-       filteredData = profileData.filter(
-         (data) => data.gender.toLowerCase() === value.toLowerCase()
-       );
-     }
-   }
-
-   setFilteredSpecialists(filteredData);
- };
-
 
   const handleViewDetail = (data) => {
     setSelectedSpecialist(data);
@@ -106,7 +102,7 @@ useEffect(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredSpecialists?.map((data) => (
+                  {filteredSpecialists.map((data) => (
                     <tr key={data.id}>
                       <td>{data.first_name + " " + data.last_name}</td>
                       <td>{data.specialization}</td>
@@ -126,13 +122,13 @@ useEffect(() => {
                   ))}
                 </tbody>
               </table>
-              <div className="print-button-container">
+              {/* <div className="print-button-container">
                 {selectedSpecialist && (
                   <Button type="primary" onClick={handlePrint}>
                     Print
                   </Button>
                 )}
-              </div>
+              </div> */}
             </>
           )}
         </div>
