@@ -53,7 +53,7 @@ class ClinicalRecord(models.Model):
         ('E', 'Eye'),
         ('S', 'Skin')
     ]
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
     family_history = models.CharField(max_length=255, blank=True)
     blood_type = models.CharField(max_length=30, blank=True)
     pregnancy_condition = models.BooleanField()
