@@ -46,6 +46,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Shared/Header/Header";
 import Footer from "./components/Shared/Footer/Footer";
 import Scan from "./components/ImageUploader/Scan";
+import Tecnician from "./components/StationAdminDashboard/Tecnician";
 
 function App() {
   return (
@@ -101,6 +102,7 @@ function App() {
         <Route path="/doctors" element={<SearchDoctor />} />
         <Route path='/calendly' element={<Calendly />} />
         <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
+        <Route path='/technician' element={<Tecnician />} />
       
         <Route path="/booking/:doctorId" element={<DoctorBooking />} />
         <Route path="/booking/success/:id" element={<BookingSuccess />} />

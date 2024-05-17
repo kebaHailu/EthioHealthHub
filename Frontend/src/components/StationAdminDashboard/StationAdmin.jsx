@@ -87,47 +87,63 @@ const StationAdmin = () => {
     setVisible(false);
   };
 
-  const handleAddTechnicianFormSubmit = (values) => {
-    const newTechnician = {
-      ...values,
-      createdAt: new Date().toLocaleString(),
-    };
-    setTechnicians([...technicians, newTechnician]);
-    setShowAddForm(false);
-  };
+const handleAddTechnicianFormSubmit = async (values) => {
+  try {
+    // Get the logged-in station admin's ID from wherever it's stored
+    // For example, if it's stored in stationInfo, you can access it like this
+    const stationId = stationInfo.id;
 
-  const handleProfileImageChange = (e) => {
-    const file = e.target.files[0];
-    setProfileImage(file);
-  };
+    // Perform any form validation if needed
+
+    // Create a new FormData object to handle file uploads if necessary
+    const formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("station_id", stationId);
+
+    // Make a POST request to the specified URL
+    const response = await fetch("http://127.0.0.1:8000/send_email", {
+      method: "POST",
+      body: formData, // Pass the FormData object as the body
+    });
+
+    // Check if the request was successful
+    if (response.ok) {
+      // If successful, get the response data
+      const responseData = await response.json();
+
+      // Update the technicians state with the new data
+      setTechnicians([...technicians, responseData]);
+
+      // Optionally, you can update state or perform any additional actions
+      console.log(technicians);
+      console.log("Technician added successfully!");
+    } else {
+      // If the request failed, log an error or handle it appropriately
+      console.error("Failed to add technician:", response.statusText);
+      // Optionally, you can display an error message to the user
+    }
+  } catch (error) {
+    // If an error occurs during the request, log it or handle it appropriately
+    console.error("Error adding technician:", error);
+    // Optionally, you can display an error message to the user
+  }
+};
+
+
+   const handleProfileImageChange = (e) => {
+     const file = e.target.files[0];
+     setProfileImage(file);
+   };
 
   const columns = [
-    {
-      title: "Technician Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text, record) => `${record.firstName} ${record.lastName}`,
-    },
+    
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
     },
-    {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Education",
-      dataIndex: "education",
-      key: "education",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
+    
+
     {
       title: "Registered Date",
       dataIndex: "createdAt",
@@ -164,9 +180,9 @@ const StationAdmin = () => {
             className="cover-image"
             src={
               profileImage
+                ? URL.createObjectURL(profileImage)
+                : stationInfo.cover_image
               
-                ? `http://127.0.0.1:8000/${stationInfo.cover_image}`
-                : "https://via.placeholder.com/220"
             }
             alt="Station Cover"
           />
@@ -297,48 +313,16 @@ const StationAdmin = () => {
         footer={null}
       >
         <Form onFinish={handleAddTechnicianFormSubmit}>
-          <Form.Item
-            label="First Name"
-            name="firstName"
-            rules={[{ required: true, message: "Please input first name" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Last Name"
-            name="lastName"
-            rules={[{ required: true, message: "Please input last name" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[{ required: true, message: "Please input phone number" }]}
-          >
-            <Input />
-          </Form.Item>
+         
           <Form.Item
             label="Email"
             name="email"
+            value={editingTechnician?.email}
             rules={[{ required: true, message: "Please input email" }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Education"
-            name="education"
-            rules={[{ required: true, message: "Please input education" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Age"
-            name="age"
-            rules={[{ required: true, message: "Please input age" }]}
-          >
-            <Input />
-          </Form.Item>
+         
           <Button className="add-technician-button" htmlType="submit">
             Add Technician
           </Button>

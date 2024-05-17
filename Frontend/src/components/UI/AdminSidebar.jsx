@@ -45,6 +45,12 @@ const AdminSidebar = () => {
                 <FaRegUser /> <span>Patients List</span>
               </Link>
             </li>
+                 <li>
+              <Link to={"/technician"}>
+                <FaUserAstronaut /> <span>my profile</span>
+              </Link>
+            </li>
+            <li></li>
             <li>
               <Link to={"/admin/addpatient"}>
                 <FaUserAstronaut /> <span>Add Patient</span>
