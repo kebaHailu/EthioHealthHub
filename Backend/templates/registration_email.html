@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Registration</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        p {
+            color: #777;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        a {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px;">
+        <h1>Welcome!</h1>
+        <h2>You have been approved as a doctor for {{ clinic_name }}</h2>
+        <p>Please use the following credentials to register as a doctor:</p>
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Password:</strong> {{ password }}</p>
+        <p>Click the following link to complete your registration:</p>
+        <a href="{{ link }}">Complete Registration</a>
+        <p>Good luck from the Ethio Health Hub team!</p>
+    </div>
+</body>
+</html>
