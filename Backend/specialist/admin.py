@@ -4,7 +4,7 @@ from specialist.models import Specialist
 @admin.register(Specialist)
 class SpecialistAdmin(admin.ModelAdmin):
     list_select_related = ['user']
-    list_display = ('first_name', 'last_name', 'email')
+    list_display = ('username', 'first_name', 'last_name', 'email')
     search_fields = ('first_name', 'email')
 
     

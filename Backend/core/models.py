@@ -15,6 +15,7 @@ class Appointment(models.Model):
     # def get_patient(self):
     #     return self.clinical_record.patient.first_name + " " + self.clinical_record.patient.last_name
 
+
     def __str__(self):
         return self.message
 

@@ -16,11 +16,15 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from user.models import User
+from station.models import Station
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 class ClinicalRecordViewset(ModelViewSet):
     queryset = ClinicalRecord.objects.all()
     serializer_class = ClinicalRecordSerializer
-
+ 
 
 class PatientViewset(ModelViewSet):
     queryset = Patient.objects.all()
@@ -45,10 +49,9 @@ def generate_registration_token(email):
 @api_view(['POST'])
 def send_registration_email(request):
     email = request.data.get('email')
-
     if email:
         station_id = request.data.get('station_id')
-
+        station_name = Station.objects.get(id=station_id).name
         username = request.data.get('username', email.split('@')[0])
         password_created = generate_password()
         password = request.data.get('password', password_created)
@@ -57,10 +60,22 @@ def send_registration_email(request):
             user=user, station_id=station_id
         )
 
-        current_site = 'https://localhost:5173/login'
+        current_site = 'localhost:5173/login'
         email_subject = 'complete your account registration'
-        email_message = f'Your current username is {username} and your password is {password}. login using the link {current_site} and Change your username and  password'
-        send_mail(email_subject, email_message, settings.DEFAULT_FROM_EMAIL, [email])
+
+        # render html
+        context = {
+            'link':current_site,
+            'password': password,
+            'username': username,
+            'clinic_name':station_name
+
+        }
+        html_message = render_to_string('registration_email.html', context)
+        text_message = strip_tags(html_message)
+        email = EmailMultiAlternatives(email_subject, text_message, settings.DEFAULT_FROM_EMAIL, [email])
+        email.attach_alternative(html_message, 'text/html')
+        email.send()
         return Response({'message':'Registation email sent'})
     else:
         return Response({'message':'Email address is requried'})
