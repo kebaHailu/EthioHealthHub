@@ -1,0 +1,19 @@
+.view-detail-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section {
+  flex: 1;
+  margin: 10px;
+}
+
+.clinical-record {
+  display: flex;
+  justify-content: space-between;
+}
+
+.patient-details, .specialist-details, .appointment-details {
+  display: flex;
+  flex-direction: column;
+}

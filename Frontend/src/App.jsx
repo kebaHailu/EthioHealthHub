@@ -48,6 +48,8 @@ import Footer from "./components/Shared/Footer/Footer";
 import Scan from "./components/ImageUploader/Scan";
 import Tecnician from "./components/StationAdminDashboard/Tecnician";
 import AppointmentForm from "./components/AppointmentForm/AppointmentForm";
+// import ViewDetail from "./components/ViewDetail/ViewDetail";
+// import ViewDetails from "./components/ViewDetail/";
 
 function App() {
   return (
@@ -118,6 +120,8 @@ function App() {
         <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
 
         <Route path="/admin/specialites" element={<Specialites />} />
+
+        {/* <Route path="/view-detail" element={<ViewDetails />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
