@@ -1,6 +1,6 @@
 import string
 
-from django.shortcuts import render
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
@@ -8,19 +8,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import TechnicianSerializer, ClinicalRecordSerializer, PatientSerializer
 from .models import Technician, ClinicalRecord, Patient
-from pprint import pprint
 import random
-from django.http import request, response
 from django.contrib.auth.tokens import PasswordResetTokenGenerator as prtg
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from django.core.mail import send_mail
 from django.conf import settings
 from user.models import User
 from station.models import Station
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
 
 class ClinicalRecordViewset(ModelViewSet):
     queryset = ClinicalRecord.objects.all()
