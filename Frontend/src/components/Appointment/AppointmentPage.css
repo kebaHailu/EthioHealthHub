@@ -1,23 +1,52 @@
 .container {
-  max-width: 500px;
-  margin: auto;
+  margin-top: 10px;
+}
+
+h2 {
+  color: #228b22; /* Forest green */
 }
 
 .appointment-form {
-  padding: 20px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  margin-top: 20px;
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto;
 }
 
 .form-group {
   margin-bottom: 20px;
 }
 
-.alert {
-  margin-bottom: 20px;
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #228b22; /* Forest green */
+}
+.form-group textarea{
+  background-color: #fff;
 }
 
-.form-control {
-  background-color: rgb(152, 228, 133) !important;
+input[type="datetime-local"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #228b22; /* Forest green */
+  border-radius: 5px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.5); /* Increase checkbox size */
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #228b22; /* Forest green */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2e8b57; /* Sea green */
 }
