@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Appointment is Just Arrived</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        p {
+            color: #777;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        #link {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        #link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px;">
+
+        <h1>Patient Appointment Scheduled - See Details</h1>
+        <p>Dear Dr. {{ doctor_name }},</p>
+        <p>You have a new appointment request.</p>
+
+        <h3>Patient Details:</h3>
+        <ul>
+            <li><strong>Name:</strong> {{ patient_name }}</li>
+            <li><strong>Gender:</strong> {{ patient_gender }}</li>
+            <li><strong>Age:</strong> {{ patient_age }}</li>
+            <li><strong>Contact Number:</strong> {{ patient_phone }}</li>
+            <li><strong>Email:</strong> {{ patient_email }}</li>
+        </ul>
+
+        <h3>Appointment Details:</h3>
+        <ul>
+            <li><strong>Date:</strong> {{ appointment_date }}</li>
+            <li><strong>Time:</strong> {{ appointment_time }}</li>
+        </ul>
+
+        <h3>Additional Message from Appointment:</h3>
+        <p>{{ message }}</p>
+
+        <p>Please review the appointment and take the necessary actions accordingly.</p>
+
+        <p>Best regards,</p>
+        <p>{{ technician_name }}</p>
+
+        <a href="{{ link }}" id="link">See Details</a>
+
+        <p>Happy to have you! From the Ethio Health Hub team!</p>
+    </div>
+</body>
+</html>

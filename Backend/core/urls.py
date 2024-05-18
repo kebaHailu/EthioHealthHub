@@ -11,7 +11,9 @@ urlpatterns = [
          views.SpecialistAppointmentAPIView.as_view(), name='specialist-appointments'),
     path('appointments/station/<int:station_id>',
          views.StationAppointmentAPIView.as_view(), name='station-appointments'),
+    path('appointment/detail/<int:id>', views.AppointmentDetailAPIView.as_view(), name='appointment-detail'),
     path('', include(router.urls)),
+
 
 ]
 
