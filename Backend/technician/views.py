@@ -24,7 +24,7 @@ class ClinicalRecordViewset(viewsets.ModelViewSet):
  
 
 class PatientViewset(viewsets.ModelViewSet):
-    queryset = Patient.objects.all()
+    queryset = Patient.objects.order_by('-created_at')
     serializer_class = PatientSerializer
 
 

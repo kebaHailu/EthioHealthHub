@@ -38,6 +38,7 @@ class Patient(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     age = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     phone_number = models.CharField(max_length=25)
     email = models.EmailField()
