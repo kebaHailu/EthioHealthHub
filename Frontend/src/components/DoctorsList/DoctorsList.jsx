@@ -63,7 +63,7 @@ const DoctorsList = () => {
             >
               View Details
             </button>
-            <Link to="/calendly">
+            <Link to="/appointment">
               <button className="appointment-btn">Make Appointment</button>
             </Link>
           </div>

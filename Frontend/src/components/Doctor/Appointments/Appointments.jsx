@@ -17,14 +17,30 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { clickToCopyClipBoard } from "../../../utils/copyClipBoard";
+import { jwtDecode } from "jwt-decode";
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const token = localStorage.getItem("accessToken");
+  // const token = "eyJ0eXAiO.../// jwt token";
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
+
   useEffect(() => {
+    const token = localStorage.getItem("accessToken");
     axios
-      .get("http://127.0.0.1:8000/appointemnts/station/1")
+      .get(
+        `http://127.0.0.1:8000/appointments/specialist/${decoded.user_id}`,
+
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setAppointments(response.data);
         setLoading(false);

@@ -5,7 +5,7 @@
 
 .appointment-form {
   padding: 20px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 20px;
 }
@@ -19,5 +19,5 @@
 }
 
 .form-control {
-  background-color: rgb(152, 228, 133) !important;
+  background-color: rgb(174, 174, 169) !important;
 }

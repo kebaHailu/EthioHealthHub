@@ -11,15 +11,16 @@
     margin-bottom: 20px;
     border-radius: 10px;
     padding: 10px;
-   
-
+    position: relative;
 }
+
 .search-bar input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 .search-bar::after {
     content: "\f002";
     font-family: FontAwesome;
@@ -29,27 +30,23 @@
     transform: translateY(-50%);
     color: #ccc;
 }
+
 .search-bar input:focus {
     outline: none;
     border-color: #53db14;
-    box-shadow: 1 10 20 10 5px #40ba07;
+    box-shadow: 0 0 5px #40ba07;
 }
 
-
-.stations-list {
-    max-height: 100px; /* Set maximum height for vertical scroll */
-     /* Enable vertical scrolling */
-}
 
 .station-card {
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 10px;
+    padding: 30px;
 }
 
 .station-card img {
     width: 100%;
-    height: 300px;
+    height: 200px;
     border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
 }
 
@@ -66,7 +63,14 @@
     justify-content: space-between;
     margin-top: 10px;
 }
-.view-details-button{
+
+.view-details-button {
     background-color: green;
     color: #fff;
+    border: none;
 }
+
+.view-details-button:hover {
+    background-color: darkgreen;
+}
+

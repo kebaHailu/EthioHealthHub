@@ -22,7 +22,7 @@
     color: inherit;
 }
 .dash-count {
-    font-size: 18px;
+    font-size: 16px;
     margin-left: auto;
 }
 .dash-widget-info h3 {
@@ -89,3 +89,7 @@
     color:black
      
 }   
+.appointments-table th {
+  font-weight: normal;
+  color: inherit;
+}

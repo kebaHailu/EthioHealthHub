@@ -47,20 +47,21 @@ import Header from "./components/Shared/Header/Header";
 import Footer from "./components/Shared/Footer/Footer";
 import Scan from "./components/ImageUploader/Scan";
 import Tecnician from "./components/StationAdminDashboard/Tecnician";
+import AppointmentForm from "./components/AppointmentForm/AppointmentForm";
 
 function App() {
   return (
     <div>
       <ToastContainer />
 
- {/* <Header/> */}
-     <Routes>
-        <Route path="/stations" element={<Stations />} /> 
+      {/* <Header/> */}
+      <Routes>
+        <Route path="/stations" element={<Stations />} />
         <Route path="/station-admin" element={<StationAdmin />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/my-patients" element={<MyPatients />} />
-      
+
         <Route path="/dashboard/schedule" element={<Schedule />} />
         <Route path="/dashboard/appointments" element={<Appointments />} />
         <Route
@@ -86,10 +87,10 @@ function App() {
           path="/dashboard/favourite"
           element={<PatientFavouriteDoctor />}
         /> */}
-       
+
         <Route path="/login" element={<SignInForm />} />
         <Route path="/" element={<Home />} />
-      
+
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/service" element={<Service />} />
@@ -98,27 +99,27 @@ function App() {
           element={<ForgotPassword />}
         />
         <Route path="/appointment" element={<AppointmentPage />} />
-       
+        <Route Path="/admin/app" element={<AppointmentForm />} />
+
         <Route path="/doctors" element={<SearchDoctor />} />
-        <Route path='/calendly' element={<Calendly />} />
+        <Route path="/calendly" element={<Calendly />} />
         <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
-        <Route path='/technician' element={<Tecnician />} />
-      
+        <Route path="/technician" element={<Tecnician />} />
+
         <Route path="/booking/:doctorId" element={<DoctorBooking />} />
         <Route path="/booking/success/:id" element={<BookingSuccess />} />
-       
+
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/doctors" element={<Doctors />} />
-        <Route path ='/scan' element={<Scan/>} />
+        <Route path="/scan" element={<Scan />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/profile" element={<Profile />} />
         <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
-       
+
         <Route path="/admin/specialites" element={<Specialites />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-     
     </div>
   );
 }

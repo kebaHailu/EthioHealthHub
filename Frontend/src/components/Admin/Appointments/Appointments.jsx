@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../AdminLayout/AdminLayout";
+import { jwtDecode } from "jwt-decode";
 import "./Appointments.css";
 
 import axios from "axios";
@@ -23,9 +24,24 @@ const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const token = localStorage.getItem("accessToken");
+  // const token = "eyJ0eXAiO.../// jwt token";
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
+
   useEffect(() => {
+    const token = localStorage.getItem("accessToken");
     axios
-      .get("http://127.0.0.1:8000/appointemnts/station/1")
+      .get(
+        `http://127.0.0.1:8000/appointments/station/${decoded.user_id}`,
+
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setAppointments(response.data);
         setLoading(false);
@@ -72,7 +88,7 @@ const AdminAppointments = () => {
                 <td>{appointment.patient_name}</td>
 
                 <td>{appointment.gender}</td>
-                
+
                 <td>
                   {`${appointment.technician_first_name} ${appointment.technician_last_name}`.trim()}
                 </td>

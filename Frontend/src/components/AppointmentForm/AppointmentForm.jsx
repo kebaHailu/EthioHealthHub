@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./AppointmentPage.css"; // Import custom styles
+import "./AppointmentForm.css"; // Import custom styles
 import { useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Fixed import
+import {jwtDecode} from "jwt-decode"; // Fixed import
 import { toast } from "react-toastify";
 
-function AppointmentPage() {
+function AppointmentForm() {
   const [, setLoading] = useState(false);
   const token = localStorage.getItem("accessToken");
   const technician = token ? jwtDecode(token) : null;
-  const patient= token ? jwtDecode(token) : null;
   const location = useLocation();
-  const { specialistId } = location.state;
+//   const { doctorIdK } = location.state;
   const [formData, setFormData] = useState({
     appointment_date: null,
     message: "",
     status: false,
   });
   const user = token ? jwtDecode(token) : null; // Assuming user info is decoded from token
-  const patientId = patient?.user_id;
+  const patientId = user?.user_id;
   const technicianId = technician?.user_id;
-  // const specialistId = doctorIdK;
+//   const specialistId = doctorIdK;
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -124,4 +123,4 @@ function AppointmentPage() {
   );
 }
 
-export default AppointmentPage;
+export default AppointmentForm;

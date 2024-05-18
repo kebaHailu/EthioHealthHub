@@ -1,55 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Row, Col, Input, Button } from "antd";
-import Header from '../Shared/Header/Header'
-import Footer from '../Shared/Footer/Footer'
+import { Row, Col, Input, Button, message } from "antd";
+import axios from "axios";
+import Header from "../Shared/Header/Header";
+import Footer from "../Shared/Footer/Footer";
 import "./Stations.css";
 import StationModal from "../StationModal/StationModal"; // Import the modal component
 
 const Stations = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [stations, setStations] = useState([]);
   const [displayedStations, setDisplayedStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState(null); // Track the selected station
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for stations
-  const stations = [
-    {
-      id: 1,
-      name: "Station 1",
-      location: "Location 1",
-      contact: "Contact 1",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Station 2",
-      location: "Location 2",
-      contact: "Contact 2",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    // Add more stations as needed
-    {
-      id: 3,
-      name: "Station 3",
-      location: "Location 3",
-      contact: "Contact 3",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    {
-      id: 4,
-      name: "Station 4",
-      location: "Location 4",
-      contact: "Contact 4",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    // Add more stations as needed
-  ];
-
-  // Initialize displayedStations with all stations when component mounts
+  // Fetch stations data from API
   useEffect(() => {
-    setDisplayedStations(stations);
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+    axios
+      .get("http://127.0.0.1:8000/station/")
+      .then((response) => {
+        setStations(response.data);
+        setDisplayedStations(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the stations!", error);
+        message.error("Failed to load stations");
+        setLoading(false);
+      });
+  }, []);
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -72,6 +52,10 @@ const Stations = () => {
     setModalVisible(false);
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <Header />
@@ -89,20 +73,20 @@ const Stations = () => {
           />
         </div>
         <div className="stations-list">
-          <Row gutter={[16, 16]}>
+          <Row gutter={[20, 20]}>
             {displayedStations.map((station) => (
-              <Col key={station.id} xs={24} sm={12}>
+              <Col key={station.id} >
                 <div className="station-card">
-                  <img src={station.imageUrl} alt={station.name} />
+                  <img src={station.cover_image} alt={station.name} />
                   <div className="station-info">
                     <h3>{station?.name}</h3>
                     <p>{station?.location}</p>
-                    <p>{station?.contact}</p>
+                   
+                    <p>{station?.description}</p>
                   </div>
                   <div className="station-buttons">
                     <Button
                       className="view-details-button"
-                      // type="primary"
                       onClick={() => handleViewDetails(station)}
                     >
                       View Details
@@ -116,7 +100,7 @@ const Stations = () => {
             ))}
           </Row>
         </div>
-        
+
         {/* Modal to display station details */}
         <StationModal
           visible={modalVisible}
@@ -124,8 +108,7 @@ const Stations = () => {
           onClose={handleCloseModal}
         />
       </div>
-      
-     
+      <Footer />
     </>
   );
 };

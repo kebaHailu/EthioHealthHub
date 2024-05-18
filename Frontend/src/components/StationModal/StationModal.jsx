@@ -13,7 +13,11 @@ const StationModal = ({ visible, station, onClose }) => {
       {station && (
         <div>
           <p>Location: {station.location}</p>
-          <p>Contact: {station.contact}</p>
+        
+          <p>Description: {station.description}</p>
+          <p>longitude: {station.longtiude}</p>
+          <p>latitude: {station.latitude}</p>
+
           <div className="container">
             {/* // style={{ border: 0, width: "100%", height: "350px" }} */}
 
