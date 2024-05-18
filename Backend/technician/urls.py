@@ -7,6 +7,7 @@ router = SimpleRouter()
 router.register('patient', views.PatientViewset)
 router.register('clinical-record', views.ClinicalRecordViewset)
 router.register('technician', views.TechnicianViewset, 'technician')
+router.register('machine-learning', views.MachineLearningModelViewSet, 'machine-learning')
 
 urlpatterns = [
     path('', include(router.urls)),

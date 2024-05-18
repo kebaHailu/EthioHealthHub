@@ -33,6 +33,9 @@ class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Up
 
     @action(detail=False, methods=['GET', 'PUT'])
     def profile(self, request):
+        if request.user.user_role != 'SD':
+            return Response({'message': 'Invalid user access'}, status=status.HTTP_400_BAD_REQUEST)
+
         specialist, status_result = Specialist.objects.get_or_create(user=request.user)
 
         if request.method == "GET":
@@ -46,7 +49,4 @@ class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Up
             return Response(serializer.data)
 
         return Response(request.user.user_role)
-        # if request.user.user_role == 'SD':
-        #     special = Specialist.objects.get_or_create(user_id=request.user.id)
-
 

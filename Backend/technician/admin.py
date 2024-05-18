@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from technician.models import Technician, ClinicalRecord, Patient
+from technician.models import Technician, ClinicalRecord, Patient, MachineLearningModel
 
 
 # Register your models here.
@@ -17,3 +17,8 @@ class PatientAdmin(admin.ModelAdmin):
 @admin.register(ClinicalRecord)
 class ClinicalRecordAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
+
+
+@admin.register(MachineLearningModel)
+class ClinicalRecordAdmin(admin.ModelAdmin):
+    list_display = ('result', 'accuracy', 'clinical_record')
