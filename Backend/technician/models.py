@@ -11,7 +11,6 @@ class Technician(models.Model):
     phone_number = models.CharField(max_length=25, null=True, blank=True)
     specialization = models.CharField(max_length=255, null=True, blank=True)
     education = models.TextField(blank=True, null=True)
-    profile_image = models.ImageField(upload_to="images/", null=True, blank=True)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     def __str__(self):
