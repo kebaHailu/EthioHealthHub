@@ -1,13 +1,14 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from specialist.models import Specialist
-from technician.models import ClinicalRecord, Patient, Technician
-
+from technician.models import ClinicalRecord, Patient, Technician, MachineLearningModel
 
 class Appointment(models.Model):
-    clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.CASCADE)
-    technician = models.ForeignKey(Technician, on_delete=models.CASCADE)
-    specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
+
+    clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.DO_NOTHING)
+    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING)
+    specialist = models.ForeignKey(Specialist, on_delete=models.DO_NOTHING)
+    machine_learning = models.ForeignKey(MachineLearningModel, on_delete=models.DO_NOTHING, null=True, default=None)
     appointment_date = models.DateTimeField()
     message = models.TextField()
     status = models.BooleanField(default=False)

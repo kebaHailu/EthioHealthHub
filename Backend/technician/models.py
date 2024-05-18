@@ -30,6 +30,7 @@ class Technician(models.Model):
 
 
 class Patient(models.Model):
+    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING, null=True, blank=True)
     GENDER_OPTION = [
         ('M', 'Male'),
         ('F', 'Female')
@@ -38,6 +39,7 @@ class Patient(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     age = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
     gender = models.CharField(max_length=1, choices=GENDER_OPTION, default='M')
     phone_number = models.CharField(max_length=25)
     email = models.EmailField()
@@ -47,7 +49,6 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.first_name
-
 
 
 class ClinicalRecord(models.Model):
@@ -80,9 +81,6 @@ class ClinicalRecord(models.Model):
         return self.patient.last_name
 
 
-
-
-
 class TechnicalReport(models.Model):
     clinical_record = models.ForeignKey(ClinicalRecord, on_delete=models.PROTECT)
     disease_level = models.IntegerField()
@@ -90,6 +88,13 @@ class TechnicalReport(models.Model):
     result_description = models.TextField()
     prescription = models.TextField(blank=True)
 
+
+class MachineLearningModel(models.Model):
+
+    clinical_record = models.ForeignKey(ClinicalRecord, on_delete=models.DO_NOTHING)
+    image = models.ImageField(upload_to="images/")
+    result = models.CharField(max_length=200, blank=True, null=True)
+    accuracy = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
 
 

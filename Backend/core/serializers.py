@@ -31,7 +31,7 @@ class AppointmentGetSerializer(serializers.ModelSerializer):
 
 
 class AppointmentDetailSerializer(serializers.ModelSerializer):
-    #patient = PatientSerializer()
+
     clinical_record = ClinicalRecordSerializer()
     specialist = SpecialistSerializer()
 
