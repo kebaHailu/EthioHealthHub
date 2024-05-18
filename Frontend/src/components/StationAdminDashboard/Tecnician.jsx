@@ -51,8 +51,38 @@ const StationAdmin = () => {
   };
 
   const handleAddTechnicianFormSubmit = async (values) => {
-    // Handle form submission for adding a new technician
-    // Send a POST request to add the new technician
+    try {
+      // Assuming you have the technician ID stored in the values object
+      const technicianId = values.id;
+
+      // Create a new FormData object to handle the form data
+      const formData = new FormData();
+      formData.append("first_name", values.first_name);
+      formData.append("last_name", values.last_name);
+      formData.append("email", values.email);
+      formData.append("phone_number", values.phone_number);
+      formData.append("specialization", values.specialization);
+      formData.append("age", values.age);
+      formData.append("education", values.education);
+      formData.append("registered_date", values.registered_date);
+
+      // Make a PUT request to update the technician data
+      const response = await fetch("http://127.0.0.1:8000/technician/10/", {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (response.ok) {
+        // If successful, update the technician data in the state
+        const updatedTechnician = await response.json();
+        setTechnicians([updatedTechnician]);
+        setShowAddForm(false);
+      } else {
+        console.error("Failed to update technician data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating technician data:", error);
+    }
   };
 
   const columns = [
@@ -69,7 +99,7 @@ const StationAdmin = () => {
     },
     {
       title: "Phone Number",
-      dataIndex: "phone",
+      dataIndex: "phone_number",
       key: "phone",
     },
     {
@@ -78,9 +108,22 @@ const StationAdmin = () => {
       key: "education",
     },
     {
+      title: "Specialization",
+      dataIndex: "specialization",
+      key: "specialization",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+      type: "number",
+    },
+    {
       title: "Registered Date",
       dataIndex: "registered_date",
       key: "registered_date",
+     type: "date",
+
     },
     {
       title: "Action",
@@ -109,14 +152,14 @@ const StationAdmin = () => {
       <AdminLayout>
         <div className="right-sidebar">
           {/* Add Technician Button */}
-          <Button onClick={handleAddTechnician}>Add Technician</Button>
+          <Button onClick={handleAddTechnician}>my Profile</Button>
           {/* Technicians Table */}
           <Table dataSource={technicians} columns={columns} />
         </div>
       </AdminLayout>
       {/* Add Technician Form */}
       <Modal
-        title="Add Technician"
+        title="lets add my profile"
         visible={showAddForm}
         onCancel={() => setShowAddForm(false)}
         footer={null}
@@ -138,16 +181,14 @@ const StationAdmin = () => {
           </Form.Item>
           <Form.Item
             label="Phone"
-            name="phone"
+            name="phone_number"
             rules={[{ required: true, message: "Please input phone number" }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Please input email" }]}
-          >
+          <Form.Item label="Email"
+        
+           name="email">
             <Input />
           </Form.Item>
           <Form.Item
@@ -158,10 +199,26 @@ const StationAdmin = () => {
             <Input />
           </Form.Item>
           <Form.Item
+            label="Specialization"
+            name="specialization"
+            rules={[{ required: true, message: "Please input specialization" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Age"
+            name="age"
+            rules={[{ required: true, message: "Please input age" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
             label="Registered Date"
             name="registered_date"
+            type="date"
             rules={[
               { required: true, message: "Please input registered date" },
+              <Input type="date" />,
             ]}
           >
             <Input />

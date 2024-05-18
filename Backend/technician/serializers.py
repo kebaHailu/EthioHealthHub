@@ -8,7 +8,7 @@ class TechnicianSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Technician
-        fields = ['first_name', 'last_name', 'email','specialization','phone_number','education']
+        fields = ['first_name', 'last_name', 'email','specialization','phone_number','education','age']
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:

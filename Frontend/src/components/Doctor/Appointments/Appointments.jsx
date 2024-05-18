@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import img from "../../../images/doc/doctor 3.jpg";
 import "./Appointments.css";
@@ -18,35 +19,27 @@ import { Link } from "react-router-dom";
 import { clickToCopyClipBoard } from "../../../utils/copyClipBoard";
 
 const Appointments = () => {
-  const appointments = [
-    {
-      id: 1,
-      patientName: "John Doe",
-      date: "2024-05-04",
-      time: "10:00 AM",
-      gender: "Male",
-      stationName: "Station 1",
-      technicianName: "Dr. Smith",
-    },
-    {
-      id: 2,
-      patientName: "Jane Smith",
-      date: "2024-05-05",
-      time: "11:30 AM",
-      gender: "Female",
-      stationName: "Station 2",
-      technicianName: "Dr. Johnson",
-    },
-    {
-      id: 3,
-      patientName: "Alice Johnson",
-      date: "2024-05-06",
-      time: "02:00 PM",
-      gender: "Female",
-      stationName: "Station 3",
-      technicianName: "Dr. Brown",
-    },
-  ];
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/appointemnts/station/1")
+      .then((response) => {
+        setAppointments(response.data);
+        setLoading(false);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the appointments!", error);
+        message.error("Failed to load appointments");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <DashboardLayout>
@@ -58,29 +51,43 @@ const Appointments = () => {
             <th>Gender</th>
             <th>Station Name</th>
             <th>Technician Name</th>
+            <th>Specialist Name</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {appointments.map((appointment) => (
-            <tr key={appointment.id}>
-              <td>{appointment.patientName}</td>
-              <td>
-                {moment(appointment.date).format("MMM Do YY")}{" "}
-                {appointment.time}
-              </td>
-              <td>{appointment.gender}</td>
-              <td>{appointment.stationName}</td>
-              <td>{appointment.technicianName}</td>
-              <td>
-                <Link to={`/dashboard/appointments/${appointment.id}`}>
-                  <Button type="primary" icon={<FaEye />} size="small">
-                    View
-                  </Button>
-                </Link>
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <tr key={appointment.id}>
+                <td>{appointment.patient_name}</td>
+                <td>
+                  {moment(appointment.appointment_date).format("MMM Do YY")}{" "}
+                  {moment(appointment.appointment_date).format("h:mm A")}
+                </td>
+                <td>{appointment.gender}</td>
+                <td>{appointment.station_name}</td>
+                <td>
+                  {`${appointment.technician_first_name} ${appointment.technician_last_name}`.trim()}
+                </td>
+                <td>
+                  {`${appointment.specialist_first_name} ${appointment.specialist_last_name}`.trim()}
+                </td>
+                <td>
+                  <Link to={`/dashboard/appointments/${appointment.id}`}>
+                    <Button type="primary" icon={<FaEye />} size="small">
+                      View
+                    </Button>
+                  </Link>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7">
+                <Empty description="No Appointments" />
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </DashboardLayout>
