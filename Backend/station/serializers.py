@@ -6,4 +6,4 @@ from station.models import Station
 class StationSerializer(ModelSerializer):
     class Meta:
         model = Station
-        fields = '__all__'
+        exclude = ['is_approved', 'approved_by']

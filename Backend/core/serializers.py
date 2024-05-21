@@ -2,13 +2,33 @@ from rest_framework import serializers
 
 from specialist.serializers import SpecialistSerializer
 from .models import Appointment, Prescription
+from technician.models import Technician
 from technician.serializers import PatientSerializer, ClinicalRecordSerializer
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+
+
     class Meta:
+        #fields = '__all__'
         model = Appointment
-        fields = '__all__'
+        exclude = ['technician', 'status']
+
+
+    def create(self, validated_data):
+        # Get the currently logged-in user
+        user = self.context['request'].user
+
+        # Retrieve the technician associated with the user
+        technician = Technician.objects.get(user=user)
+
+        # Assign the technician to the validated data
+        validated_data['technician'] = technician
+
+        # Create and save the Appointment instance
+        appointment = Appointment.objects.create(**validated_data)
+
+        return appointment
 
 
 class AppointmentGetSerializer(serializers.ModelSerializer):
@@ -26,8 +46,8 @@ class AppointmentGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['id', 'patient_name', 'appointment_date', 'specialization', 'status', 'gender', 'station_name', 'technician_first_name', 'technician_last_name',
-                  'specialist_first_name', 'specialist_last_name']
+        fields = ['id', 'patient_name', 'appointment_date', 'specialization', 'status', 'gender', 'station_name',
+                  'technician_first_name', 'technician_last_name', 'specialist_first_name', 'specialist_last_name']
 
 
 class AppointmentDetailSerializer(serializers.ModelSerializer):
