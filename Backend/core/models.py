@@ -4,17 +4,17 @@ from specialist.models import Specialist
 from technician.models import ClinicalRecord, Patient, Technician, MachineLearningModel
 
 class Appointment(models.Model):
-
     clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.DO_NOTHING)
-    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING)
+    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING, null=True, default=None)
     specialist = models.ForeignKey(Specialist, on_delete=models.DO_NOTHING)
     machine_learning = models.ForeignKey(MachineLearningModel, on_delete=models.DO_NOTHING, null=True, default=None)
     appointment_date = models.DateTimeField()
     message = models.TextField()
     status = models.BooleanField(default=False)
 
-    # def get_patient(self):
-    #     return self.clinical_record.patient.first_name + " " + self.clinical_record.patient.last_name
+    def __str__(self):
+        return self.message
+
 
 
     def __str__(self):

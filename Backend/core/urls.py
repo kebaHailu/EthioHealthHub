@@ -7,6 +7,7 @@ router = SimpleRouter()
 router.register('appointment', views.AppointmentViewSet)
 router.register('prescription', views.PrescriptionViewSet)
 urlpatterns = [
+     
     path('appointments/specialist/<int:specialist_id>',
          views.SpecialistAppointmentAPIView.as_view(), name='specialist-appointments'),
     path('appointments/station/<int:station_id>',

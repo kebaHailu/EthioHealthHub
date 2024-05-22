@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
+import Header from "../Shared/Header/Header";
 
 const StationAdmin = () => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -172,163 +173,167 @@ const handleAddTechnicianFormSubmit = async (values) => {
   ];
 
   return (
-    <div className="station-admin-container">
-      <div className="left-sidebar sticky">
-        {/* Station Info */}
-        <label htmlFor="profileImage">
-          <img
-            className="cover-image"
-            src={
-              profileImage
-                ? URL.createObjectURL(profileImage)
-                : stationInfo.cover_image
-              
-            }
-            alt="Station Cover"
-          />
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handleProfileImageChange}
-          />
-        </label>
-        <p>
-          <strong>Station Name:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.name}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, name: e.target.value })
+    <>
+    <Header/>
+      <div className="station-admin-container">
+        <div className="left-sidebar sticky">
+          {/* Station Info */}
+          <label htmlFor="profileImage">
+            <img
+              className="cover-image"
+              src={
+                profileImage
+                  ? URL.createObjectURL(profileImage)
+                  : stationInfo.cover_image
               }
+              alt="Station Cover"
             />
-          ) : (
-            stationInfo.name
-          )}
-        </p>
-        <p>
-          <strong>Station Location:</strong>{" "}
+            <input
+              type="file"
+              id="profileImage"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleProfileImageChange}
+            />
+          </label>
+          <p>
+            <strong>Station Name:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.name}
+                onChange={(e) =>
+                  setStationInfo({ ...stationInfo, name: e.target.value })
+                }
+              />
+            ) : (
+              stationInfo.name
+            )}
+          </p>
+          <p>
+            <strong>Station Location:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.location}
+                onChange={(e) =>
+                  setStationInfo({ ...stationInfo, location: e.target.value })
+                }
+              />
+            ) : (
+              stationInfo.location
+            )}
+          </p>
+          <p>
+            <strong>Latitude:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.latitude}
+                onChange={(e) =>
+                  setStationInfo({ ...stationInfo, latitude: e.target.value })
+                }
+              />
+            ) : (
+              stationInfo.latitude
+            )}
+          </p>
+          <p>
+            <strong>Longitude:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.longitude}
+                onChange={(e) =>
+                  setStationInfo({ ...stationInfo, longitude: e.target.value })
+                }
+              />
+            ) : (
+              stationInfo.longitude
+            )}
+          </p>
+          <p>
+            <strong>Description:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.description}
+                onChange={(e) =>
+                  setStationInfo({
+                    ...stationInfo,
+                    description: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              stationInfo.description
+            )}
+          </p>
+          <p>
+            <strong>Verification Status:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.is_approved ? "Approved" : "Not Approved"}
+                onChange={(e) =>
+                  setStationInfo({
+                    ...stationInfo,
+                    is_approved: e.target.value === "Approved",
+                  })
+                }
+              />
+            ) : stationInfo.is_approved ? (
+              "Approved"
+            ) : (
+              "Not Approved"
+            )}
+          </p>
+          <p>
+            <strong>Admin Name:</strong>{" "}
+            {editMode ? (
+              <Input
+                value={stationInfo.adminName}
+                onChange={(e) =>
+                  setStationInfo({ ...stationInfo, adminName: e.target.value })
+                }
+              />
+            ) : (
+              stationInfo.adminName
+            )}
+          </p>
+          {/* Add/Edit button */}
           {editMode ? (
-            <Input
-              value={stationInfo.location}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, location: e.target.value })
-              }
-            />
+            <Button onClick={handleSave} type="primary">
+              Save
+            </Button>
           ) : (
-            stationInfo.location
+            <Button onClick={handleEdit}>Edit</Button>
           )}
-        </p>
-        <p>
-          <strong>Latitude:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.latitude}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, latitude: e.target.value })
-              }
-            />
-          ) : (
-            stationInfo.latitude
-          )}
-        </p>
-        <p>
-          <strong>Longitude:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.longitude}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, longitude: e.target.value })
-              }
-            />
-          ) : (
-            stationInfo.longitude
-          )}
-        </p>
-        <p>
-          <strong>Description:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.description}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, description: e.target.value })
-              }
-            />
-          ) : (
-            stationInfo.description
-          )}
-        </p>
-        <p>
-          <strong>Verification Status:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.is_approved ? "Approved" : "Not Approved"}
-              onChange={(e) =>
-                setStationInfo({
-                  ...stationInfo,
-                  is_approved: e.target.value === "Approved",
-                })
-              }
-            />
-          ) : stationInfo.is_approved ? (
-            "Approved"
-          ) : (
-            "Not Approved"
-          )}
-        </p>
-        <p>
-          <strong>Admin Name:</strong>{" "}
-          {editMode ? (
-            <Input
-              value={stationInfo.adminName}
-              onChange={(e) =>
-                setStationInfo({ ...stationInfo, adminName: e.target.value })
-              }
-            />
-          ) : (
-            stationInfo.adminName
-          )}
-        </p>
-        {/* Add/Edit button */}
-        {editMode ? (
-          <Button onClick={handleSave} type="primary">
-            Save
-          </Button>
-        ) : (
-          <Button onClick={handleEdit}>Edit</Button>
-        )}
+        </div>
+        <div className="right-sidebar">
+          {/* Add Technician Button */}
+          <Button onClick={handleAddTechnician}>Add Technician</Button>
+          {/* Technicians Table */}
+          <Table dataSource={technicians} columns={columns} />
+        </div>
+        {/* Add Technician Form */}
+        <Modal
+          title="Add Technician"
+          visible={showAddForm}
+          onCancel={() => setShowAddForm(false)}
+          footer={null}
+        >
+          <Form onFinish={handleAddTechnicianFormSubmit}>
+            <Form.Item
+              label="Email"
+              name="email"
+              value={editingTechnician?.email}
+              rules={[{ required: true, message: "Please input email" }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Button className="add-technician-button" htmlType="submit">
+              Add Technician
+            </Button>
+          </Form>
+        </Modal>
       </div>
-      <div className="right-sidebar">
-        {/* Add Technician Button */}
-        <Button onClick={handleAddTechnician}>Add Technician</Button>
-        {/* Technicians Table */}
-        <Table dataSource={technicians} columns={columns} />
-      </div>
-      {/* Add Technician Form */}
-      <Modal
-        title="Add Technician"
-        visible={showAddForm}
-        onCancel={() => setShowAddForm(false)}
-        footer={null}
-      >
-        <Form onFinish={handleAddTechnicianFormSubmit}>
-         
-          <Form.Item
-            label="Email"
-            name="email"
-            value={editingTechnician?.email}
-            rules={[{ required: true, message: "Please input email" }]}
-          >
-            <Input />
-          </Form.Item>
-         
-          <Button className="add-technician-button" htmlType="submit">
-            Add Technician
-          </Button>
-        </Form>
-      </Modal>
-    </div>
+    </>
   );
 };
 

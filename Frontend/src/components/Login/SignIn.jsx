@@ -37,35 +37,35 @@ const SignIn = ({ handleResponse }) => {
     }));
   };
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    console.log("User:", user);
-    try {
-      const response = await loginService.logIn(user);
-      const { access } = response.data; // Extract access token from response
-      localStorage.setItem("accessToken", access); // Save access token to localStorage
-      if (response.status === 200 && response.data.user_role === "SD") {
-   
-        toast.success("Successfully logged in");
-        navigate("/dashboard");
-      } else if (response.status === 200 && response.data.user_role === "HO") {
-      
-        toast.success("Successfully logged in");
-        navigate("/admin/dashboard");
-      } else if (response.status === 200 && response.data.user_role === "SA") {
-        toast.success("Successfully logged in");
-        navigate("/station-admin");
-      } else {
-        toast.error("Invalid credentials. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-      toast.error("An error occurred. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleLoginSubmit = async (e) => {
+   e.preventDefault();
+   setLoading(true);
+   console.log("User:", user);
+   try {
+     const response = await loginService.logIn(user);
+     const { access, user_role } = response.data; // Extract access token and user_role from response
+     localStorage.setItem("accessToken", access); // Save access token to localStorage
+     localStorage.setItem("user_role", user_role); // Save user_role to localStorage
+     if (response.status === 200) {
+       toast.success("Successfully logged in");
+       if (user_role === "SD") {
+         navigate("/dashboard");
+       } else if (user_role === "HO") {
+         navigate("/admin/dashboard");
+       } else if (user_role === "SA") {
+         navigate("/station-admin");
+       }
+     } else {
+       toast.error("Invalid credentials. Please try again.");
+     }
+   } catch (error) {
+     console.error("Error:", error.message);
+     toast.error("An error occurred. Please try again later.");
+   } finally {
+     setLoading(false);
+   }
+ };
+
 
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();

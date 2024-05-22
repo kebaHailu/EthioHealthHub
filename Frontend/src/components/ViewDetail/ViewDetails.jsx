@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ViewDetail.css"; // Import CSS file for custom styling
+import { useParams } from "react-router-dom";
 
 const ViewDetail = () => {
+  const { id } = useParams(); // Get the appointment ID from the URL
   const [appointmentData, setAppointmentData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/appointment/detail/20"
+          `http://127.0.0.1:8000/appointment/detail/${id}`
         );
         setAppointmentData(response.data);
       } catch (error) {
@@ -18,7 +20,7 @@ const ViewDetail = () => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   if (!appointmentData) {
     return <div>Loading...</div>;
@@ -86,7 +88,7 @@ const ViewDetail = () => {
         </div>
       </div>
 
-      <div className="section">
+      {/* <div className="section">
         <h2>Specialist Details</h2>
         <div className="specialist-details">
           <p>
@@ -108,7 +110,7 @@ const ViewDetail = () => {
           <p>State: {appointmentData.specialist.state}</p>
           <p>Country: {appointmentData.specialist.country}</p>
         </div>
-      </div>
+      </div> */}
       <div className="section">
         <h2>Appointment Details</h2>
         <div className="appointment-details">

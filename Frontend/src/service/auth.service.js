@@ -154,12 +154,12 @@ export const isLoggedIn = () => {
   const authToken = getFromLocalStorage(authKey);
   return !!authToken;
 };
-const loggedOut = () => {
-  return localStorage.removeItem(authKey);
-};
-// const Logout = () => {
-//   localStorage.removeItem("Token");
+// const loggedOut = () => {
+//   return localStorage.removeItem(authKey);
 // };
+const Logout = () => {
+  localStorage.removeItem("accessToken");
+};
 
 const loginService = {
   logIn,
@@ -167,7 +167,7 @@ const loginService = {
   getUserInfo,
   isLoggedIn,
   setUserInfo,
-  loggedOut,
+  // loggedOut,
   DoctorProfile,
   PatientProfile,
   DoctorProfileEducation,
@@ -175,5 +175,6 @@ const loginService = {
   DoctorProfileEducationUpdate,
   DoctorProfileExperienceUpdate,
   PatientCredentials,
+  Logout,
 };
 export default loginService;

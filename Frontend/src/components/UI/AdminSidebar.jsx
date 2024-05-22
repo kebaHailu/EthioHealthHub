@@ -10,6 +10,13 @@ import { FaBriefcase } from "react-icons/fa";
 import { Link,NavLink } from "react-router-dom";
 
 const AdminSidebar = () => {
+
+
+    const handleLogout = () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user_role");
+      navigate("/");
+    };
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -45,7 +52,7 @@ const AdminSidebar = () => {
                 <FaRegUser /> <span>Patients List</span>
               </Link>
             </li>
-                 <li>
+            <li>
               <Link to={"/technician"}>
                 <FaUserAstronaut /> <span>my profile</span>
               </Link>
@@ -57,7 +64,7 @@ const AdminSidebar = () => {
               </Link>
             </li>
             <li>
-              <NavLink to={"/"}>
+              <NavLink to={"/"} onClick={handleLogout}>
                 <FaSignOutAlt className="icon" />
                 <span>Logout</span>
               </NavLink>
