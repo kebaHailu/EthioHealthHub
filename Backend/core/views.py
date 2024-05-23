@@ -10,6 +10,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+from user.models import User
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -18,7 +19,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
         # patient access
         clinical_record_id = self.request.data.get('clinical_record')
-        clinical_record = get_object_or_404(ClinicalRecord, pk= clinical_record_id)
+        clinical_record = get_object_or_404(ClinicalRecord, pk=clinical_record_id)
 
         patient_id = clinical_record.patient_id
         patient = get_object_or_404(Patient, pk=patient_id)
@@ -28,8 +29,12 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         appointment_date = appointment_datetime.date()
         appointment_time = appointment_datetime.time()
         message = self.request.data.get('message')
-        technician_id = self.request.data.get('technician')
-        technician = get_object_or_404(Technician, pk=technician_id)
+
+        user_id = self.request.user.id
+        user = get_object_or_404(User, id=user_id)
+        technician = get_object_or_404(Technician, user=user)
+
+        # user_id = self.request.data.get('user')
         specialist_id = self.request.data.get('specialist')
         specialist = get_object_or_404(Specialist, pk=specialist_id)
 

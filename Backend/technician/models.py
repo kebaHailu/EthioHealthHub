@@ -30,7 +30,7 @@ class Technician(models.Model):
 
 
 class Patient(models.Model):
-    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING, null=True, blank=True)
+    technician = models.ForeignKey(Technician, on_delete=models.SET_NULL, null=True, blank=True)
     GENDER_OPTION = [
         ('M', 'Male'),
         ('F', 'Female')
