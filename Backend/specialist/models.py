@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 # Create your models here.
 
+# todo: remove created_at and update_at
 
 class Specialist(models.Model):
 

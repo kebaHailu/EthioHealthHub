@@ -11,7 +11,6 @@ class Technician(models.Model):
     phone_number = models.CharField(max_length=25, null=True, blank=True)
     specialization = models.CharField(max_length=255, null=True, blank=True)
     education = models.TextField(blank=True, null=True)
-   
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -19,6 +18,7 @@ class Technician(models.Model):
 
     def username(self):
         return self.user.username
+
     def first_name(self):
         return self.user.first_name
 
@@ -49,6 +49,8 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.first_name
+
+# todo: remove image_path from clinical Record
 
 
 class ClinicalRecord(models.Model):
