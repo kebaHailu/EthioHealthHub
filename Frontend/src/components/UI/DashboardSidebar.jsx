@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import img from "../../images/avatar.jpg";
 import "./DashboardSidebar.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   FaTable,
   FaCalendarDay,
@@ -14,6 +14,7 @@ import axios from "axios";
 
 const DashboardSidebar = () => {
   const [profileData, setProfileData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +39,13 @@ const DashboardSidebar = () => {
     fetchData();
   }, []);
 
-  const role = "doctor";
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user_role");
+    navigate("/");
+  };
+
+  const role = "doctor"; // This should ideally come from your auth context or a similar state management system
 
   return (
     <div className="profile-sidebar p-3 rounded">
@@ -88,7 +95,7 @@ const DashboardSidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/"}>
+              <NavLink to={"/"} onClick={handleLogout}>
                 <FaSignOutAlt className="icon" />
                 <span>Logout</span>
               </NavLink>
@@ -159,7 +166,7 @@ const DashboardSidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/"}>
+              <NavLink to={"/"} onClick={handleLogout}>
                 <FaSignOutAlt className="icon" end />
                 <span>Logout</span>
               </NavLink>

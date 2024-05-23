@@ -1,6 +1,8 @@
 import string
 from rest_framework import viewsets, generics, status
-from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from .serializers import (TechnicianSerializer, ClinicalRecordSerializer, PatientSerializer,
                           MachineLearningModelSerializer, DefaultClinicalRecordSerializer)
@@ -21,6 +23,18 @@ from . import machine_learning as ml
 class ClinicalRecordViewset(viewsets.ModelViewSet):
     queryset = ClinicalRecord.objects.all()
     serializer_class = ClinicalRecordSerializer
+    def create(self, request, *args, **kwargs):
+        patient_id = request.data.get('patient')
+        clinical_record = ClinicalRecord.objects.filter(patient_id=patient_id).first()
+
+        if clinical_record:
+          return Response({"detail": "A clinical record for this patient already exists."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return super().create(request, *args, **kwargs)
+
+
+
  
 
 class PatientViewset(viewsets.ModelViewSet):
@@ -31,6 +45,26 @@ class PatientViewset(viewsets.ModelViewSet):
 class TechnicianViewset(viewsets.ModelViewSet):
     queryset = Technician.objects.all()
     serializer_class = TechnicianSerializer
+
+    # To make the following code functional we have to know who the station is
+    # @action(detail=False, methods=['GET', 'PUT'])
+    # def profile(self, request):
+    #     if request.user.user_role != 'HO':
+    #         return Response({'message': 'Invalid user access'}, status=status.HTTP_400_BAD_REQUEST)
+    #
+    #     health_officer, status_result = Technician.objects.get_or_create(user=request.user)
+    #
+    #     if request.method == "GET":
+    #         serializer = TechnicianSerializer(health_officer)
+    #         return Response(serializer.data)
+    #
+    #     elif request.method == "PUT":
+    #         serializer = TechnicianSerializer(health_officer, data=request.data)
+    #         serializer.is_valid(raise_exception=True)
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class MachineLearningModelViewSet(viewsets.ModelViewSet):

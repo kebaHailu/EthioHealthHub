@@ -13,64 +13,48 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./PatientCredentialsForm.css";
-import ImageUpload from "../UI/form/ImageUpload";
+
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const { Step } = Steps;
 const { Option } = Select;
 
 const PatientCredentialsForm = () => {
-  const [fileList, setFileList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [profileData, setProfileData] = useState(null);
-  
- 
+
   const [formData, setFormData] = useState({
     pregnancy_condition: false, // Default value set to false
   });
   const [isNextDisabled, setIsNextDisabled] = useState(true);
   const [form] = Form.useForm();
 
-     useEffect(() => {
-     // Define an async function to fetch data
-     const fetchData = async () => {
-       try {
-         // Make the HTTP request using Axios
-         const response = await axios.get("http://127.0.0.1:8000/patient/");
-         // Extract the data from the response
-         const data = response.data;
-         // Set the fetched data to the state
-         setProfileData(data);
-         // Log the data to the console
-         console.log(data);
-       } catch (error) {
-         console.log(error);
-         // Log any errors to the console
-         console.error("There was a problem fetching the data:", error.message);
-       }
-     };
-     
-     // Call the async function to fetch data when the component mounts
-     fetchData();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []); // E
-   console.log(profileData);
-  // const [formField, setFormField] = useState({
-  //   family_history: "",
-  //   blood_type: "",
-  //   pregnancy_condition: false,
-  //   symptoms: "",
-  //   symptoms_description: "",
-  //   disease_type: null,
-  //   disease_description: "",
-  //   follow_up_information: "",
-  //   image_path: "",
-  //   model_result: "",
-  //   allergies: "",
-  //   vaccination_status: "",
-  //   sugar_level: "",
-  //   blood_pressure: "",
-  // });
+  useEffect(() => {
+    // Define an async function to fetch data
+    const fetchData = async () => {
+      try {
+        // Make the HTTP request using Axios
+        const response = await axios.get("http://127.0.0.1:8000/patient/");
+        // Extract the data from the response
+        const data = response.data;
+        // Set the fetched data to the state
+        setProfileData(data);
+        // Log the data to the console
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        // Log any errors to the console
+        console.error("There was a problem fetching the data:", error.message);
+      }
+    };
+
+    // Call the async function to fetch data when the component mounts
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // E
+  console.log(profileData);
+
 
   const handleCheckboxChange = (e) => {
     setFormData({
@@ -80,33 +64,24 @@ const PatientCredentialsForm = () => {
   };
   const onSubmit = async (values) => {
     try {
-      const data = { ...formData, ...values, fileList };
+      const data = { ...formData, ...values};
       console.log("Form data:", data);
       // Send form data to backend server
       const response = await axios.post(
         "http://127.0.0.1:8000/clinical-record/",
         data
       );
-      message.success("Form submitted successfully!");
+      message.success("clinical record  submitted successfully!");
       // Handle response if needed
     } catch (error) {
       console.error("Failed to submit form:", error);
-      message.error("Failed to submit form. Please try again.");
+      message.error("A clinical record for this patient already exists", error);
     }
   };
 
-  const handleFileChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
+ 
 
-  const uploadProps = {
-    name: "file",
-    multiple: true,
-    fileList,
-    beforeUpload: () => false,
-    onChange: handleFileChange,
-  };
-
+  
   const nextStep = () => {
     setCurrentStep(currentStep + 1);
   };
@@ -127,17 +102,11 @@ const PatientCredentialsForm = () => {
     setIsNextDisabled(!isFormValid);
   };
 
-
-
-   
-
-
   return (
     <div className="form-container">
       <Steps current={currentStep}>
         <Step title="Patient Credentials 1" />
         <Step title="Patient Credentials 2" />
-        <Step title="Image Upload" />
       </Steps>
       <Form
         form={form}
@@ -285,16 +254,6 @@ const PatientCredentialsForm = () => {
               </Form.Item>
             </>
           )}
-          {currentStep === 2 && (
-            <Form.Item label="Upload Images">
-              <ImageUpload
-                fileList={fileList}
-                onFileChange={(file) => {
-                  setFileList([...fileList, file]);
-                }}
-              />
-            </Form.Item>
-          )}
         </div>
         <div className="button-container">
           {currentStep > 0 && (
@@ -302,7 +261,19 @@ const PatientCredentialsForm = () => {
               Previous
             </Button>
           )}
-          {currentStep < 2 && (
+          {currentStep === 1 && (
+            <div className="submit-button-container">
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Link to="/scan">
+                <p style={{ textAlign: "center", marginTop: "30px" }} >
+                  If you are not sure about it you can upload images here
+                </p>
+              </Link>
+            </div>
+          )}
+          {currentStep < 1 && (
             <Button
               className="button"
               type="primary"
@@ -313,13 +284,6 @@ const PatientCredentialsForm = () => {
             </Button>
           )}
         </div>
-        {currentStep === 2 && (
-          <div className="submit-button-container">
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </div>
-        )}
       </Form>
     </div>
   );

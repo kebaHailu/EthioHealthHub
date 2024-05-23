@@ -9,7 +9,7 @@ class TechnicianSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Technician
-        fields = ['id', 'first_name', 'last_name', 'email', 'specialization', 'phone_number', 'education']
+        fields = ['user','id', 'first_name', 'last_name', 'email', 'specialization', 'phone_number', 'education','age']
 
 
 class PatientSerializer(serializers.ModelSerializer):

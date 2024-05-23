@@ -10,7 +10,7 @@ class SpecialistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Specialist
-        fields = [
+        fields = [ 'id',
             'first_name', 'last_name','username', 'email', 'profile_picture','is_license_verified' ,
             'phone', 'date_of_birth', 'gender', 'about_me', 'clinic_name', 'clinic_address', 'service',
             'specialization', 'license_number', 'address_line', 'city', 'state', 'country',

@@ -73,7 +73,7 @@ const BookDoctor = () => {
 								</div>
 								<ul className="available-info">
 									<li>
-										<FaLocationArrow className='icon' /> Georgia, USA
+										<FaLocationArrow className='icon' /> Addis Ababa, Ethiopia
 									</li>
 									<li>
 										<FaClock className='icon' /> Available on Fri, 22 Mar
@@ -93,46 +93,61 @@ const BookDoctor = () => {
 			}
 		</>
 	return (
-		<section className="section-doctor container">
-			<div className="container-fluid">
-				<div className="row">
-					<div className="col-12 col-md-3 col-lg-3">
-						<div className='mb-2 section-title text-center'>
-							<h2>Book Our Doctor</h2>
-							<p className='m-0 text-secondary'>Lorem ipsum dolor sit.</p>
-						</div>
-						<div className="form-text">
-							<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-							<p>Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover  Various versions have evolved over the years, sometimes</p>
-							<div className='text-center text-md-start my-3 my-md-0'>
-								<Link to={'/doctors'} className='more-btn text-center text-md-start'>See More</Link>
-							</div>
-						</div>
-					</div>
-					<div className="col-12 col-md-9 col-lg-9">
-						<div className="d-flex justify-content-center align-items-center gap-3 border-0">
-							<Swiper
-								spaceBetween={10}
-								slidesPerView={1}
-								modules={[Navigation, Autoplay]}
-								navigation={true}
-								loop={true}
-								centeredSlides={true}
-								autoplay={{ delay: 5000, disableOnInteraction: false }}
-								breakpoints={{
-									640: { slidesPerView: 2 },
-									768: { slidesPerView: 2},
-									1024: { slidesPerView: 3},
-								}}
-							>
-								{content}
-							</Swiper>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section >
-	);
+    <section className="section-doctor container">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12 col-md-3 col-lg-3">
+            <div className="mb-2 section-title text-center">
+              <h2>Book Our Doctor</h2>
+              <p className="m-0 text-secondary">book our specialists here</p>
+            </div>
+            <div className="form-text">
+              <p>
+                you can see our specialist doctors here and you can appoint with
+                them
+              </p>
+              <p>
+                Our team of expert specialists spans a wide array of medical fields, ensuring that
+                you receive personalized attention and targeted treatment plans.
+                Whether it's a consultation with a renowned cardiologist, a
+                neurologist, or any other specialist, rest assured that you're
+                in capable hands. Book your appointment today and embark on a
+                journey towards optimal health and well-being
+              </p>
+              <div className="text-center text-md-start my-3 my-md-0">
+                <Link
+                  to={"/doctors"}
+                  className="more-btn text-center text-md-start"
+                >
+                  See More
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="col-12 col-md-9 col-lg-9">
+            <div className="d-flex justify-content-center align-items-center gap-3 border-0">
+              <Swiper
+                spaceBetween={10}
+                slidesPerView={1}
+                modules={[Navigation, Autoplay]}
+                navigation={true}
+                loop={true}
+                centeredSlides={true}
+                autoplay={{ delay: 5000, disableOnInteraction: false }}
+                breakpoints={{
+                  640: { slidesPerView: 2 },
+                  768: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+              >
+                {content}
+              </Swiper>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default BookDoctor;

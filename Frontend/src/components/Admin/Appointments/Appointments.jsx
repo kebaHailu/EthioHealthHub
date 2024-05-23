@@ -1,112 +1,120 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../AdminLayout/AdminLayout";
+import { jwtDecode } from "jwt-decode";
 import "./Appointments.css";
-import { Button } from "antd/es/radio";
+
 import axios from "axios";
+
+import moment from "moment";
+import { Button, Empty, message, Tag, Tooltip } from "antd";
+import {
+  FaEye,
+  FaCheck,
+  FaTimes,
+  FaClock,
+  FaEnvelope,
+  FaLocationArrow,
+  FaPhoneAlt,
+  FaBriefcaseMedical,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { clickToCopyClipBoard } from "../../../utils/copyClipBoard";
 
 const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const token = localStorage.getItem("accessToken");
+  // const token = "eyJ0eXAiO.../// jwt token";
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/appointment/");
+    const token = localStorage.getItem("accessToken");
+    axios
+      .get(
+        `http://127.0.0.1:8000/appointments/station/${decoded.user_id}`,
+
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      )
+      .then((response) => {
         setAppointments(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
+        setLoading(false);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the appointments!", error);
+        message.error("Failed to load appointments");
+        setLoading(false);
+      });
   }, []);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <>
-      <AdminLayout>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="card">
-              <div className="card-body">
-                <div className="table-responsive">
-                  <table className="datatable table table-hover table-center mb-0">
-                    <thead>
-                      <tr>
-                        <th>Doctor Name</th>
-                        <th>Speciality</th>
-                        <th>Patient Name</th>
-                        <th>Appointment Time</th>
-                        <th>Status</th>
-                        <th className="text-right">Detail</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {appointments.map((appointment) => (
-                        <tr key={appointment.id}>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="avatar avatar-sm mr-2"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle"
-                                  src="assets/img/doctors/doctor-thumb-01.jpg"
-                                  alt=""
-                                />
-                              </a>
-                              <a href="profile.html">
-                                {appointment.doctor_name}
-                              </a>
-                            </h2>
-                          </td>
-                          <td>{appointment.speciality}</td>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="avatar avatar-sm mr-2"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle"
-                                  src="assets/img/patients/patient1.jpg"
-                                  alt=""
-                                />
-                              </a>
-                              <a href="profile.html">
-                                {appointment.patient_name}
-                              </a>
-                            </h2>
-                          </td>
-                          <td>{appointment.appointment_time}</td>
-                          <td>
-                            <div className="status-toggle">
-                              <input
-                                type="checkbox"
-                                id={`status_${appointment.id}`}
-                                className="check"
-                                checked={appointment.status}
-                              />
-                              <label
-                                htmlFor={`status_${appointment.id}`}
-                                className="checktoggle"
-                              >
-                                checkbox
-                              </label>
-                            </div>
-                          </td>
-                          <td className="text-right">
-                            <Button className="see-more">see more</Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </AdminLayout>
-    </>
+    <AdminLayout>
+      <table className="appointments-table">
+        <thead>
+          <tr>
+            <th>Specialist Name</th>
+            <th>Specialization Area</th>
+            <th>Patient Name</th>
+
+            <th>Gender</th>
+            {/* <th>Station Name</th> */}
+            <th>Technician Name</th>
+
+            <th>Appointment Date & Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <tr key={appointment.id}>
+                <td>
+                  {`${appointment.specialist_first_name} ${appointment.specialist_last_name}`.trim()}
+                </td>
+
+                <td>{appointment.specialization}</td>
+
+                <td>{appointment.patient_name}</td>
+
+                <td>{appointment.gender}</td>
+
+                <td>
+                  {`${appointment.technician_first_name} ${appointment.technician_last_name}`.trim()}
+                </td>
+                <td>
+                  {moment(appointment.appointment_date).format("MMM Do YY")}{" "}
+                  {moment(appointment.appointment_date).format("h:mm A")}
+                </td>
+                <td>
+                  <Link to={`/admin/appointments/${appointment.id}`}>
+                    <Button type="primary" icon={<FaEye />} size="small">
+                      View
+                    </Button>
+                  </Link>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7">
+                <Empty description="No Appointments" />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </AdminLayout>
   );
 };
 

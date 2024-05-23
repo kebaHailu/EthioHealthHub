@@ -11,6 +11,7 @@ class Technician(models.Model):
     phone_number = models.CharField(max_length=25, null=True, blank=True)
     specialization = models.CharField(max_length=255, null=True, blank=True)
     education = models.TextField(blank=True, null=True)
+   
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -29,7 +30,7 @@ class Technician(models.Model):
 
 
 class Patient(models.Model):
-    technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING, null=True, blank=True)
+    technician = models.ForeignKey(Technician, on_delete=models.SET_NULL, null=True, blank=True)
     GENDER_OPTION = [
         ('M', 'Male'),
         ('F', 'Female')
@@ -55,7 +56,7 @@ class ClinicalRecord(models.Model):
         ('E', 'Eye'),
         ('S', 'Skin')
     ]
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
     family_history = models.CharField(max_length=255, blank=True)
     blood_type = models.CharField(max_length=30, blank=True)
     pregnancy_condition = models.BooleanField()

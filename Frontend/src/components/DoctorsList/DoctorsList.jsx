@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./DoctorsList.css";
 
 const DoctorsList = () => {
   const [doctorsData, setDoctorsData] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -19,6 +20,10 @@ const DoctorsList = () => {
 
     fetchDoctors();
   }, []);
+
+  const handleMakeAppointment = (specialistId) => {
+    navigate("/appointment", { state: { doctorIdK: specialistId } });
+  };
 
   const openDetailsPopup = (doctor) => {
     setSelectedDoctor(doctor);
@@ -49,7 +54,6 @@ const DoctorsList = () => {
               <p>
                 <strong>Address:</strong> {doctor.clinic_address}
               </p>
-
               <p>
                 <strong>Experience: </strong>
                 {doctor.experience} years
@@ -63,14 +67,16 @@ const DoctorsList = () => {
             >
               View Details
             </button>
-            <Link to="/calendly">
-              <button className="appointment-btn">Make Appointment</button>
-            </Link>
+            <button
+              className="appointment-btn"
+              onClick={() => handleMakeAppointment(doctor.id)}
+            >
+              Make Appointment
+            </button>
           </div>
         </div>
       ))}
 
-      {/* Popup component */}
       {selectedDoctor && (
         <div className="popup">
           <div className="popup-content">
@@ -78,12 +84,6 @@ const DoctorsList = () => {
               &times;
             </span>
             <div className="popup-details">
-              {/* <div className="profile-image">
-                <img
-                  src={selectedDoctor.profile_picture}
-                  alt={selectedDoctor.username}
-                />
-              </div> */}
               <div className="doctor-info">
                 <h3>
                   {selectedDoctor.first_name} {selectedDoctor.last_name}

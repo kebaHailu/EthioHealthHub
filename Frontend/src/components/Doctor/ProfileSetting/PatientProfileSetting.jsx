@@ -260,18 +260,18 @@ const PatientProfileSetting = ({ data }) => {
   ];
 
   return (
-    <div>
+    <div style={{ marginBootom: "0px" }}>
       <AdminLayout>
         <Steps current={currentStep}>
           {steps.map((item) => (
             <Step key={item.title} title={item.title} />
           ))}
         </Steps>
-        <div className="steps-content">{steps[currentStep].content}</div>
+        <div className="steps-content">{steps[currentStep].content} </div>
         <div className="steps-action">
           {currentStep < steps.length - 1 && (
             <Button
-              style={{ marginLeft: "908px" }}
+              style={{ marginLeft: "908px", marginTop: "0px" }}
               type="primary"
               onClick={() => setCurrentStep(currentStep + 1)}
             >

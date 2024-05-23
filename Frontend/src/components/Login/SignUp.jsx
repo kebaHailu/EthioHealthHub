@@ -177,7 +177,7 @@ const SignUp = () => {
           onChange={(e) => handleUserTypeChange(e)}
           defaultValue="patient"
         >
-          <option value="HO">Health Officer</option>
+          {/* <option value="HO">Health Officer</option> */}
           <option value="SD">Specialist Doctor</option>
           <option value="SA">station Admin</option>
         </select>
