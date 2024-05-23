@@ -148,21 +148,23 @@ const MyPatients = () => {
               <p>Address: {selectedPatient.patient.city}</p>
               <p>Email: {selectedPatient.patient.email}</p>
               <p>Mobile: {selectedPatient.patient.phone_number}</p>
-            
+
               <p>Family_history: {selectedPatient.family_history}</p>
               <p>Blood_type: {selectedPatient.blood_type}</p>
               <p>Pregnancy_condition: {selectedPatient.pregnancy_condition}</p>
               <p>Symptoms: {selectedPatient.symptoms}</p>
-              <p>Symptoms_description: {selectedPatient.symptoms_description}</p>
+              <p>
+                Symptoms_description: {selectedPatient.symptoms_description}
+              </p>
               <p>Disease_description: {selectedPatient.disease_description}</p>
-              <p>Follow_up_information: {selectedPatient.follow_up_information}</p>
+              <p>
+                Follow_up_information: {selectedPatient.follow_up_information}
+              </p>
               <p>Image_path: {selectedPatient.image_path}</p>
               <p>Allergies: {selectedPatient.allergies}</p>
               <p>Vaccination_status: {selectedPatient.vaccination_status}</p>
               <p>Sugar_level: {selectedPatient.sugar_level}</p>
               <p>Blood_pressure: {selectedPatient.blood_pressure}</p>
-
-
             </div>
           )}
         </Modal>

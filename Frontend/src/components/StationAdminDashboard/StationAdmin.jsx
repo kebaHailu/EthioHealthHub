@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
 import Header from "../Shared/Header/Header";
+import { jwtDecode } from "jwt-decode";
 
 const StationAdmin = () => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -12,6 +13,9 @@ const StationAdmin = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [stationInfo, setStationInfo] = useState({});
   const [technicians, setTechnicians] = useState([]);
+  const Token = localStorage.getItem("accessToken");
+  const user = Token ? jwtDecode(Token) : null;
+  // Get technician ID from token
 
   useEffect(() => {
     // Fetch station data
@@ -20,7 +24,7 @@ const StationAdmin = () => {
 
   const fetchStationData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/station/");
+      const response = await fetch("http://127.0.0.1:8000/station/profile/");
       const data = await response.json();
       if (data.length > 0) {
         setStationInfo(data[0]); // Assuming data is an array and taking the first item
@@ -40,7 +44,7 @@ const StationAdmin = () => {
     try {
       const formData = new FormData();
       formData.append("name", stationInfo.name);
-      formData.append('user',stationInfo.user);
+      formData.append("user", user);
       formData.append("location", stationInfo.location);
       formData.append("latitude", stationInfo.latitude);
       formData.append("longitude", stationInfo.longitude);
@@ -49,11 +53,16 @@ const StationAdmin = () => {
       if (profileImage) {
         formData.append("cover_image", profileImage);
       }
+      const token = localStorage.getItem("accessToken");
 
       const response = await fetch(
-        `http://127.0.0.1:8000/station/${stationInfo.id}/`,
+        "http://127.0.0.1:8000/station/profile/",
         {
           method: "PUT",
+
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
           body: formData,
         }
       );
@@ -88,62 +97,59 @@ const StationAdmin = () => {
     setVisible(false);
   };
 
-const handleAddTechnicianFormSubmit = async (values) => {
-  try {
-    // Get the logged-in station admin's ID from wherever it's stored
-    // For example, if it's stored in stationInfo, you can access it like this
-    const stationId = stationInfo.id;
+  const handleAddTechnicianFormSubmit = async (values) => {
+    try {
+      // Get the logged-in station admin's ID from wherever it's stored
+      // For example, if it's stored in stationInfo, you can access it like this
+      const stationId = stationInfo.id;
 
-    // Perform any form validation if needed
+      // Perform any form validation if needed
 
-    // Create a new FormData object to handle file uploads if necessary
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("station_id", stationId);
+      // Create a new FormData object to handle file uploads if necessary
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("station_id", stationId);
 
-    // Make a POST request to the specified URL
-    const response = await fetch("http://127.0.0.1:8000/send_email", {
-      method: "POST",
-      body: formData, // Pass the FormData object as the body
-    });
+      // Make a POST request to the specified URL
+      const response = await fetch("http://127.0.0.1:8000/send_email", {
+        method: "POST",
+        body: formData, // Pass the FormData object as the body
+      });
 
-    // Check if the request was successful
-    if (response.ok) {
-      // If successful, get the response data
-      const responseData = await response.json();
+      // Check if the request was successful
+      if (response.ok) {
+        // If successful, get the response data
+        const responseData = await response.json();
 
-      // Update the technicians state with the new data
-      setTechnicians([...technicians, responseData]);
+        // Update the technicians state with the new data
+        setTechnicians([...technicians, responseData]);
 
-      // Optionally, you can update state or perform any additional actions
-      console.log(technicians);
-      console.log("Technician added successfully!");
-    } else {
-      // If the request failed, log an error or handle it appropriately
-      console.error("Failed to add technician:", response.statusText);
+        // Optionally, you can update state or perform any additional actions
+        console.log(technicians);
+        console.log("Technician added successfully!");
+      } else {
+        // If the request failed, log an error or handle it appropriately
+        console.error("Failed to add technician:", response.statusText);
+        // Optionally, you can display an error message to the user
+      }
+    } catch (error) {
+      // If an error occurs during the request, log it or handle it appropriately
+      console.error("Error adding technician:", error);
       // Optionally, you can display an error message to the user
     }
-  } catch (error) {
-    // If an error occurs during the request, log it or handle it appropriately
-    console.error("Error adding technician:", error);
-    // Optionally, you can display an error message to the user
-  }
-};
+  };
 
-
-   const handleProfileImageChange = (e) => {
-     const file = e.target.files[0];
-     setProfileImage(file);
-   };
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file);
+  };
 
   const columns = [
-    
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
     },
-    
 
     {
       title: "Registered Date",
@@ -174,7 +180,7 @@ const handleAddTechnicianFormSubmit = async (values) => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="station-admin-container">
         <div className="left-sidebar sticky">
           {/* Station Info */}

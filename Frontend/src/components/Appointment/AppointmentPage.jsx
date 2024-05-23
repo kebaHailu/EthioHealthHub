@@ -76,18 +76,24 @@ function AppointmentPage() {
       const postData = {
         clinical_record: formData.clinical_record,
         // patient: formData.patient, // Use formData.patient as patientId
-        technician: "13", // Use the technicianId from the token
+        // technician: technicianId, // Use the technicianId from the token
         specialist: specialistId, // Use the specialistId retrieved from location state
         appointment_date: formData.appointment_date,
         message: formData.message,
         status: formData.status,
       };
       console.log(postData);
+      const token= localStorage.getItem("accessToken");
 
       const response = await axios.post(
         "http://127.0.0.1:8000/appointment/",
         postData,
-        
+        {
+          headers: {
+            Authorization: `JWT ${Token}`,
+          },
+        }
+
       );
       console.log(response);
       if (response.status === 201) {
@@ -96,7 +102,7 @@ function AppointmentPage() {
         setFormData({
           appointment_date: null,
           message: "",
-          status: false,
+          // status: false,
           technician: "",
           specialist: "",
         });
@@ -149,7 +155,7 @@ function AppointmentPage() {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Status:</label>
           <input
             type="checkbox"
@@ -157,7 +163,7 @@ function AppointmentPage() {
             checked={formData.status}
             onChange={handleChange}
           />
-        </div>
+        </div> */}
         <button type="submit" className="btn btn-primary">
           Make Appointment
         </button>

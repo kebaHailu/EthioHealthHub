@@ -67,9 +67,9 @@ function App() {
         <Route
           path="/appointment"
           element={
-            <PrivateAuthRoute roes={["HO"]}>
+            // <PrivateAuthRoute roes={["HO"]}>
               <AppointmentPage />
-            </PrivateAuthRoute>
+            // </PrivateAuthRoute>
           }
         />
 
@@ -113,14 +113,14 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/dashboard/appointments/:id"
           element={
             <PrivateAuthRoute roles={["SD"]}>
               <ViewAppointment />
             </PrivateAuthRoute>
           }
-        />
+        /> */}
         <Route
           path="/dashboard/prescription"
           element={
