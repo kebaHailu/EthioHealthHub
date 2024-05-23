@@ -1,3 +1,5 @@
+
+
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home/Home";
@@ -49,7 +51,7 @@ import Scan from "./components/ImageUploader/Scan";
 import Tecnician from "./components/StationAdminDashboard/Tecnician";
 import AppointmentForm from "./components/AppointmentForm/AppointmentForm";
 // import ViewDetail from "./components/ViewDetail/ViewDetail";
-// import ViewDetails from "./components/ViewDetail/";
+import ViewDetails from "./components/ViewDetail/ViewDetails";
 
 function App() {
   return (
@@ -121,7 +123,7 @@ function App() {
 
         <Route path="/admin/specialites" element={<Specialites />} />
 
-        {/* <Route path="/view-detail" element={<ViewDetails />} /> */}
+        <Route path="/view-detail" element={<ViewDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
