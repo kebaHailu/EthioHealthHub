@@ -53,7 +53,6 @@ function App() {
           path="/reset-password/:userId/:uniqueString"
           element={<ForgotPassword />}
         />
-        <Route path="/appointment" element={<AppointmentPage />} />
         <Route path="/doctors" element={<SearchDoctor />} />
         <Route path="/calendly" element={<Calendly />} />
         <Route path="/doctors/profile/:id" element={<DoctorProfile />} />
@@ -62,6 +61,16 @@ function App() {
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="*" element={<NotFound />} />
         {/* Protected Routes for different roles */}
+
+        <Route
+          path="/appointment"
+          element={
+            <PrivateAuthRoute roes={["HO"]}>
+              <AppointmentPage />
+            </PrivateAuthRoute>
+          }
+        />
+
         <Route
           path="/dashboard"
           element={
@@ -152,6 +161,16 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
+        <Route
+          path="/admin/addpatient"
+          element={
+            <PrivateAuthRoute roles={["HO"]}>
+              {<PatientProfileSetting />}
+            </PrivateAuthRoute>
+          }
+        />
+
         <Route
           path="/admin/appointments"
           element={
