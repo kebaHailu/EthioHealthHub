@@ -83,10 +83,10 @@ class MachineLearningModelViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             image = serializer.validated_data['image']
+            print(type(image))
 
             if clinical_record.disease_type == 'E':
-                preprocessed_image = ml.preprocess_image_for_eye(image)
-                result, accuracy = ml.predict_with_eye_model(preprocessed_image)
+                result, accuracy = ml.predict_with_eye_model(image)
 
             elif clinical_record.disease_type == 'S':
                 preprocessed_image = ml.preprocess_image_for_skin(image)
@@ -96,7 +96,7 @@ class MachineLearningModelViewSet(viewsets.ModelViewSet):
                 return Response("Invalid image type", status=status.HTTP_400_BAD_REQUEST)
 
             # response for both models
-            instance = serializer.save(clinical_record=clinical_record, image=preprocessed_image, accuracy=accuracy,
+            instance = serializer.save(clinical_record=clinical_record, image=image, accuracy=accuracy,
                                        result=result)
 
             patient = get_object_or_404(Patient, pk=clinical_record.patient_id)
