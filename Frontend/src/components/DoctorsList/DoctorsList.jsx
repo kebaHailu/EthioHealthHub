@@ -69,7 +69,7 @@ const DoctorsList = () => {
             </button>
             <button
               className="appointment-btn"
-              onClick={() => handleMakeAppointment(doctorsData.user_id)}
+              onClick={() => handleMakeAppointment(doctor.id)}
             >
               Make Appointment
             </button>

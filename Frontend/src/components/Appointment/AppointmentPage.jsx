@@ -21,7 +21,7 @@ function AppointmentPage() {
     appointment_date: null,
     message: "",
     status: false,
-    patient: "", // Add patient field to formData
+    clinical_record: "", // Add patient field to formData
   });
 
   const [error, setError] = useState("");
@@ -39,7 +39,9 @@ function AppointmentPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/patient/");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/clinical-record/"
+        );
         const data = response.data;
         setProfileData(data);
         console.log(data);
@@ -61,41 +63,48 @@ function AppointmentPage() {
     try {
       if (
         !formData.appointment_date ||
-        !formData.message ||
-        !formData.patient
+        !formData.message
+        // !formData.clinical_record
       ) {
         setError("All fields are required.");
         setLoading(false);
         return;
       }
-      formData.technician = technicianId;
-      formData.specialist = specialistId;
+      // formData.technician = technicianId;
+      // formData.specialist = specialistId;
 
       const postData = {
-        clinical_record: 2,
-        patient: formData.patient, // Use formData.patient as patientId
-        technician: 10, // Use the technicianId from the token
-        specialist: 4, // Use the specialistId retrieved from location state
+        clinical_record: formData.clinical_record,
+        // patient: formData.patient, // Use formData.patient as patientId
+        // technician: technicianId, // Use the technicianId from the token
+        specialist: specialistId, // Use the specialistId retrieved from location state
         appointment_date: formData.appointment_date,
         message: formData.message,
         status: formData.status,
       };
+      console.log(postData);
+      const token= localStorage.getItem("accessToken");
 
       const response = await axios.post(
         "http://127.0.0.1:8000/appointment/",
-        postData
-      );
+        postData,
+        {
+          headers: {
+            Authorization: `JWT ${Token}`,
+          },
+        }
 
+      );
+      console.log(response);
       if (response.status === 201) {
         toast.success("Appointment created successfully");
         toast.dismiss(toastId);
         setFormData({
           appointment_date: null,
           message: "",
-          status: false,
-          patient: "", // Reset patient field
-          technician: technicianId,
-          specialist: specialistId,
+          // status: false,
+          technician: "",
+          specialist: "",
         });
       }
     } catch (error) {
@@ -115,15 +124,15 @@ function AppointmentPage() {
         {error && <div className="alert alert-danger">{error}</div>}
 
         <div className="form-group">
-          <label>Select Patient:</label>
+          <label>Select clinical record:</label>
           <Select
-            placeholder="Select a patient"
-            value={formData.patient}
-            onChange={(value) => setFormData({ ...formData, patient: value })}
+            placeholder="Select clinical record for your patient"
+            value={formData.clinical_record}
+            onChange={(value) => setFormData({ ...formData, clinical_record: value })}
           >
             {profileData.map((profile) => (
               <Select.Option key={profile.id} value={profile.id}>
-                {profile.first_name} {profile.last_name}
+                {profile.patient.first_name} {profile.patient.last_name}
               </Select.Option>
             ))}
           </Select>
@@ -146,7 +155,7 @@ function AppointmentPage() {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Status:</label>
           <input
             type="checkbox"
@@ -154,7 +163,7 @@ function AppointmentPage() {
             checked={formData.status}
             onChange={handleChange}
           />
-        </div>
+        </div> */}
         <button type="submit" className="btn btn-primary">
           Make Appointment
         </button>

@@ -5,7 +5,7 @@ from .models import Appointment, Prescription
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ("status",)
+    list_display = ("message","specialist","status",)
 
 
 @admin.register(Prescription)
