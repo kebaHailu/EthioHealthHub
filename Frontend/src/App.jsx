@@ -1,5 +1,3 @@
-
-
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home/Home";
@@ -38,6 +36,8 @@ import ViewDetails from "./components/ViewDetail/ViewDetails";
 import UnAuthorized from "./UnAuthorized/UnAuthrized";
 import PrivateAuthRoute from "./components/Auth/PrivateAuthRoute";
 
+import Physician from "./components/Physician/Physician";
+
 function App() {
   return (
     <div>
@@ -68,7 +68,7 @@ function App() {
           path="/appointment"
           element={
             // <PrivateAuthRoute roes={["HO"]}>
-              <AppointmentPage />
+            <AppointmentPage />
             // </PrivateAuthRoute>
           }
         />
@@ -163,13 +163,19 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-        <Route path="/admin/addpatient" element={<PatientProfileSetting />} />
+
         <Route
           path="/admin/addpatient"
           element={
             <PrivateAuthRoute roles={["HO"]}>
               {<PatientProfileSetting />}
             </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/physician"
+          element={
+            <PrivateAuthRoute roles={["HO"]}>{<Physician />}</PrivateAuthRoute>
           }
         />
 

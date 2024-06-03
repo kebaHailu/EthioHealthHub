@@ -1,8 +1,8 @@
 .profile-sidebar {
-    background-color: #07654b;
+    background-color: #3487df;
 	overflow: hidden;
    
-    box-shadow: 0 0 8px 10px rgba(8, 8, 8, 0.2);
+    /* box-shadow: 0 0 8px 10px rgba(8, 8, 8, 0.2); */
 }
 .dashboard-menu ul {
     color: #ffffff;

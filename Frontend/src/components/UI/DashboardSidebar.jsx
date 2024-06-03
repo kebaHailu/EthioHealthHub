@@ -155,6 +155,14 @@ const DashboardSidebar = () => {
                 <span>Profile Settings</span>
               </NavLink>
             </li>
+
+            <li>
+              <NavLink to={"/scan"} activeClassName="active" end>
+                <FaLock className="icon" />
+                <span>upload Image</span>
+              </NavLink>
+            </li>
+
             <li>
               <NavLink
                 to={"/dashboard/change-password"}

@@ -40,7 +40,7 @@ const Scan = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2 style={{ marginBottom: "20px", color: "#333" }}>
+      <h2 style={{ marginBottom: "20px", color: "3487df" }}>
         Upload Your Image Here
       </h2>
       <div
@@ -50,10 +50,10 @@ const Scan = () => {
           borderRadius: "10px",
           marginLeft: "10%",
 
-          padding: "20px",
+          padding: "2px",
 
           marginBottom: "20px",
-          backgroundColor: "green",
+          backgroundColor: "#3487df",
         }}
       >
         <input
@@ -89,7 +89,7 @@ const Scan = () => {
         style={{
           padding: "10px 20px",
           backgroundColor: "#007bff",
-          color: "#fff",
+          color: "3487df",
           border: "none",
           borderRadius: "5px",
           cursor: "pointer",

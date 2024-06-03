@@ -2,9 +2,7 @@
   margin-top: 10px;
 }
 
-h2 {
-  color: #228b22; /* Forest green */
-}
+/*  */
 
 .appointment-form {
   max-width: 600px; /* Adjust as needed */
@@ -18,7 +16,7 @@ h2 {
 label {
   display: block;
   margin-bottom: 5px;
-  color: #228b22; /* Forest green */
+  color: #3487df; /* Forest green */
 }
 .form-group textarea{
   background-color: #fff;
@@ -28,7 +26,7 @@ input[type="datetime-local"],
 textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #228b22; /* Forest green */
+  border: 1px solid #3487df; /* Forest green */
   border-radius: 5px;
 }
 
@@ -39,14 +37,16 @@ input[type="checkbox"] {
 
 button[type="submit"] {
   padding: 10px 20px;
-  background-color: #228b22; /* Forest green */
+  background-color: #3487df; /* Forest green */
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+.headerapp{
 
-button[type="submit"]:hover {
-  background-color: #2e8b57; /* Sea green */
+  margin-bottom:100px;
 }
+
+

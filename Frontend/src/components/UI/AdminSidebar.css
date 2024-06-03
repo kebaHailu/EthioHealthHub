@@ -1,5 +1,5 @@
 .sidebar {
-    background-color: #198754;
+    background-color: #0c8ace;
     bottom: 0;
     left: 0;
     margin-top: 0;
@@ -38,18 +38,18 @@
 	padding: 0 20px;
 }
 .sidebar-menu li a:hover {
-    color: #21f95a;
+    color: #3487df;
 }
 .sidebar-menu > ul > li > a:hover {
-	background-color: #39e839;
+	background-color: #3487df;
     color: #fff;
 }
 .sidebar-menu > ul > li.active > a:hover {
-    background-color: #7bdc19;
+    background-color: #3487df;
     color: #fff;
 }
 .sidebar-menu li.active a {
-    background-color: #63f038;
+    background-color: #3487df;
     color: #fff;
 }
 .menu-title {
@@ -79,7 +79,7 @@
     padding: 10px 15px;
 }
 .sidebar-menu ul ul a.active {
-	color: #20e3ff;
+	color: #3487df;
 	text-decoration: underline;
 }
 .mobile_btn {

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Button, Table } from "antd";
+import { Modal, Form,message, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
 import Header from "../Shared/Header/Header";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import Footer from "../Shared/Footer/Footer";
 
 const StationAdmin = () => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -11,24 +13,37 @@ const StationAdmin = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingTechnician, setEditingTechnician] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-  const [stationInfo, setStationInfo] = useState({});
+  const [stationInfo, setStationInfo] = useState(
+    JSON.parse(localStorage.getItem("stationInfo")) || {}
+  );
   const [technicians, setTechnicians] = useState([]);
-  const Token = localStorage.getItem("accessToken");
-  const user = Token ? jwtDecode(Token) : null;
-  // Get technician ID from token
+  const token = localStorage.getItem("accessToken");
+  const user = token ? jwtDecode(token).user_id : null;
 
   useEffect(() => {
-    // Fetch station data
-    fetchStationData();
+    if (!stationInfo || Object.keys(stationInfo).length === 0) {
+      fetchStationData();
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("stationInfo", JSON.stringify(stationInfo));
+  }, [stationInfo]);
 
   const fetchStationData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/station/profile/");
-      const data = await response.json();
-      if (data.length > 0) {
-        setStationInfo(data[0]); // Assuming data is an array and taking the first item
-      }
+      const response = await axios.get(
+        "http://127.0.0.1:8000/station/profile/",
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
+      console.log("Response data:", response.data);
+      setStationInfo(response.data);
+      setformData(response.data);
+      setProfileImage(response.data);
     } catch (error) {
       console.error("Error fetching station data:", error);
     }
@@ -40,36 +55,28 @@ const StationAdmin = () => {
 
   const handleSave = async () => {
     setEditMode(false);
-    // Send updated data to backend
     try {
       const formData = new FormData();
       formData.append("name", stationInfo.name);
-      formData.append("user", user);
+      formData.append("cover_image", profileImage);
       formData.append("location", stationInfo.location);
       formData.append("latitude", stationInfo.latitude);
       formData.append("longitude", stationInfo.longitude);
       formData.append("description", stationInfo.description);
-      formData.append("is_approved", stationInfo.is_approved);
-      if (profileImage) {
-        formData.append("cover_image", profileImage);
-      }
-      const token = localStorage.getItem("accessToken");
+      formData.append("user", user);
 
-      const response = await fetch(
+      const response = await axios.put(
         "http://127.0.0.1:8000/station/profile/",
+        formData,
         {
-          method: "PUT",
-
           headers: {
             Authorization: `JWT ${token}`,
           },
-          body: formData,
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to update station data");
-      }
+      const updatedData = response.data;
+      setStationInfo(updatedData);
     } catch (error) {
       console.error("Error updating station data:", error);
     }
@@ -93,55 +100,30 @@ const StationAdmin = () => {
   };
 
   const handleOk = () => {
-    // Handle form submission
     setVisible(false);
   };
 
-  const handleAddTechnicianFormSubmit = async (values) => {
-    try {
-      // Get the logged-in station admin's ID from wherever it's stored
-      // For example, if it's stored in stationInfo, you can access it like this
-      const stationId = stationInfo.id;
 
-      // Perform any form validation if needed
-
-      // Create a new FormData object to handle file uploads if necessary
-      const formData = new FormData();
-      formData.append("email", values.email);
-      formData.append("station_id", stationId);
-
-      // Make a POST request to the specified URL
-      const response = await fetch("http://127.0.0.1:8000/send_email", {
-        method: "POST",
-        body: formData, // Pass the FormData object as the body
-      });
-
-      // Check if the request was successful
-      if (response.ok) {
-        // If successful, get the response data
-        const responseData = await response.json();
-
-        // Update the technicians state with the new data
-        setTechnicians([...technicians, responseData]);
-
-        // Optionally, you can update state or perform any additional actions
-        console.log(technicians);
-        console.log("Technician added successfully!");
-      } else {
-        // If the request failed, log an error or handle it appropriately
-        console.error("Failed to add technician:", response.statusText);
-        // Optionally, you can display an error message to the user
-      }
-    } catch (error) {
-      // If an error occurs during the request, log it or handle it appropriately
-      console.error("Error adding technician:", error);
-      // Optionally, you can display an error message to the user
+  useEffect(() => {
+    if (!stationInfo || Object.keys(stationInfo).length === 0) {
+      fetchStationData();
     }
-  };
+    fetchTechniciansData();
+  }, []);
 
-  const handleProfileImageChange = (e) => {
-    const file = e.target.files[0];
-    setProfileImage(file);
+
+  const fetchTechniciansData = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/technician/", {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      });
+      console.log("Technicians data:", response.data);
+      setTechnicians(response.data);
+    } catch (error) {
+      console.error("Error fetching technicians data:", error);
+    }
   };
 
   const columns = [
@@ -150,12 +132,11 @@ const StationAdmin = () => {
       dataIndex: "email",
       key: "email",
     },
-
-    {
-      title: "Registered Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
+    // {
+    //   title: "Registered Date",
+    //   dataIndex: "createdAt",
+    //   key: "createdAt",
+    // },
     {
       title: "Action",
       key: "action",
@@ -178,20 +159,51 @@ const StationAdmin = () => {
     },
   ];
 
+ const handleAddTechnicianFormSubmit = async (values) => {
+   try {
+     const stationId = stationInfo.id;
+
+     const formData = new FormData();
+     formData.append("email", values.email);
+     formData.append("station_id", stationId);
+
+     const response = await axios.post(
+       "http://127.0.0.1:8000/send_email",
+       formData,
+       {
+         headers: {
+           Authorization: `JWT ${token}`,
+         },
+       }
+     );
+
+     const responseData = response.data;
+     setTechnicians([...technicians, responseData]);
+     message.success("Technician added successfully!");
+   } catch (error) {
+     console.error("Error adding technician:", error);
+     message.error("Failed to add technician!");
+   }
+ };
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file);
+  };
+
+  
+
   return (
     <>
       <Header />
       <div className="station-admin-container">
-        <div className="left-sidebar sticky">
-          {/* Station Info */}
+        <div
+          className="left-sidebar sticky"
+          style={{ marginLeft: "30px", marginRight: "30px" }}
+        >
           <label htmlFor="profileImage">
             <img
               className="cover-image"
-              src={
-                profileImage
-                  ? URL.createObjectURL(profileImage)
-                  : stationInfo.cover_image
-              }
+              src={`http://localhost:8000/${stationInfo.cover_image}`}
               alt="Station Cover"
             />
             <input
@@ -270,38 +282,6 @@ const StationAdmin = () => {
               stationInfo.description
             )}
           </p>
-          <p>
-            <strong>Verification Status:</strong>{" "}
-            {editMode ? (
-              <Input
-                value={stationInfo.is_approved ? "Approved" : "Not Approved"}
-                onChange={(e) =>
-                  setStationInfo({
-                    ...stationInfo,
-                    is_approved: e.target.value === "Approved",
-                  })
-                }
-              />
-            ) : stationInfo.is_approved ? (
-              "Approved"
-            ) : (
-              "Not Approved"
-            )}
-          </p>
-          <p>
-            <strong>Admin Name:</strong>{" "}
-            {editMode ? (
-              <Input
-                value={stationInfo.adminName}
-                onChange={(e) =>
-                  setStationInfo({ ...stationInfo, adminName: e.target.value })
-                }
-              />
-            ) : (
-              stationInfo.adminName
-            )}
-          </p>
-          {/* Add/Edit button */}
           {editMode ? (
             <Button onClick={handleSave} type="primary">
               Save
@@ -312,13 +292,13 @@ const StationAdmin = () => {
         </div>
         <div className="right-sidebar">
           {/* Add Technician Button */}
-          <Button onClick={handleAddTechnician}>Add Technician</Button>
+          <Button onClick={handleAddTechnician}>Add Local Physician</Button>
           {/* Technicians Table */}
           <Table dataSource={technicians} columns={columns} />
         </div>
         {/* Add Technician Form */}
         <Modal
-          title="Add Technician"
+          title="Add Local Physichan"
           visible={showAddForm}
           onCancel={() => setShowAddForm(false)}
           footer={null}
@@ -334,10 +314,13 @@ const StationAdmin = () => {
             </Form.Item>
 
             <Button className="add-technician-button" htmlType="submit">
-              Add Technician
+              Add Local Physichan
             </Button>
           </Form>
         </Modal>
+      </div>
+      <div style={{ marginTop: "40px" }}>
+        <Footer />
       </div>
     </>
   );

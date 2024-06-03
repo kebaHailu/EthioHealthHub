@@ -108,11 +108,11 @@
 }
 .user-menu .dropdown-menu .dropdown-item:hover {
 	color: #fff;
-    background: #00d0f1;
+    background: #3487df;
 }
 .header .dropdown-menu > li > a:focus,
 .header .dropdown-menu > li > a:hover {
-	background-color: #00d0f1;
+	background-color: #3487df;
 	color: #fff;
 }
 .header .dropdown-menu > li > a:focus i,

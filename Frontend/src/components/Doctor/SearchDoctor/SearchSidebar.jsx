@@ -9,11 +9,11 @@ const SearchSidebar = ({ setSearchTerm, setSorByGender, setSpecialist, setPriceR
   const options = [
     {
       label: 'Male',
-      value: 'male',
+      value: 'M',
     },
     {
       label: 'Female',
-      value: 'female',
+      value: 'F',
     },
    
   ];
@@ -47,7 +47,7 @@ const SearchSidebar = ({ setSearchTerm, setSorByGender, setSpecialist, setPriceR
         </div>
 
         <div className="mb-3">
-          <h6 style={{ color: "#05335c" }}>Date Range</h6>
+          <h6 style={{ color: "#1977cc" }}>Date Range</h6>
           <DatePicker
             style={{ width: "100%" }}
             format="YYYY-MM-DD HH:mm:ss"
@@ -63,12 +63,12 @@ const SearchSidebar = ({ setSearchTerm, setSorByGender, setSpecialist, setPriceR
         </div>
 
         <div className="mb-3">
-          <h6 style={{ color: "#32de8b" }}>Price Range</h6>
+          <h6 style={{ color: "#1977cc" }}>Price Range</h6>
           <Slider range defaultValue={[50, 150]} onChange={onRangeChange} />
         </div>
 
         <div className="mb-3">
-          <h6 style={{ color: "#05335c" }}>Select Specialist</h6>
+          <h6 style={{ color: "#1977cc" }}>Select Specialist</h6>
           <div className="d-flex flex-column">
             <Radio.Group
               options={doctorSpecialistOptions}
@@ -80,7 +80,7 @@ const SearchSidebar = ({ setSearchTerm, setSorByGender, setSpecialist, setPriceR
         <Button
           className="w-100 mt-4 mb-2"
           type="primary"
-          style={{ backgroundColor: "#32de8b" }}
+          style={{ backgroundColor: "#1977cc" }}
           shape="round"
           icon={<FaSearch />}
           size="sm"
@@ -90,7 +90,7 @@ const SearchSidebar = ({ setSearchTerm, setSorByGender, setSpecialist, setPriceR
         {Object.keys(query).length > 4 && (
           <Button
             className="w-100 mt-4 mb-2"
-            style={{ backgroundColor: "#32de8b" }}
+            style={{ backgroundColor: "#1977cc" }}
             onClick={resetFilter}
             type="primary"
             shape="round"

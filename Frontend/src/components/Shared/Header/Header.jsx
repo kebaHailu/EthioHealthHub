@@ -44,17 +44,6 @@ const Header = () => {
     navigate("/");
   };
 
-  // useEffect(() => {
-  //   if (isLoggedIn && role) {
-  //     if (role === "HO") {
-  //       navigate("/admin/dashboard");
-  //     } else if (role === "SD") {
-  //       navigate("/dashboard");
-  //     } else if (role === "SA") {
-  //       navigate("/station-admin");
-  //     }
-  //   }
-  // }, [isLoggedIn, role, navigate]);
 
   const content = (
     <div className="nav-popover">

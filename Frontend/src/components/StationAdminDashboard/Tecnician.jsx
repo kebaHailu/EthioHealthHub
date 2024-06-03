@@ -3,12 +3,17 @@ import { Modal, Form, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
 import AdminLayout from "../Admin/AdminLayout/AdminLayout";
+import { jwtDecode } from "jwt-decode";
 
 const StationAdmin = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [visible, setVisible] = useState(false);
   const [technicians, setTechnicians] = useState([]);
+  const token = localStorage.getItem("accessToken");
 
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
   useEffect(() => {
     // Fetch technician data
     fetchTechnicianData();
@@ -16,7 +21,16 @@ const StationAdmin = () => {
 
   const fetchTechnicianData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/technician/10/");
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/technician/${decoded.user_id}/`,
+
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       if (data) {
         // Assuming the response is an object with technician data
@@ -64,13 +78,22 @@ const StationAdmin = () => {
       formData.append("specialization", values.specialization);
       formData.append("age", values.age);
       formData.append("education", values.education);
-      formData.append("registered_date", values.registered_date);
+      // formData.append("registered_date", values.registered_date);
 
       // Make a PUT request to update the technician data
-      const response = await fetch("http://127.0.0.1:8000/technician/10/", {
-        method: "PUT",
-        body: formData,
-      });
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/technician/${decoded.user_id}/`,
+
+        {
+          method: "PUT",
+          body: formData,
+
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         // If successful, update the technician data in the state
@@ -118,13 +141,12 @@ const StationAdmin = () => {
       key: "age",
       type: "number",
     },
-    {
-      title: "Registered Date",
-      dataIndex: "registered_date",
-      key: "registered_date",
-     type: "date",
-
-    },
+    // {
+    //   title: "Registered Date",
+    //   dataIndex: "registered_date",
+    //   key: "registered_date",
+    //   type: "date",
+    // },
     {
       title: "Action",
       key: "action",
@@ -186,9 +208,7 @@ const StationAdmin = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item label="Email"
-        
-           name="email">
+          <Form.Item label="Email" name="email">
             <Input />
           </Form.Item>
           <Form.Item
@@ -212,7 +232,7 @@ const StationAdmin = () => {
           >
             <Input type="number" />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="Registered Date"
             name="registered_date"
             type="date"
@@ -222,9 +242,9 @@ const StationAdmin = () => {
             ]}
           >
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Button className="add-technician-button" htmlType="submit">
-            Add Technician
+            Add Local Physician
           </Button>
         </Form>
       </Modal>

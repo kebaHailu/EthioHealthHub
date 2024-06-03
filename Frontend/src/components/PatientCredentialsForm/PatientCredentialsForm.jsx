@@ -55,7 +55,6 @@ const PatientCredentialsForm = () => {
   }, []); // E
   console.log(profileData);
 
-
   const handleCheckboxChange = (e) => {
     setFormData({
       ...formData,
@@ -64,7 +63,7 @@ const PatientCredentialsForm = () => {
   };
   const onSubmit = async (values) => {
     try {
-      const data = { ...formData, ...values};
+      const data = { ...formData, ...values };
       console.log("Form data:", data);
       // Send form data to backend server
       const response = await axios.post(
@@ -79,9 +78,6 @@ const PatientCredentialsForm = () => {
     }
   };
 
- 
-
-  
   const nextStep = () => {
     setCurrentStep(currentStep + 1);
   };
@@ -266,10 +262,25 @@ const PatientCredentialsForm = () => {
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>
+            </div>
+          )}
+          {currentStep === 1 && (
+            <div className="threebuttons">
+              <Link to="/admin/physician">
+                <button style={{ textAlign: "center", marginTop: "30px" }}>
+                  your Decision
+                </button>
+              </Link>
+
               <Link to="/scan">
-                <p style={{ textAlign: "center", marginTop: "30px" }} >
-                  If you are not sure about it you can upload images here
-                </p>
+                <button style={{ textAlign: "center", marginTop: "30px" }}>
+                  upload image
+                </button>
+              </Link>
+              <Link to="/doctors">
+                <button style={{ textAlign: "center", marginTop: "30px" }}>
+                  appointment
+                </button>
               </Link>
             </div>
           )}

@@ -33,15 +33,17 @@
 
 .search-bar input:focus {
     outline: none;
-    border-color: #53db14;
-    box-shadow: 0 0 5px #40ba07;
+    border-color: #3487df;
+    box-shadow: 0 0 5px #3487df;
 }
 
 
 .station-card {
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
+    margin:30px;
 }
 
 .station-card img {
@@ -65,12 +67,14 @@
 }
 
 .view-details-button {
-    background-color: green;
+    background-color: #3487df;
+    margin-left: 5px;
+   
     color: #fff;
     border: none;
 }
 
 .view-details-button:hover {
-    background-color: darkgreen;
+    background-color: #0f60b7;
 }
 
