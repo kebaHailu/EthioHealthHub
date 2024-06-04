@@ -60,6 +60,7 @@ class ClinicalRecord(models.Model):
     family_history = models.CharField(max_length=255, blank=True)
     blood_type = models.CharField(max_length=30, blank=True)
     pregnancy_condition = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
     symptoms = models.CharField(max_length=255, blank=True)
     symptoms_description = models.TextField(blank=True)
     disease_type = models.CharField(max_length=1, choices=DISEASE_OPTION, default='E')
@@ -94,6 +95,7 @@ class MachineLearningModel(models.Model):
     clinical_record = models.ForeignKey(ClinicalRecord, on_delete=models.DO_NOTHING)
     image = models.ImageField(upload_to="images/")
     result = models.CharField(max_length=200, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     accuracy = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
 
