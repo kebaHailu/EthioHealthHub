@@ -9,6 +9,7 @@ class Appointment(models.Model):
     specialist = models.ForeignKey(Specialist, on_delete=models.DO_NOTHING)
     machine_learning = models.ForeignKey(MachineLearningModel, on_delete=models.DO_NOTHING, null=True, default=None)
     appointment_date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     status = models.BooleanField(default=False)
 
@@ -25,6 +26,7 @@ class Prescription(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
     prescription_medicine = models.CharField(max_length=300)
     follow_update = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     archived = models.BooleanField(default=False)
 
