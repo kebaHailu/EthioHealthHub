@@ -1,10 +1,10 @@
 import string
-from rest_framework import viewsets, generics, status
-from rest_framework import status
+from rest_framework import viewsets, generics, status, mixins
+
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, action
-from rest_framework.response import Response
-from .serializers import (TechnicianSerializer, ClinicalRecordSerializer, PatientSerializer,
+from .serializers import (TechnicianSerializer, ClinicalRecordSerializer,
+                          PatientSerializer, MachineLearningModelCreateSerializer,
                           MachineLearningModelSerializer, DefaultClinicalRecordSerializer)
 
 from .models import Technician, ClinicalRecord, Patient, MachineLearningModel
@@ -40,33 +40,43 @@ class PatientViewset(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
 
 
+class ClinicalRecordViewByTechnician(generics.ListAPIView):
+    serializer_class = ClinicalRecordSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return ClinicalRecord.objects.filter(patient__technician__user_id=user.id).order_by('-created_at')
+
+
+
+
+
 class TechnicianViewset(viewsets.ModelViewSet):
-    queryset = Technician.objects.all()
     serializer_class = TechnicianSerializer
-
-    # To make the following code functional we have to know who the station is
-    # @action(detail=False, methods=['GET', 'PUT'])
-    # def profile(self, request):
-    #     if request.user.user_role != 'HO':
-    #         return Response({'message': 'Invalid user access'}, status=status.HTTP_400_BAD_REQUEST)
-    #
-    #     health_officer, status_result = Technician.objects.get_or_create(user=request.user)
-    #
-    #     if request.method == "GET":
-    #         serializer = TechnicianSerializer(health_officer)
-    #         return Response(serializer.data)
-    #
-    #     elif request.method == "PUT":
-    #         serializer = TechnicianSerializer(health_officer, data=request.data)
-    #         serializer.is_valid(raise_exception=True)
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        user = self.request.user
+        return Technician.objects.filter(station__user_id=user.id).order_by('-user__date_joined')
 
 
-class MachineLearningModelViewSet(viewsets.ModelViewSet):
+class TechnicianProfileViewSet(generics.UpdateAPIView, generics.RetrieveAPIView):
+    serializer_class = TechnicianSerializer
+    def get_object(self):
+        user = self.request.user
+        technician = Technician.objects.get(user_id=user.id)
+        return technician
+
+
+class MachineLearningModelViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = MachineLearningModelSerializer
+    # queryset = MachineLearningModel.objects.all()
+    def get_queryset(self):
+        user = self.request.user
+        technician = Technician.objects.get(user_id=user.id)
+        print(user.id, technician.id)
+        return MachineLearningModel.objects.filter(clinical_record__patient__technician_id=technician.id)
+
+
+class MachineLearningModelCreateViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = MachineLearningModelCreateSerializer
     queryset = MachineLearningModel.objects.all()
 
     def create(self, request, *args, **kwargs):
@@ -81,14 +91,14 @@ class MachineLearningModelViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             image = serializer.validated_data['image']
-            print(type(image))
+
 
             if clinical_record.disease_type == 'E':
                 result, accuracy = ml.predict_with_eye_model(image)
 
             elif clinical_record.disease_type == 'S':
-                preprocessed_image = ml.preprocess_image_for_skin(image)
-                result, accuracy = ml.predict_with_skin_model(preprocessed_image)
+
+                result, accuracy = ml.predict_with_skin_model(image)
 
             else:
                 return Response("Invalid image type", status=status.HTTP_400_BAD_REQUEST)

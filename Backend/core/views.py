@@ -85,13 +85,15 @@ class SpecialistAppointmentAPIView(generics.ListAPIView):
 class StationAppointmentAPIView(generics.ListAPIView):
     serializer_class = AppointmentGetSerializer
     def get_queryset(self):
-        station_id = self.kwargs['station_id']
-        return Appointment.objects.filter(technician__station__user_id=station_id)
+        technician_user_id = self.kwargs['station_id']
+        return Appointment.objects.filter(technician__user_id=technician_user_id)
 
 
 class AppointmentDetailAPIView(generics.RetrieveAPIView):
     serializer_class = AppointmentDetailSerializer
     queryset = Appointment.objects.all()
     lookup_field = 'id'
+
+
 
 
