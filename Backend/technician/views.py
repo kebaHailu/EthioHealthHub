@@ -3,11 +3,13 @@ from rest_framework import viewsets, generics, status, mixins
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import (TechnicianSerializer, ClinicalRecordSerializer,
+
+from specialist.models import Specialist
+from .serializers import (TechnicianSerializer, ClinicalRecordSerializer, TechnicalReportSerializer,
                           PatientSerializer, MachineLearningModelCreateSerializer,
                           MachineLearningModelSerializer, DefaultClinicalRecordSerializer)
 
-from .models import Technician, ClinicalRecord, Patient, MachineLearningModel
+from .models import Technician, ClinicalRecord, Patient, MachineLearningModel, TechnicalReport
 import random
 from django.contrib.auth.tokens import PasswordResetTokenGenerator as prtg
 from django.conf import settings
@@ -47,8 +49,19 @@ class ClinicalRecordViewByTechnician(generics.ListAPIView):
         return ClinicalRecord.objects.filter(patient__technician__user_id=user.id).order_by('-created_at')
 
 
+class SpecialistClinicalRecordAPIView(generics.ListAPIView):
+    serializer_class = ClinicalRecordSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        specialist = Specialist.objects.get(user=user)
+        return ClinicalRecord.objects.filter(appointment__specialist_id=specialist.id)
 
+class TechnicalReportViewSet(viewsets.ModelViewSet):
+    serializer_class = TechnicalReportSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return TechnicalReport.objects.filter(technician__user_id=user.id)
 
 class TechnicianViewset(viewsets.ModelViewSet):
     serializer_class = TechnicianSerializer

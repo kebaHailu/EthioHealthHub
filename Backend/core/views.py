@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, views
 from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+
 from .models import Appointment, Prescription
 from technician.models import Patient, Technician, ClinicalRecord
 from specialist.models import Specialist
+from station.models import Station
 from datetime import datetime
 from .serializers import AppointmentSerializer, AppointmentGetSerializer, PrescriptionSerializer, AppointmentDetailSerializer
 from django.core.mail import EmailMultiAlternatives
@@ -74,6 +77,15 @@ class PrescriptionViewSet(viewsets.ModelViewSet):
     serializer_class = PrescriptionSerializer
 
 
+class SpecialistPrescriptionViewSet(generics.ListAPIView):
+    serializer_class = PrescriptionSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        specialist = Specialist.objects.get(user=user)
+        return Prescription.objects.filter(appointment__specialist__user_id=specialist.id)
+
+
 class SpecialistAppointmentAPIView(generics.ListAPIView):
     serializer_class = AppointmentGetSerializer
 
@@ -95,5 +107,38 @@ class AppointmentDetailAPIView(generics.RetrieveAPIView):
     lookup_field = 'id'
 
 
+# Dashboards
+class SpecialistDashboardView(views.APIView):
+    def get(self, request):
+        user = request.user
+        specialist = Specialist.objects.get(user_id=user.id)
+        appointments = Appointment.objects.filter(specialist_id=specialist.id)
+        prescriptions = Prescription.objects.filter(appointment__specialist_id=specialist.id)
+        patients = ClinicalRecord.objects.filter(appointment__specialist_id=specialist.id)
+        data = {
+            'total_patients': patients.count(),
+            'total_appointments': appointments.count(),
+            'total_prescriptions': prescriptions.count(),
+        }
 
+        return Response(data)
+
+
+class TechnicianDashboardView(views.APIView):
+    def get(self, request):
+        user = request.user
+        technician = Technician.objects.get(user_id=user.id)
+        specialist = Specialist.objects.all()
+        appointments = Appointment.objects.filter(technician_id=technician.id)
+        patients = ClinicalRecord.objects.filter(patient__technician_id=technician.id)
+        stations = Station.objects.all()
+        data = {
+            'total_specialist': specialist.count(),
+            'total_patients': patients.count(),
+            'total_appointments': appointments.count(),
+            'total_stations': stations.count(),
+
+        }
+
+        return Response(data)
 
