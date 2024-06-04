@@ -3,57 +3,58 @@ import AdminLayout from "../AdminLayout/AdminLayout";
 import "./Patients.css";
 import { Link } from "react-router-dom";
 import { Empty, Button, Select, Modal } from "antd";
+import { CalendarOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const { Option } = Select;
 
 const Patients = () => {
-    const [profileData, setProfileData] = useState([]);
-    const [filteredPatients, setFilteredPatients] = useState([]);
-    const [selectedPatient, setSelectedPatient] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
+  const [profileData, setProfileData] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(
-            "http://127.0.0.1:8000/clinical-record/"
-          );
-          setProfileData(response.data);
-          setFilteredPatients(response.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    }, []);
-
-    const handleFilterChange = (value, type) => {
-      let filtered;
-      if (type === "gender") {
-        // Filter based on gender
-        filtered =
-          value === "All"
-            ? profileData
-            : profileData.filter((patient) => patient.patient.gender === value);
-      } else if (type === "disease_type") {
-        // Filter based on disease type
-        filtered =
-          value === "All"
-            ? profileData
-            : profileData.filter((data) => data.disease_type === value);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/clinical-record/"
+        );
+        setProfileData(response.data);
+        setFilteredPatients(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-      setFilteredPatients(filtered);
     };
+    fetchData();
+  }, []);
 
-    const handleViewDetail = (patient) => {
-      setSelectedPatient(patient);
-      setModalVisible(true);
-    };
+  const handleFilterChange = (value, type) => {
+    let filtered;
+    if (type === "gender") {
+      // Filter based on gender
+      filtered =
+        value === "All"
+          ? profileData
+          : profileData.filter((patient) => patient.patient.gender === value);
+    } else if (type === "disease_type") {
+      // Filter based on disease type
+      filtered =
+        value === "All"
+          ? profileData
+          : profileData.filter((data) => data.disease_type === value);
+    }
+    setFilteredPatients(filtered);
+  };
 
-    const handlePrint = () => {
-      window.print();
-    };
+  const handleViewDetail = (patient) => {
+    setSelectedPatient(patient);
+    setModalVisible(true);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <AdminLayout>
@@ -116,6 +117,9 @@ const Patients = () => {
                         >
                           View Detail
                         </Button>
+                        <Link to="/doctors">
+                          <Button type="default" icon={<CalendarOutlined />} />
+                        </Link>
                       </td>
                     </tr>
                   ))}
