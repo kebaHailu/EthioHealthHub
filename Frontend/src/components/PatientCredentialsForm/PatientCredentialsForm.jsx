@@ -99,204 +99,219 @@ const PatientCredentialsForm = () => {
   };
 
   return (
-    <div className="form-container">
-      <Steps current={currentStep}>
-        <Step title="Patient Credentials 1" />
-        <Step title="Patient Credentials 2" />
-      </Steps>
-      <Form
-        form={form}
-        name="patient-form"
-        onFinish={onSubmit}
-        onFieldsChange={handleFormChange}
-      >
-        <div className="step-container">
-          {currentStep === 0 && (
-            <>
-              <Form.Item
-                label="Select Patient"
-                name="patient"
-                rules={[
-                  { required: true, message: "Please select a patient!" },
-                ]}
-              >
-                <Select placeholder="Select a patient">
-                  {profileData?.map((patient) => (
-                    <Option key={patient.id} value={patient.id}>
-                      {patient.first_name} {patient.last_name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                className="medical"
-                label="Medical History"
-                name="medical_history"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                className="select"
-                label="Disease Type"
-                name="disease_type"
-                rules={[{ required: true }]}
-              >
-                <Select>
-                  <Option value="S">Skin Disease</Option>
-                  <Option value="E">Eye Disease</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Disease Description"
-                name="disease_description"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                label="Symptoms"
-                name="symptoms"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                label="Blood Group"
-                name="blood_type"
-                className="select"
-                rules={[{ required: true }]}
-              >
-                <Select>
-                  {bloodGrupOptions.map((option, index) => (
-                    <Option key={index} value={option.value}>
-                      {option.label}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Symptoms Description"
-                name="symptoms_description"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>{" "}
-              <Form.Item label="Pregnancy" valuePropName="checked">
-                <Checkbox
-                  checked={formData.pregnancy_condition}
-                  onChange={handleCheckboxChange}
+    <>
+      <div className="form-container">
+        <Steps current={currentStep}>
+          <Step title="Patient Credentials 1" />
+          <Step title="Patient Credentials 2" />
+        </Steps>
+        <Form
+          form={form}
+          name="patient-form"
+          onFinish={onSubmit}
+          onFieldsChange={handleFormChange}
+        >
+          <div className="step-container">
+            {currentStep === 0 && (
+              <>
+                <Form.Item
+                  label="Select Patient"
+                  name="patient"
+                  rules={[
+                    { required: true, message: "Please select a patient!" },
+                  ]}
                 >
-                  Yes
-                </Checkbox>
-              </Form.Item>
-            </>
-          )}
-          {currentStep === 1 && (
-            <>
-              <Form.Item
-                className="medical"
-                label="Family History"
-                name="family_history"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                label="Vaccination Status"
-                className="select"
-                name="vaccination_status"
-                rules={[{ required: true }]}
-              >
-                <Select>
-                  <Option value="vaccinated">Vaccinated</Option>
-                  <Option value="notVaccinated">Not Vaccinated</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Follow-up Information"
-                name="follow_up_information"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={3} />
-              </Form.Item>
-              <Form.Item
-                label="Allergies"
-                name="allergies"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                label="Message"
-                name="message"
-                rules={[{ required: true }]}
-              >
-                <Input.TextArea rows={2} />
-              </Form.Item>
-              <Form.Item
-                label="Blood Sugar Level"
-                name="sugar_level"
-                rules={[{ required: true }]}
-              >
-                <InputNumber min={0} step={0.1} />
-              </Form.Item>
-              <Form.Item
-                label="Blood Pressure"
-                name="blood_pressure"
-                rules={[{ required: true }]}
-              >
-                <InputNumber min={0} />
-              </Form.Item>
-            </>
-          )}
-        </div>
-        <div className="button-container">
-          {currentStep > 0 && (
-            <Button className="button" onClick={prevStep}>
-              Previous
-            </Button>
-          )}
-          {currentStep === 1 && (
-            <div className="submit-button-container">
-              <Button type="primary" htmlType="submit">
-                Submit
+                  <Select placeholder="Select a patient">
+                    {profileData?.map((patient) => (
+                      <Option key={patient.id} value={patient.id}>
+                        {patient.first_name} {patient.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  className="medical"
+                  label="Medical History"
+                  name="medical_history"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  className="select"
+                  label="Disease Type"
+                  name="disease_type"
+                  rules={[{ required: true }]}
+                >
+                  <Select>
+                    <Option value="S">Skin Disease</Option>
+                    <Option value="E">Eye Disease</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Disease Description"
+                  name="disease_description"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Symptoms"
+                  name="symptoms"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Blood Group"
+                  name="blood_type"
+                  className="select"
+                  rules={[{ required: true }]}
+                >
+                  <Select>
+                    {bloodGrupOptions.map((option, index) => (
+                      <Option key={index} value={option.value}>
+                        {option.label}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Symptoms Description"
+                  name="symptoms_description"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>{" "}
+                <Form.Item label="Pregnancy" valuePropName="checked">
+                  <Checkbox
+                    checked={formData.pregnancy_condition}
+                    onChange={handleCheckboxChange}
+                  >
+                    Yes
+                  </Checkbox>
+                </Form.Item>
+              </>
+            )}
+            {currentStep === 1 && (
+              <>
+                <Form.Item
+                  className="medical"
+                  label="Family History"
+                  name="family_history"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Vaccination Status"
+                  className="select"
+                  name="vaccination_status"
+                  rules={[{ required: true }]}
+                >
+                  <Select>
+                    <Option value="vaccinated">Vaccinated</Option>
+                    <Option value="notVaccinated">Not Vaccinated</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Follow-up Information"
+                  name="follow_up_information"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Allergies"
+                  name="allergies"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Message"
+                  name="message"
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Blood Sugar Level"
+                  name="sugar_level"
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber min={0} step={1} />
+                </Form.Item>
+                <Form.Item
+                  label="Blood Pressure"
+                  name="blood_pressure"
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber min={0} />
+                </Form.Item>
+              </>
+            )}
+          </div>
+          <div className="button-container">
+            {currentStep > 0 && (
+              <Button className="button" onClick={prevStep}>
+                Previous
               </Button>
-            </div>
-          )}
-          {currentStep === 1 && (
-            <div className="threebuttons">
+            )}
+            {currentStep === 1 && (
+              <div className="submit-button-container">
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </div>
+            )}
+
+            {currentStep < 1 && (
+              <Button
+                className="button"
+                type="primary"
+                onClick={nextStep}
+                disabled={isNextDisabled}
+              >
+                Next
+              </Button>
+            )}
+          </div>
+          <div> </div>
+        </Form>
+      </div>
+      <div className="three">
+        {currentStep === 1 && (
+          <div className="three-buttons">
+            <h6>use one of these</h6>
+            <div>
+              {" "}
               <Link to="/admin/physician">
                 <button style={{ textAlign: "center", marginTop: "30px" }}>
                   your Decision
                 </button>
               </Link>
+            </div>
 
+            <div>
+              {" "}
               <Link to="/scan">
                 <button style={{ textAlign: "center", marginTop: "30px" }}>
                   upload image
                 </button>
               </Link>
+            </div>
+            <div>
               <Link to="/doctors">
                 <button style={{ textAlign: "center", marginTop: "30px" }}>
                   appointment
                 </button>
               </Link>
             </div>
-          )}
-          {currentStep < 1 && (
-            <Button
-              className="button"
-              type="primary"
-              onClick={nextStep}
-              disabled={isNextDisabled}
-            >
-              Next
-            </Button>
-          )}
-        </div>
-      </Form>
-    </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

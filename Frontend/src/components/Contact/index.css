@@ -1,7 +1,7 @@
 .info .icon {
     margin-top: 2px;
     font-size: 22px;
-    color:#32de8b;
+    color:#1b99cb;
     padding: 5px;
     background: #d6e9fa;
     display: flex;
@@ -14,11 +14,11 @@
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #2c4964;
+    /* color: #2c4964; */
 }
 .contact .info p {
     font-size: 14px;
-    color: #1d5b3a;
+    /* color: #1b99cb; */
 }
 .contact .appointment-btn {
     border: 0 !important;

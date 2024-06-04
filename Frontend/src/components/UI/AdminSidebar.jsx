@@ -25,9 +25,9 @@ const AdminSidebar = () => {
           <div id="sidebar-menu" className="sidebar-menu">
             <ul>
               <li className="menu-title">
-                <span>
+                {/* <span>
                   <strong>Main</strong>
-                </span>
+                </span> */}
               </li>
               <li className="active">
                 <Link to={"/admin/dashboard"}>

@@ -98,7 +98,7 @@ const DoctorProfileSetting = () => {
 
     try {
       const response = await loginService.DoctorProfile(formData);
-      message.success("Profile updated successfully!");
+      message.success("Profile updated successfully! you will be verified soon!");
       console.log("response", combinedFormData);
     } catch (error) {
       console.error("Error updating profile:", error);

@@ -88,7 +88,7 @@ const Prescription = () => {
       render: (appointment) => <Tag color="#f50">{appointment}</Tag>,
     },
     {
-      title: "Disease",
+      title: "Priscription medicine",
       dataIndex: "prescription_medicine",
       key: "prescription_medicine",
     },
@@ -190,7 +190,7 @@ const Prescription = () => {
           </Form.Item>
           <Form.Item
             name="prescription_medicine"
-            label="Disease"
+            label="medicine"
             rules={[{ required: true, message: "Please input the disease!" }]}
           >
             <Input />

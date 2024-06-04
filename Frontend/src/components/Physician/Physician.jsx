@@ -51,11 +51,14 @@ const Physician = () => {
   if (!data) {
     return <p>No data available</p>;
   }
+  const handlePrevious = () => {
+    window.history.back();
+  };
 
   return (
     <div>
       <h5 style={{ textAlign: "center" }}>Clinical Records Preview</h5>
-      <div style={{ display: "flex"}}>
+      <div style={{ display: "flex" }}>
         <div style={{ flex: 1, marginLeft: "100px" }}>
           <h3>Patient Information</h3>
           <table>
@@ -168,6 +171,9 @@ const Physician = () => {
         />
       </div>
       <div>
+        <button className="btn" onClick={handlePrevious}>
+          previous
+        </button>
         <button className="btn" onClick={handleSave}>
           Save
         </button>

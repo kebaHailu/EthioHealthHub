@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form,message, Input, Button, Table } from "antd";
+import { Modal, Form, message, Input, Button, Table } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./StationAdmin.css";
 import Header from "../Shared/Header/Header";
@@ -103,14 +103,12 @@ const StationAdmin = () => {
     setVisible(false);
   };
 
-
   useEffect(() => {
     if (!stationInfo || Object.keys(stationInfo).length === 0) {
       fetchStationData();
     }
     fetchTechniciansData();
   }, []);
-
 
   const fetchTechniciansData = async () => {
     try {
@@ -159,38 +157,36 @@ const StationAdmin = () => {
     },
   ];
 
- const handleAddTechnicianFormSubmit = async (values) => {
-   try {
-     const stationId = stationInfo.id;
+  const handleAddTechnicianFormSubmit = async (values) => {
+    try {
+      const stationId = stationInfo.id;
 
-     const formData = new FormData();
-     formData.append("email", values.email);
-     formData.append("station_id", stationId);
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("station_id", stationId);
 
-     const response = await axios.post(
-       "http://127.0.0.1:8000/send_email",
-       formData,
-       {
-         headers: {
-           Authorization: `JWT ${token}`,
-         },
-       }
-     );
+      const response = await axios.post(
+        "http://127.0.0.1:8000/send_email",
+        formData,
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
 
-     const responseData = response.data;
-     setTechnicians([...technicians, responseData]);
-     message.success("Technician added successfully!");
-   } catch (error) {
-     console.error("Error adding technician:", error);
-     message.error("Failed to add technician!");
-   }
- };
+      const responseData = response.data;
+      setTechnicians([...technicians, responseData]);
+      message.success("Technician added successfully!");
+    } catch (error) {
+      console.error("Error adding technician:", error);
+      message.error("Failed to add technician!");
+    }
+  };
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
     setProfileImage(file);
   };
-
-  
 
   return (
     <>

@@ -62,6 +62,7 @@ const Appointments = () => {
       <table className="appointments-table">
         <thead>
           <tr>
+            <th>Appointment_ID</th>
             <th>Patient Name</th>
             <th>Appointment Date & Time</th>
             <th>Gender</th>
@@ -75,6 +76,8 @@ const Appointments = () => {
           {appointments.length > 0 ? (
             appointments.map((appointment) => (
               <tr key={appointment.id}>
+                <td>{appointment.id}</td>
+
                 <td>{appointment.patient_name}</td>
                 <td>
                   {moment(appointment.appointment_date).format("MMM Do YY")}{" "}
