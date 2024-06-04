@@ -14,20 +14,26 @@ const Patients = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/"
-        );
-        setProfileData(response.data);
-        setFilteredPatients(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          const response = await axios.get(
+            "http://127.0.0.1:8000/clinical_record/technician",
+            {
+              headers: {
+                Authorization: `JWT ${token}`,
+              },
+            }
+          );
+          setProfileData(response.data);
+          setFilteredPatients(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }, []);
 
   const handleFilterChange = (value, type) => {
     let filtered;

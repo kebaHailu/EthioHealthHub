@@ -50,8 +50,13 @@ const Scan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('accessToken');
         const response = await axios.get(
-          "http://127.0.0.1:8000/machine-learning/"
+          "http://127.0.0.1:8000/machine-learning-retrieve/", 
+          {headers: 
+            { Authorization: `JWT ${token}`
+            }
+          }
         );
         const data = response.data;
         setData(data);
