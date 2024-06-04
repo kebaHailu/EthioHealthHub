@@ -13,6 +13,9 @@ urlpatterns = [
     path('appointments/station/<int:station_id>',
          views.StationAppointmentAPIView.as_view(), name='station-appointments'),
     path('appointment/detail/<int:id>', views.AppointmentDetailAPIView.as_view(), name='appointment-detail'),
+    path('prescription/specialist', views.SpecialistPrescriptionViewSet.as_view(), name='specialist-prescription'),
+    path('specialist/dashboard', views.SpecialistDashboardView.as_view(), name='dashboard-specialist'),
+    path('technician/dashboard', views.TechnicianDashboardView.as_view(), name='dashboard-technician'),
     path('', include(router.urls)),
 
 
