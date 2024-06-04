@@ -70,16 +70,20 @@ a {
 }
 
 a:hover {
-    color: #09dca4;
+    color: rgb(20, 104, 177);
 }
-
+button{
+    background-color: rgb(20, 104, 177)
+}
 a:hover,
 a:active,
 a:focus {
     outline: none;
     text-decoration: none;
 }
-
+.ibtn{
+     background-color:rgb(20, 104, 177);
+}
 .ant-radio-group {
     display: flex !important;
     flex-direction: column !important;

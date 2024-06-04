@@ -98,7 +98,7 @@ const SignIn = ({ handleResponse }) => {
           <div
             onClick={handleShowForgotPassword}
             className="text-bold"
-            style={{ cursor: "pointer", color: "#32de8b" }}
+            style={{ cursor: "pointer", color: "#3487df" }}
           >
             Still remember your password?
           </div>
@@ -109,23 +109,7 @@ const SignIn = ({ handleResponse }) => {
             show={show}
             onClose={() => setShow(!show)}
             className="signInToast"
-          >
-            {/* <Toast.Header>
-              <strong className="mr-auto">Demo credentials</strong>
-            </Toast.Header>
-            <Toast.Body>
-              Use the following account to sign in as a doctor: <br />
-              <hr />
-              <div className="bg-dark text-white p-2 px-3 rounded">
-                Email: lala <br />
-                Password: 123456 <br />
-              </div>
-              <hr />
-              <div className="bg-success p-2 rounded text-white">
-                Please do not abuse this facility.
-              </div>
-            </Toast.Body> */}
-          </Toast>
+          ></Toast>
           <h2 className="title">Sign in</h2>
           <div className="input-field">
             <span className="fIcon">
@@ -155,7 +139,7 @@ const SignIn = ({ handleResponse }) => {
           <div
             onClick={handleShowForgotPassword}
             className="text-bold"
-            style={{ cursor: "pointer", color: "#32de8b" }}
+            style={{ cursor: "pointer", color: "#3487df" }}
           >
             Forgot Password?
           </div>

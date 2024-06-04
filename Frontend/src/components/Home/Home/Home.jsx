@@ -10,8 +10,8 @@ import InfoPage from "../InfoPage/InfoPage";
 import Header from '../../Shared/Header/Header';
 import Service from "../Services/Service";
 import Gallery from "../Gallery/Gallery";
-import OurDoctors from "../OurDoctor/OurDoctors";
-import Stations from "../../Stations/Stations";
+// import OurDoctors from "../OurDoctor/OurDoctors";
+// import Stations from "../../Stations/Stations";
 
 const Home = () => {
   return (
@@ -24,7 +24,7 @@ const Home = () => {
       {/* <BookDoctor /> */}
      
       <Availabe />
-      <OurDoctors />
+      {/* <OurDoctors /> */}
       <Testimonial />
       <Gallery />
       <Footer />

@@ -8,58 +8,52 @@ import axios from "axios";
 const { Option } = Select;
 
 const Patients = () => {
-  const [profileData, setProfileData] = useState([]);
-  const [filteredPatients, setFilteredPatients] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+    const [profileData, setProfileData] = useState([]);
+    const [filteredPatients, setFilteredPatients] = useState([]);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/patient/");
-        setProfileData(response.data);
-        setFilteredPatients(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://127.0.0.1:8000/clinical-record/"
+          );
+          setProfileData(response.data);
+          setFilteredPatients(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }, []);
+
+    const handleFilterChange = (value, type) => {
+      let filtered;
+      if (type === "gender") {
+        // Filter based on gender
+        filtered =
+          value === "All"
+            ? profileData
+            : profileData.filter((patient) => patient.patient.gender === value);
+      } else if (type === "disease_type") {
+        // Filter based on disease type
+        filtered =
+          value === "All"
+            ? profileData
+            : profileData.filter((data) => data.disease_type === value);
       }
+      setFilteredPatients(filtered);
     };
-    fetchData();
-  }, []);
 
-const handleFilterChange = (value, type) => {
-  if (type === "gender") {
-    // Filter based on gender
-    if (value === "All") {
-      setFilteredPatients(profileData);
-    } else {
-      const filtered = profileData.filter(
-        (patient) => patient.gender === value
-      );
-      setFilteredPatients(filtered);
-    }
-  } else if (type === "disease_type") {
-    // Filter based on disease type
-    if (value === "All") {
-      setFilteredPatients(profileData);
-    } else {
-      const filtered = profileData.filter(
-        (patient) => patient.disease_type === value
-      );
-      setFilteredPatients(filtered);
-    }
-  }
-};
+    const handleViewDetail = (patient) => {
+      setSelectedPatient(patient);
+      setModalVisible(true);
+    };
 
-
-
-  const handleViewDetail = (patient) => {
-    setSelectedPatient(patient);
-    setModalVisible(true);
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
+    const handlePrint = () => {
+      window.print();
+    };
 
   return (
     <AdminLayout>
@@ -93,8 +87,8 @@ const handleFilterChange = (value, type) => {
                         }
                       >
                         <Option value="All">Disease Type</Option>
-                        <Option value="Skin Disease">Skin Disease</Option>
-                        <Option value="Eye Disease">Eye Disease</Option>
+                        <Option value="S">Skin Disease</Option>
+                        <Option value="E">Eye Disease</Option>
                       </Select>
                     </th>
                     <th>Address</th>
@@ -108,15 +102,13 @@ const handleFilterChange = (value, type) => {
                   {filteredPatients.map((data) => (
                     <tr key={data.id}>
                       <td>
-                        <Link to={"/"} className="patient-name">
-                          {data.first_name + " " + data.last_name}
-                        </Link>
+                        {data.patient.first_name + " " + data.patient.last_name}
                       </td>
-                      <td>{data.gender}</td>
+                      <td>{data.patient.gender}</td>
                       <td>{data.disease_type}</td>
-                      <td>{data.city}</td>
-                      <td>{data.email}</td>
-                      <td>{data.phone_number}</td>
+                      <td>{data.patient.city}</td>
+                      <td>{data.patient.email}</td>
+                      <td>{data.patient.phone_number}</td>
                       <td>
                         <Button
                           type="primary"
@@ -148,13 +140,31 @@ const handleFilterChange = (value, type) => {
           {selectedPatient && (
             <div>
               <p>
-                Name: {selectedPatient.first_name} {selectedPatient.last_name}
+                Name: {selectedPatient.patient.first_name}{" "}
+                {selectedPatient.patient.last_name}
               </p>
-              <p>Gender: {selectedPatient.gender}</p>
+              <p>Gender: {selectedPatient.patient.gender}</p>
               <p>Disease Type: {selectedPatient.disease_type}</p>
-              <p>Address: {selectedPatient.city}</p>
-              <p>Email: {selectedPatient.email}</p>
-              <p>Mobile: {selectedPatient.phone_number}</p>
+              <p>Address: {selectedPatient.patient.city}</p>
+              <p>Email: {selectedPatient.patient.email}</p>
+              <p>Mobile: {selectedPatient.patient.phone_number}</p>
+
+              <p>Family_history: {selectedPatient.family_history}</p>
+              <p>Blood_type: {selectedPatient.blood_type}</p>
+              <p>Pregnancy_condition: {selectedPatient.pregnancy_condition}</p>
+              <p>Symptoms: {selectedPatient.symptoms}</p>
+              <p>
+                Symptoms_description: {selectedPatient.symptoms_description}
+              </p>
+              <p>Disease_description: {selectedPatient.disease_description}</p>
+              <p>
+                Follow_up_information: {selectedPatient.follow_up_information}
+              </p>
+              <p>Image_path: {selectedPatient.image_path}</p>
+              <p>Allergies: {selectedPatient.allergies}</p>
+              <p>Vaccination_status: {selectedPatient.vaccination_status}</p>
+              <p>Sugar_level: {selectedPatient.sugar_level}</p>
+              <p>Blood_pressure: {selectedPatient.blood_pressure}</p>
             </div>
           )}
         </Modal>

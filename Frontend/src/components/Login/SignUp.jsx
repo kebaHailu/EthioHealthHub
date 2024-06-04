@@ -3,6 +3,7 @@ import { FaCheck, FaEnvelope, FaLock, FaTimes, FaUser } from "react-icons/fa";
 import SocialSignUp from "./SocialSignUp";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
+import "./SignInForm.css";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import loginService from "../../service/auth.service";
@@ -106,7 +107,7 @@ const SignUp = () => {
 
   return (
     <form className="sign-up-form" onSubmit={hanldeOnSubmit}>
-      <h2 className="title">Sign Up</h2>
+      <h2 className="title" type='primary'>Sign Up</h2>
 
       <div className="input-field">
         <span className="fIcon">
@@ -186,7 +187,8 @@ const SignUp = () => {
       {infoError && <h6 className="text-danger text-center">{infoError}</h6>}
       <button
         type="submit"
-        className="btn btn-success btn-block mt-2 iBtn"
+       
+        className="iBtn"
         disabled={
           passwordValidation.carLength &&
           passwordValidation.numeric &&

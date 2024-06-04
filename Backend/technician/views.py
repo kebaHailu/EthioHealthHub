@@ -129,7 +129,7 @@ def send_registration_email(request):
         username = request.data.get('username', email.split('@')[0])
         password_created = generate_password()
         password = request.data.get('password', password_created)
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password, user_role='HO')
         technician = Technician.objects.create(
             user=user, station_id=station_id
         )

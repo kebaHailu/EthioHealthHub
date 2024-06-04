@@ -159,6 +159,7 @@ export const isLoggedIn = () => {
 // };
 const Logout = () => {
   localStorage.removeItem("accessToken");
+  localStorage.removeItem("stationInfo");
 };
 
 const loginService = {

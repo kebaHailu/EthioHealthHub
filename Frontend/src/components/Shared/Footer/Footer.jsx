@@ -14,7 +14,7 @@ const Footer = () => {
               <div className="footer-widget footer-about">
                 <div className="footer-logo">
                   <Link to={"/"}>
-                    <img src={logo} alt="logo" style={{ maxWidth: "160px" }} />
+                    <img src={logo} alt="logo" style={{ maxWidth: "100px" }} />
                   </Link>
                 </div>
                 <div className="footer-about-content">

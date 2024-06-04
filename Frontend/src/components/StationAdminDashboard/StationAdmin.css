@@ -6,23 +6,8 @@
   margin-top: 100px;
 }
 
-.left-sidebar {
-  flex: 1 1 auto; /* Initially take up remaining space */
-  padding: 10px;
-  border-color: #4caf50;
-  background-color: #a4a9a2;
-  color: white;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  border: 3px solid #4caf50;
-  border-radius: 10px;
-  margin: 10px;
-  max-width: 100%; /* Limit maximum width */
-}
-
 .left-sidebar button {
-  background-color: #4caf50;
+  background-color: #4fade3;
   color: white;
   padding-bottom: 14px;
   margin: 4px 2px;
@@ -38,14 +23,14 @@
 }
 
 .station-info input {
-  border: 1px solid #4caf50; /* Green border for input fields */
+  border: 1px solid #6addef; /* Green border for input fields */
   border-radius: 4px;
   padding: 10px;
 }
 
 .station-info input:focus {
   outline: none; /* Remove default focus outline */
-  border-color: #4caf50; /* Change border color on focus */
+  border-color: #4ebee0; /* Change border color on focus */
 }
 
 .right-sidebar {
@@ -57,7 +42,7 @@
 }
 
 .right-sidebar button {
-  background-color: #4caf50;
+  background-color: #58b5e4;
   color: white;
   padding-bottom: 14px;
   margin: 8px 2px;
@@ -67,7 +52,7 @@
 }
 
 .add-technician-button {
-  background-color: #4caf50;
+  background-color: #5ab3dc;
   color: white;
   padding-bottom: 14px;
   margin: 8px 2px;

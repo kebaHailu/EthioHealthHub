@@ -18,13 +18,14 @@
     object-fit: cover;
     object-position: top;
     margin-left: 11px;
-    border: 2px #67cc19 solid;
+    border: 2px #3492df solid;
     cursor: pointer;
 }
 .hideTopHeader{
     display: none !important;
     transition: 1s!important;
 }
+
 .stickyHeader{
     top: 0 !important;
     transition: 1ms!important;
@@ -51,11 +52,12 @@
 }
 
 #header .logo a {
-    color: #219555;
+    color: #3487df;
 }
 
 #header .logo img {
-    max-height: 40px;
+    max-height: 50px;
+    width:100px
 }
 
 
@@ -103,8 +105,8 @@
 .navbar .active,
 .navbar .active:focus,
 .navbar li:hover>a {
-    color: #19cc5e;
-    border-color: #19cc4f;
+    color: #3487df;
+    border-color: #3487df;
 }
 
 .navbar .dropdown ul {
@@ -142,7 +144,7 @@
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover>a {
-    color: #19cc3d;
+    color: #3487df;
 }
 
 .navbar .dropdown:hover>ul {
@@ -196,7 +198,7 @@
 
 .appointment-btn {
     margin-left: 25px;
-    background: #32de8b;
+    background: #1b99cb;
     color: #fff;
     border-radius: 50px;
     padding: 8px 25px;
@@ -207,7 +209,7 @@
 }
 
 .appointment-btn:hover {
-    background: #78b516;
+    background: #3487df;
     color: #fff;
 }
 

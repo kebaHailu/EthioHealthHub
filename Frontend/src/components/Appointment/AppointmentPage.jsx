@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Fixed import
 import { toast } from "react-toastify";
 import { Select } from "antd";
+import Header from '../Shared/Header/Header';
+import Footer from '../Shared/Footer/Footer';
 
 function AppointmentPage() {
   const [, setLoading] = useState(false);
@@ -118,44 +120,50 @@ function AppointmentPage() {
   };
 
   return (
-    <div className="container">
-      <h2 style={{ textAlign: "center" }}>Create Appointment</h2>
-      <form onSubmit={handleSubmit} className="appointment-form">
-        {error && <div className="alert alert-danger">{error}</div>}
+    <>
+      <div className ='headerapp'>
+        <Header />
+      </div>
+      <div className="container">
+        <h2 style={{ textAlign: "center" }}>Create Appointment</h2>
+        <form onSubmit={handleSubmit} className="appointment-form">
+          {error && <div className="alert alert-danger">{error}</div>}
 
-        <div className="form-group">
-          <label>Select clinical record:</label>
-          <Select
-            placeholder="Select clinical record for your patient"
-            value={formData.clinical_record}
-            onChange={(value) => setFormData({ ...formData, clinical_record: value })}
-          >
-            {profileData.map((profile) => (
-              <Select.Option key={profile.id} value={profile.id}>
-                {profile.patient.first_name} {profile.patient.last_name}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
+          <div className="form-group">
+            <label>Select clinical record:</label>
+            <Select
+              placeholder="Select clinical record for your patient"
+              value={formData.clinical_record}
+              onChange={(value) =>
+                setFormData({ ...formData, clinical_record: value })
+              }
+            >
+              {profileData.map((profile) => (
+                <Select.Option key={profile.id} value={profile.id}>
+                  {profile.patient.first_name} {profile.patient.last_name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
 
-        <div className="form-group">
-          <label>Date and Time:</label>
-          <input
-            type="datetime-local"
-            name="appointment_date"
-            value={formData.appointment_date}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Message:</label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-          />
-        </div>
-        {/* <div className="form-group">
+          <div className="form-group">
+            <label>Date and Time:</label>
+            <input
+              type="datetime-local"
+              name="appointment_date"
+              value={formData.appointment_date}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Message:</label>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+            />
+          </div>
+          {/* <div className="form-group">
           <label>Status:</label>
           <input
             type="checkbox"
@@ -164,11 +172,15 @@ function AppointmentPage() {
             onChange={handleChange}
           />
         </div> */}
-        <button type="submit" className="btn btn-primary">
-          Make Appointment
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="btn btn-primary">
+            Make Appointment
+          </button>
+        </form>
+      </div>
+      <div>
+        <Footer />
+      </div>
+    </>
   );
 }
 
