@@ -5,14 +5,25 @@ import "./AdminHeader.css";
 import { Link } from "react-router-dom";
 
 const AdminHeader = () => {
-  const [data, setData] = useState([]);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://127.0.0.1:8000/technician/");
-      const data = await response.json();
-      setData(data);
-      console.log(data);
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await fetch(
+          "http://127.0.0.1:8000/technician/profile",
+          {
+            headers: {
+              Authorization: `JWT ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setEmail(data.email);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchData();
   }, []);
@@ -73,9 +84,7 @@ const AdminHeader = () => {
                 alt="Ryan Taylor"
               />
             </span>
-            <span className="user-email">
-             Welcome: {data.length > 0 && data[0].email}
-            </span>
+            <span className="user-email">Welcome: {email}</span>
           </a>
           <div className="dropdown-menu">
             <div className="user-header">

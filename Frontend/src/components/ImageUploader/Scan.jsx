@@ -31,8 +31,14 @@ const Scan = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const Token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/"
+          "http://127.0.0.1:8000/clinical_record/technician",
+          {
+            headers: {
+              Authorization: `JWT ${Token}`,
+            },
+          }
         );
         const data = response.data;
         setProfileData(data);
@@ -50,13 +56,10 @@ const Scan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/machine-learning-retrieve/", 
-          {headers: 
-            { Authorization: `JWT ${token}`
-            }
-          }
+          "http://127.0.0.1:8000/machine-learning-retrieve/",
+          { headers: { Authorization: `JWT ${token}` } }
         );
         const data = response.data;
         setData(data);
@@ -204,7 +207,7 @@ const Scan = () => {
             borderRadius: "5px",
             cursor: "pointer",
             // marginTop: "20px",
-            marginLeft:'750px',
+            marginLeft: "750px",
             // float: "right", // Float the button to the right
           }}
           onClick={handleToggleTable}

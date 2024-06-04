@@ -97,7 +97,7 @@ const AdminAppointments = () => {
                   {moment(appointment.appointment_date).format("h:mm A")}
                 </td>
                 <td>
-                  <Link to={`/admin/appointments/${appointment.id}`}>
+                  <Link to={`/dashboard/appointments/${appointment.id}`}>
                     <Button type="primary" icon={<FaEye />} size="small">
                       View
                     </Button>
