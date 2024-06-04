@@ -115,9 +115,14 @@ const DoctorProfileExperienceUpdate = async (formField) => {
 
 const PatientProfile = async (formField) => {
   try {
+    const token = localStorage.getItem("accessToken");
     const response = await axios.post(
       "http://127.0.0.1:8000/patient/",
-      formField
+      formField,{
+            headers: {
+              Authorization: `JWT ${token}`,
+            }
+          }
     );
     return response.data;
   } catch (error) {

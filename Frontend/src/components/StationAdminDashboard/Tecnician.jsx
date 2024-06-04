@@ -23,7 +23,7 @@ const StationAdmin = () => {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://127.0.0.1:8000/technician/${decoded.user_id}/`,
+      'http://127.0.0.1:8000/technician/profile',
 
         {
           headers: {
@@ -83,7 +83,7 @@ const StationAdmin = () => {
       // Make a PUT request to update the technician data
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://127.0.0.1:8000/technician/${decoded.user_id}/`,
+        'http://127.0.0.1:8000/technician/profile',
 
         {
           method: "PUT",

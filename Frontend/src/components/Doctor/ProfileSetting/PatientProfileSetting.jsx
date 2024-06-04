@@ -62,10 +62,15 @@ const PatientProfileSetting = ({ data }) => {
     // Define an async function to fetch data
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('accessToken')
        
         // Make the HTTP request using Axios
         const response = await axios.get(
-          'http://127.0.0.1:8000/patient/'
+          'http://127.0.0.1:8000/patient/',{
+            headers: {
+              Authorization: `JWT ${token}`,
+            }
+          }
         );
         // Extract the data from the response
         const data = response.data;
