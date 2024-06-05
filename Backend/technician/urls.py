@@ -16,9 +16,11 @@ urlpatterns = [
     path('send_email', views.send_registration_email),
     path('clinical_record/technician',
          views.ClinicalRecordViewByTechnician.as_view(), name='clinical_record-technician'),
+path('patient/technician', views.PatientViewSetByTechnicain.as_view(), name='patient-technician'),
     path('technician/profile',
          views.TechnicianProfileViewSet.as_view(), name='technician-profile'),
     path('clinical_record/specialist',
          views.SpecialistClinicalRecordAPIView.as_view(), name='specialist-clinical-record'),
+    path('machine_learning_test', views.machine_learning_test, name='machine-learning-test')
 
 ]

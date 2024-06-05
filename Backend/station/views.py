@@ -9,7 +9,7 @@ from rest_framework import status
 
 
 class StationViewSet(ModelViewSet):
-    queryset = Station.objects.all()
+    queryset = Station.objects.all().order_by('-created_at')
     serializer_class = StationSerializer
 
     @action(detail=False, methods=['GET', 'PUT'])
