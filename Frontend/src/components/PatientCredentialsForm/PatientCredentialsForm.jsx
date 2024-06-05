@@ -15,7 +15,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import "./PatientCredentialsForm.css";
 
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -23,26 +23,28 @@ const { Option } = Select;
 const PatientCredentialsForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [profileData, setProfileData] = useState(null);
-  const [clinicalData, setClinicalData]=useState(null)
+  const [clinicalData, setClinicalData] = useState(null);
 
   const [formData, setFormData] = useState({
     pregnancy_condition: false, // Default value set to false
   });
   const [isNextDisabled, setIsNextDisabled] = useState(true);
   const [form] = Form.useForm();
+  const navigate=useNavigate()
 
   useEffect(() => {
     // Define an async function to fetch data
     const fetchData = async () => {
       try {
-      const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/patient",
+          "http://127.0.0.1:8000/patient/technician",
           {
             headers: {
               Authorization: `JWT ${token}`,
             },
-          })
+          }
+        );
         const data = response.data;
         // Set the fetched data to the state
         setProfileData(data);
@@ -78,40 +80,42 @@ const PatientCredentialsForm = () => {
       );
       message.success("clinical record  submitted successfully!");
       // Handle response if needed
+        navigate(`/admin/physician/${response.data.id}`);
     } catch (error) {
       console.error("Failed to submit form:", error);
       message.error("A clinical record for this patient already exists", error);
     }
   };
- useEffect(() => {
-   // Define an async function to fetch data
-   const fetchData = async () => {
-     try {
-       const token = localStorage.getItem("accessToken");
-       const response = await axios.get("http://127.0.0.1:8000/clinical_record/", {
-         headers: {
-           Authorization: `JWT ${token}`,
-         },
-       });
-       const data = response.data;
-       // Set the fetched data to the state
-       setClinicalData(data);
-       // Log the data to the console
-       console.log(data);
-     } catch (error) {
-       console.log(error);
-       // Log any errors to the console
-       console.error("There was a problem fetching the data:", error.message);
-     }
-   };
+  useEffect(() => {
+    // Define an async function to fetch data
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/clinical_record/",
+          {
+            headers: {
+              Authorization: `JWT ${token}`,
+            },
+          }
+        );
+        const data = response.data;
+        // Set the fetched data to the state
+        setClinicalData(data);
+        // Log the data to the console
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        // Log any errors to the console
+        console.error("There was a problem fetching the data:", error.message);
+      }
+    };
 
-   // Call the async function to fetch data when the component mounts
-   fetchData();
-   // eslint-disable-next-line react-hooks/exhaustive-deps
- }, []); // E
- console.log(clinicalData);
-
-
+    // Call the async function to fetch data when the component mounts
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // E
+  console.log(clinicalData);
 
   const nextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -315,16 +319,13 @@ const PatientCredentialsForm = () => {
           <div> </div>
         </Form>
       </div>
-      <div className="three">
+      {/* <div className="three">
         {currentStep === 1 && (
           <div className="three-buttons">
             <h6>use one of these</h6>
 
             {clinicalData?.map((clinical_record) => (
-              <Option
-                key={clinical_record.id}
-             
-              ></Option>
+              <Option key={clinical_record.id}></Option>
             ))}
             <div>
               <Link to="/admin/physician/">
@@ -351,7 +352,7 @@ const PatientCredentialsForm = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

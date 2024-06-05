@@ -145,12 +145,12 @@ class MachineLearningModelCreateViewSet(mixins.CreateModelMixin, mixins.UpdateMo
             return Response(response_data, status=status.HTTP_201_CREATED, headers=header)
 
         return Response("The request has some error", status=status.HTTP_400_BAD_REQUEST)
-
+ 
 
 @api_view(['POST'])
 def machine_learning_test(request):
     image = request.FILES.get('image')
-    disease_type = request.data.get('type')
+    disease_type = request.data.get('diseaseType')
     if disease_type == 'E':
         result, accuracy = ml.predict_with_eye_model(image)
 
@@ -158,9 +158,10 @@ def machine_learning_test(request):
         result, accuracy = ml.predict_with_skin_model(image)
 
     else:
-        return Response("Invalid image type or undefined type or/and Image!", status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(disease_type, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'result': result, 'accuracy': accuracy, 'image': image}, status=status.HTTP_202_ACCEPTED)
+    return Response({'result': result, 'accuracy': accuracy}, status=status.HTTP_202_ACCEPTED)
 
 
 
