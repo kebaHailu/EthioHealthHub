@@ -10,6 +10,7 @@ import PatientCredentialsForm from "../../PatientCredentialsForm/PatientCredenti
 import AdminLayout from "../../Admin/AdminLayout/AdminLayout";
 import loginService from "../../../service/auth.service";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const { Step } = Steps;
 
@@ -22,6 +23,11 @@ const PatientProfileSetting = ({ data }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const[profileData,setProfileData]=useState(null)
+  const token = localStorage.getItem("accessToken");
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.user_id);
+
 
   const [formField, setFormField] = useState({
     first_name: "",

@@ -34,9 +34,14 @@ const PatientCredentialsForm = () => {
     // Define an async function to fetch data
     const fetchData = async () => {
       try {
-        // Make the HTTP request using Axios
-        const response = await axios.get("http://127.0.0.1:8000/patient/");
-        // Extract the data from the response
+      const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/clinical_record/technician",
+          {
+            headers: {
+              Authorization: `JWT ${token}`,
+            },
+          })
         const data = response.data;
         // Set the fetched data to the state
         setProfileData(data);
@@ -122,9 +127,13 @@ const PatientCredentialsForm = () => {
                   ]}
                 >
                   <Select placeholder="Select a patient">
-                    {profileData?.map((patient) => (
-                      <Option key={patient.id} value={patient.id}>
-                        {patient.first_name} {patient.last_name}
+                    {profileData?.map((clinical_record) => (
+                      <Option
+                        key={clinical_record.id}
+                        value={clinical_record.id}
+                      >
+                        {clinical_record.patient.first_name}{" "}
+                        {clinical_record.patient.last_name}
                       </Option>
                     ))}
                   </Select>

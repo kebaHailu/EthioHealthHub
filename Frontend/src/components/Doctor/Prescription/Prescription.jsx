@@ -25,7 +25,15 @@ const Prescription = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/prescription/");
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/prescription/specialist",
+          {
+            headers: {
+              Authorization: `JWT ${token}`,
+            },
+          }
+        );
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

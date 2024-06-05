@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { message, Select } from "antd";
+import { message, Select, Modal, Button } from "antd";
 import Header from "../Shared/Header/Header";
 import axios from "axios";
 
@@ -10,6 +10,9 @@ const Scan = () => {
   const [error, setError] = useState(null);
   const [Data, setData] = useState([]);
   const [formData, setFormData] = useState({ clinical_record: null });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [tableVisible, setTableVisible] = useState(false); // State to manage table visibility
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -17,10 +20,10 @@ const Scan = () => {
     if (selectedFile && allowedTypes.includes(selectedFile.type)) {
       setFile(selectedFile);
       setError(null);
-      setPreviewUrl(URL.createObjectURL(selectedFile)); // Create preview URL
+      setPreviewUrl(URL.createObjectURL(selectedFile));
     } else {
       setFile(null);
-      setPreviewUrl(null); // Clear preview URL
+      setPreviewUrl(null);
       setError("Please select a valid scan image (JPEG or PNG).");
     }
   };
@@ -28,8 +31,14 @@ const Scan = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const Token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/"
+          "http://127.0.0.1:8000/clinical_record/technician",
+          {
+            headers: {
+              Authorization: `JWT ${Token}`,
+            },
+          }
         );
         const data = response.data;
         setProfileData(data);
@@ -47,39 +56,21 @@ const Scan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/machine-learning-retrieve/", 
-          {headers: 
-            { Authorization: `JWT ${token}`
-            }
-          }
+          "http://127.0.0.1:8000/machine-learning-retrieve/",
+          { headers: { Authorization: `JWT ${token}` } }
         );
         const data = response.data;
         setData(data);
         console.log(data);
       } catch (error) {
-        console.error(
-          "There was a problem fetching the profile data:",
-          error.message
-        );
+        console.error("There was a problem fetching the data:", error.message);
       }
     };
 
     fetchData();
   }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:8000/machine-learning/");
-  //     const result = await response.json();
-
-  //     setData(result);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-
-  // };
 
   const handleUpload = async () => {
     if (file && formData.clinical_record) {
@@ -97,12 +88,20 @@ const Scan = () => {
         );
 
         if (response.ok) {
+          const responseData = await response.json();
           message.success("Image uploaded successfully!");
-
           setFile(null);
-          setPreviewUrl(null); // Clear preview URL
+          setPreviewUrl(null);
           setError(null);
-          // fetchData(); // Fetch data after successful upload
+
+          // Update modal data and show modal
+          setModalData({
+            result: responseData.result,
+            accuracy: responseData.accuracy,
+            imageUrl: previewUrl,
+            patientName: `${responseData.patient.first_name} ${responseData.patient.last_name}`,
+          });
+          setModalVisible(true);
         } else {
           const errorData = await response.json();
           console.error("Upload failed:", errorData);
@@ -114,6 +113,10 @@ const Scan = () => {
     } else {
       setError("Please select an image and clinical record to upload.");
     }
+  };
+
+  const handleToggleTable = () => {
+    setTableVisible(!tableVisible);
   };
 
   return (
@@ -195,115 +198,154 @@ const Scan = () => {
         >
           Upload
         </button>
-        {Data.length > 0 && (
+        <Button
+          style={{
+            padding: "2px 20px",
+            backgroundColor: "#28a745",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            // marginTop: "20px",
+            marginLeft: "750px",
+            // float: "right", // Float the button to the right
+          }}
+          onClick={handleToggleTable}
+        >
+          {tableVisible ? "Hide Results" : "Show  previous records"}
+        </Button>
+        {tableVisible && Data.length > 0 && (
           <div style={{ marginTop: "20px" }}>
             <h3>Data from server:</h3>
-            <ul>
-              {Data.map((item, index) => (
-                <li
-                  key={index}
-                  style={{ marginBottom: "20px", textAlign: "left" }}
-                >
-                  <div>
-                    <strong>Result:</strong> {item.result}
-                  </div>
-                  <div>
-                    <strong>Accuracy:</strong> {item.accuracy}%
-                  </div>
-                  <div>
-                    <strong>Clinical Record ID:</strong>{" "}
-                    {item.clinical_record_id}
-                  </div>
-                  {item.patient && (
-                    <>
-                      <div>
-                        <strong>Patient Name:</strong> {item.patient.first_name}{" "}
-                        {item.patient.last_name}
-                      </div>
-                      <div>
-                        <strong>Patient Age:</strong> {item.patient.age}
-                      </div>
-                      <div>
-                        <strong>Patient Gender:</strong> {item.patient.gender}
-                      </div>
-                      <div>
-                        <strong>Patient Phone Number:</strong>{" "}
-                        {item.patient.phone_number}
-                      </div>
-                      <div>
-                        <strong>Patient Email:</strong> {item.patient.email}
-                      </div>
-                      <div>
-                        <strong>Patient City:</strong> {item.patient.city}
-                      </div>
-                      <div>
-                        <strong>Patient State:</strong> {item.patient.state}
-                      </div>
-                      <div>
-                        <strong>Patient Country:</strong> {item.patient.country}
-                      </div>
-                    </>
-                  )}
-                  {item.clinical_record && (
-                    <>
-                      <div>
-                        <strong>Family History:</strong>{" "}
-                        {item.clinical_record.family_history}
-                      </div>
-                      <div>
-                        <strong>Blood Type:</strong>{" "}
-                        {item.clinical_record.blood_type}
-                      </div>
-                      <div>
-                        <strong>Pregnancy Condition:</strong>{" "}
-                        {item.clinical_record.pregnancy_condition
-                          ? "Yes"
-                          : "No"}
-                      </div>
-                      <div>
-                        <strong>Symptoms:</strong>{" "}
-                        {item.clinical_record.symptoms}
-                      </div>
-                      <div>
-                        <strong>Symptoms Description:</strong>{" "}
-                        {item.clinical_record.symptoms_description}
-                      </div>
-                      <div>
-                        <strong>Disease Type:</strong>{" "}
-                        {item.clinical_record.disease_type}
-                      </div>
-                      <div>
-                        <strong>Disease Description:</strong>{" "}
-                        {item.clinical_record.disease_description}
-                      </div>
-                      <div>
-                        <strong>Follow Up Information:</strong>{" "}
-                        {item.clinical_record.follow_up_information}
-                      </div>
-                      <div>
-                        <strong>Allergies:</strong>{" "}
-                        {item.clinical_record.allergies}
-                      </div>
-                      <div>
-                        <strong>Vaccination Status:</strong>{" "}
-                        {item.clinical_record.vaccination_status}
-                      </div>
-                      <div>
-                        <strong>Sugar Level:</strong>{" "}
-                        {item.clinical_record.sugar_level}
-                      </div>
-                      <div>
-                        <strong>Blood Pressure:</strong>{" "}
-                        {item.clinical_record.blood_pressure}
-                      </div>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Result
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Accuracy
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Patient Name
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Patient Age
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Patient Gender
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Blood Type
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Symptoms
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Symptoms Description
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Disease Type
+                  </th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    Disease Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Data.map((item, index) => (
+                  <tr key={index}>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.result}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.accuracy}%
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.patient &&
+                        `${item.patient.first_name} ${item.patient.last_name}`}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.patient && item.patient.age}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.patient && item.patient.gender}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.clinical_record && item.clinical_record.blood_type}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.clinical_record && item.clinical_record.symptoms}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.clinical_record &&
+                        item.clinical_record.symptoms_description}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.clinical_record &&
+                        item.clinical_record.disease_type}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {item.clinical_record &&
+                        item.clinical_record.disease_description}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
+      <Modal
+        title="Upload Result"
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+        bodyStyle={{ backgroundColor: "#f7f7f7" }} // Light background for the modal body
+      >
+        {modalData && (
+          <div>
+            <p
+              style={{
+                backgroundColor: "#d4edda",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              Result: {modalData.result}
+            </p>
+            <p
+              style={{
+                backgroundColor: "#cce5ff",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              Accuracy: {modalData.accuracy}%
+            </p>
+            <p
+              style={{
+                backgroundColor: "#ffeeba",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              Patient Name: {modalData.patientName}
+            </p>
+            {modalData.imageUrl && (
+              <img
+                src={modalData.imageUrl}
+                alt="Uploaded"
+                style={{
+                  maxWidth: "100%",
+                  borderRadius: "5px",
+                  marginTop: "10px",
+                }}
+              />
+            )}
+          </div>
+        )}
+      </Modal>
     </>
   );
 };

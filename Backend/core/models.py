@@ -27,7 +27,7 @@ class Prescription(models.Model):
     prescription_medicine = models.CharField(max_length=300)
     follow_update = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
     archived = models.BooleanField(default=False)
 
 

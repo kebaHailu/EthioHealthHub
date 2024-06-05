@@ -41,8 +41,14 @@ function AppointmentPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const Token= localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/"
+          "http://127.0.0.1:8000/clinical_record/technician",
+          {
+            headers: {
+              Authorization: `JWT ${Token}`,
+            },
+          }
         );
         const data = response.data;
         setProfileData(data);

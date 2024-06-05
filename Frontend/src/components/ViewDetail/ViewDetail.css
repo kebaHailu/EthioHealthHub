@@ -1,19 +1,41 @@
 .view-detail-container {
-  display: flex;
-  flex-wrap: wrap;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-.section {
-  flex: 1;
-  margin: 10px;
-}
-
-.clinical-record {
+.view-detail-flex {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
 }
 
-.patient-details, .specialist-details, .appointment-details {
-  display: flex;
-  flex-direction: column;
+.view-detail-section {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.view-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.view-detail-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.view-detail-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.view-detail-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.view-detail-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
 }
