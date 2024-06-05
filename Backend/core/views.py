@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 from .models import Appointment, Prescription
-from technician.models import Patient, Technician, ClinicalRecord
+from technician.models import Patient, Technician, ClinicalRecord, MachineLearningModel
 from specialist.models import Specialist
 from station.models import Station
 from datetime import datetime
@@ -105,6 +105,20 @@ class AppointmentDetailAPIView(generics.RetrieveAPIView):
     serializer_class = AppointmentDetailSerializer
     queryset = Appointment.objects.all().order_by('-created_at')
     lookup_field = 'id'
+
+    def get_object(self):
+        appointment = super().get_object()
+        clinical_record = appointment.clinical_record
+        machine_learning_data = MachineLearningModel.objects.filter(clinical_record=clinical_record).values_list('result', flat=True)
+        appointment.machine_learning_data = list(machine_learning_data)
+        return appointment
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        serialized_data = serializer.data
+        serialized_data['machine_learning_data'] = instance.machine_learning_data
+        return Response(serialized_data)
 
 
 # Dashboards

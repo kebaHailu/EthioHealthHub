@@ -7,7 +7,6 @@ class Appointment(models.Model):
     clinical_record = models.OneToOneField(ClinicalRecord, on_delete=models.DO_NOTHING)
     technician = models.ForeignKey(Technician, on_delete=models.DO_NOTHING, blank=True)
     specialist = models.ForeignKey(Specialist, on_delete=models.DO_NOTHING)
-    machine_learning = models.ForeignKey(MachineLearningModel, on_delete=models.DO_NOTHING, null=True, default=None)
     appointment_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
