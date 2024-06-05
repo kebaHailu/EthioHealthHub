@@ -19,7 +19,6 @@ const AdminSidebar = () => {
     };
   return (
     <>
-    
       <div className="sidebar" id="sidebar">
         <div className="sidebar-inner slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
@@ -65,6 +64,17 @@ const AdminSidebar = () => {
                   <FaUserAstronaut /> <span>Add Patient</span>
                 </Link>
               </li>
+              <li>
+                <Link to={"/scan"}>
+                  <FaUserAstronaut /> <span>Upload Image </span>
+                </Link>
+              </li>
+              <li>
+                <Link to={"/doctors"}>
+                  <FaUserAstronaut /> <span>Make Appointment </span>
+                </Link>
+              </li>
+
               <li>
                 <NavLink to={"/"} onClick={handleLogout}>
                   <FaSignOutAlt className="icon" />

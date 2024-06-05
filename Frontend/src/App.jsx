@@ -41,7 +41,6 @@ import Physician from "./components/Physician/Physician";
 
 function App() {
   return (
-
     <div>
       <ToastContainer />
 
@@ -176,6 +175,12 @@ function App() {
         />
         <Route
           path="/admin/physician"
+          element={
+            <PrivateAuthRoute roles={["HO"]}>{<Physician />}</PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/physician:id"
           element={
             <PrivateAuthRoute roles={["HO"]}>{<Physician />}</PrivateAuthRoute>
           }

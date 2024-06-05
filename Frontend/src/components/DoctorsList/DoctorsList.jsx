@@ -55,8 +55,8 @@ const DoctorsList = () => {
                 <strong>Address:</strong> {doctor.clinic_address}
               </p>
               <p>
-                <strong>Experience: </strong>
-                {doctor.experience} years
+                <strong>Hospital Name: </strong>
+                {doctor.clinic_name} 
               </p>
             </div>
           </div>

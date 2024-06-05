@@ -4,11 +4,10 @@ import "react-multi-carousel/lib/styles.css";
 import "./Testimonial.css";
 import kibrom from "../../../assets/kibrom.jpg";
 import gebby from "../../../assets/gebby.jpg";
-// import lidiya from "../../../assets/lidiya.jpg";
+import lidiya from "../../../assets/lidiyas.jpg";
 import kira from "../../../assets/kira.jpg";
 import eshetu from "../../../assets/eshetu.jpg";
 import Profile from "../../../assets/Profile.jpg";
-
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -61,7 +60,7 @@ const Testimonial = () => {
 
         <div data-aos="zoom-in">
           <div className="testimonial-card">
-            <img src={Profile} alt="lidiya" />
+            <img src={lidiya} alt="lidiya" />
             <h3 className="text-lg pb-6">Lidiya Abrham</h3>
             <p className="text-base text-neutral-950">Backend</p>
           </div>

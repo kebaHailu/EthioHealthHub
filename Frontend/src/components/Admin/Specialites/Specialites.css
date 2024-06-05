@@ -1,25 +1,24 @@
 .my-specialists-table {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
 }
 
 .my-specialists-table th,
 .my-specialists-table td {
-  padding: 12px;
+  padding: 7px;
   border: 1px solid #ddd;
 }
 
 .my-specialists-table th {
   background-color: #f2f2f2;
   text-align: left;
-  padding-left: 16px;
-  padding-right: 16px;
+
 }
 
-.my-specialists-table th:first-child,
+/* .my-specialists-table th:first-child,
 .my-specialists-table td:first-child {
   padding-left: 16px;
-}
+} */
 
 .my-specialists-table th:last-child,
 .my-specialists-table td:last-child {
