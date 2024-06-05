@@ -16,9 +16,15 @@ const DashboardPage = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/"
-        );
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.get(
+        "http://127.0.0.1:8000/clinical_record/specialist",
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
         setData(response.data);
       } catch (error) {
         message.error("Failed to fetch data");

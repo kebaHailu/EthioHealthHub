@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message } from "antd";
-
+import { message, Modal, Button, Form, Input, InputNumber } from "antd";
 import axios from "axios";
 import "./physician.css";
 
@@ -8,8 +7,8 @@ const Physician = () => {
   const [data, setData] = useState(null); // Change initial state to null
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [comments, setComments] = useState({});
-  const [decision, setDecision] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [report, setReport] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,14 +29,40 @@ const Physician = () => {
     fetchData();
   }, []);
 
-  const handleSave = () => {
-    console.log("Message:", decision);
-    message.success("Data saved successfully!");
-    // Implement the logic to save the data (comments and message)
-  };
-
   const handlePrint = () => {
     window.print();
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async (values) => {
+    const { disease_level, result_description, prescription } = values;
+    const postData = {
+      disease_level,
+      result_description,
+      prescription,
+      clinical_record: 5,
+      technician: 25,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/technical_report/",
+        postData
+      );
+      message.success("Technical report submitted successfully!");
+      setReport(response.data);
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("Failed to submit report:", error);
+      message.error("Failed to submit report");
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   if (loading) {
@@ -51,17 +76,18 @@ const Physician = () => {
   if (!data) {
     return <p>No data available</p>;
   }
+
   const handlePrevious = () => {
     window.history.back();
   };
 
   return (
-    <div>
+    <div className="physician-container">
       <h5 style={{ textAlign: "center" }}>Clinical Records Preview</h5>
-      <div style={{ display: "flex" }}>
-        <div style={{ flex: 1, marginLeft: "100px" }}>
+      <div className="physician-content">
+        <div className="physician-info-section">
           <h3>Patient Information</h3>
-          <table>
+          <table className="physician-info-table">
             <tbody>
               <tr>
                 <td>First Name:</td>
@@ -102,9 +128,9 @@ const Physician = () => {
             </tbody>
           </table>
         </div>
-        <div style={{ flex: 1 }}>
-          <h5>Clinical Record</h5>
-          <table>
+        <div className="physician-info-section">
+          <h3>Clinical Record</h3>
+          <table className="physician-info-table">
             <tbody>
               <tr>
                 <td>Family History:</td>
@@ -162,25 +188,77 @@ const Physician = () => {
           </table>
         </div>
       </div>
-      <div>
-        <h5>Local Physcian Decision</h5>
-        <textarea
-          value={decision}
-          onChange={(e) => setDecision(e.target.value)}
-          placeholder="Enter your decision here"
-        />
-      </div>
-      <div>
-        <button className="btn" onClick={handlePrevious}>
-          previous
-        </button>
-        <button className="btn" onClick={handleSave}>
-          Save
-        </button>
-        <button className="btn" onClick={handlePrint}>
+      <div className="physician-button-group">
+        <Button type="primary" onClick={handlePrevious}>
+          Previous
+        </Button>
+        <Button type="primary" onClick={showModal}>
+          Add Your Decision
+        </Button>
+        <Button type="primary" onClick={handlePrint}>
           Print
-        </button>
+        </Button>
       </div>
+
+      <Modal
+        title="Add Your Decision"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form onFinish={handleOk}>
+          <Form.Item
+            label="Disease Level"
+            name="disease_level"
+            rules={[
+              { required: true, message: "Please input the disease level!" },
+            ]}
+          >
+            <InputNumber min={1} max={5} />
+          </Form.Item>
+          <Form.Item
+            label="Result Description"
+            name="result_description"
+            rules={[
+              {
+                required: true,
+                message: "Please input the result description!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Prescription"
+            name="prescription"
+            rules={[
+              { required: true, message: "Please input the prescription!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {report && (
+        <div className="physician-report">
+          <h5>Report</h5>
+          <p>
+            <strong>Disease Level:</strong> {report.disease_level}
+          </p>
+          <p>
+            <strong>Result Description:</strong> {report.result_description}
+          </p>
+          <p>
+            <strong>Prescription:</strong> {report.prescription}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

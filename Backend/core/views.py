@@ -82,8 +82,7 @@ class SpecialistPrescriptionViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        specialist = Specialist.objects.get(user=user)
-        return Prescription.objects.filter(appointment__specialist__user_id=specialist.id)
+        return Prescription.objects.filter(appointment__specialist__user_id=user.id)
 
 
 class SpecialistAppointmentAPIView(generics.ListAPIView):

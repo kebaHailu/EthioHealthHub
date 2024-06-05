@@ -13,6 +13,29 @@ const AdminDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [clinicalRecords, setClinicalRecords] = useState([]);
 
+  const [dashboardData, setDashboardData] = useState({
+    total_specialist: 0,
+    total_patients: 0,
+    total_appointments: 0,
+    total_stations: 0,
+  });
+
+   useEffect(() => {
+     const token = localStorage.getItem("accessToken");
+     axios
+       .get("http://127.0.0.1:8000/technician/dashboard", {
+         headers: {
+           Authorization: `JWT ${token}`,
+         },
+       })
+       .then((response) => {
+         setDashboardData(response.data);
+       })
+       .catch((error) => {
+         console.error("Error fetching dashboard data:", error);
+       });
+   }, []);
+
   useEffect(() => {
     // Fetch doctors data
     axios
@@ -24,17 +47,7 @@ const AdminDashboard = () => {
         console.error("Error fetching doctors data:", error);
       });
 
-    // Fetch patients data
-    // axios
-    //   .get("http://127.0.0.1:8000/patient/")
-    //   .then((response) => {
-    //     setPatients(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching patients data:", error);
-    //   });
-
-    // Fetch appointments data
+   
     axios
       .get("http://127.0.0.1:8000/appointment/")
       .then((response) => {
@@ -63,8 +76,12 @@ const AdminDashboard = () => {
   };
 
   const getPatientName = (id) => {
-    const clinicalRecord = clinicalRecords.find((clinicalRecord) => clinicalRecord.id === id);
-    return clinicalRecord ? `${clinicalRecord.patient.first_name} ${clinicalRecord.patient.last_name}` : "Unknown";
+    const clinicalRecord = clinicalRecords.find(
+      (clinicalRecord) => clinicalRecord.id === id
+    );
+    return clinicalRecord
+      ? `${clinicalRecord.patient.first_name} ${clinicalRecord.patient.last_name}`
+      : "Unknown";
   };
 
   const getSpecialization = (id) => {
@@ -100,7 +117,9 @@ const AdminDashboard = () => {
                     <i className="fe fe-users"></i>
                   </span>
                   <div className="dash-count">
-                    <h3>{doctors.length}</h3>
+                    <div className="dash-count">
+                      <h3>{dashboardData.total_specialist}</h3>
+                    </div>
                   </div>
                 </div>
                 <div className="dash-widget-info">
@@ -120,7 +139,9 @@ const AdminDashboard = () => {
                     <i className="fe fe-credit-card"></i>
                   </span>
                   <div className="dash-count">
-                    <h3>{clinicalRecords.length}</h3>
+                    <div className="dash-count">
+                      <h3>{dashboardData.total_patients}</h3>
+                    </div>
                   </div>
                 </div>
                 <div className="dash-widget-info">
@@ -139,9 +160,7 @@ const AdminDashboard = () => {
                   <span className="dash-widget-icon text-danger border-danger">
                     <i className="fe fe-money"></i>
                   </span>
-                  <div className="dash-count">
-                    <h3>{appointments.length}</h3>
-                  </div>
+                  <h3>{dashboardData.total_appointments}</h3>
                 </div>
                 <div className="dash-widget-info">
                   <h6 className="text-muted">Appointments</h6>
@@ -159,9 +178,7 @@ const AdminDashboard = () => {
                   <span className="dash-widget-icon text-warning border-warning">
                     <i className="fe fe-folder"></i>
                   </span>
-                  <div className="dash-count">
-                    <h3>8</h3>
-                  </div>
+                  <h3>{dashboardData.total_stations}</h3>
                 </div>
                 <div className="dash-widget-info">
                   <h6 className="text-muted">Stations</h6>
@@ -189,7 +206,7 @@ const AdminDashboard = () => {
                         <th>Doctor Name</th>
                         <th>Speciality</th>
                         <th>Gender</th>
-                      
+
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -212,7 +229,7 @@ const AdminDashboard = () => {
                           </td>
                           <td>{doctor.specialization || "N/A"}</td>
                           <td>{doctor.gender}</td>
-                       
+
                           <td>
                             <EditOutlined className="mr-2" />
                             <DeleteOutlined />
@@ -332,11 +349,7 @@ const AdminDashboard = () => {
                               </a>
                               <a href="profile.html">
                                 {getPatientName(appointment.clinicalRecord)}
-
-
-                                
                               </a>
-
                             </h2>
                           </td>
 
@@ -389,3 +402,120 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+// import React, { useEffect, useState } from "react";
+// import AdminLayout from "../AdminLayout/AdminLayout";
+// import userImg from "../../../images/avatar.jpg";
+// import "./Dashboard.css";
+// import { Button } from "antd";
+// import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+// import axios from "axios";
+
+// const AdminDashboard = () => {
+//   const [dashboardData, setDashboardData] = useState({
+//     total_specialist: 0,
+//     total_patients: 0,
+//     total_appointments: 0,
+//     total_stations: 0,
+//   });
+
+//   useEffect(() => {
+//     axios
+//       .get("http://127.0.0.1:8000/technician/dashboard")
+//       .then((response) => {
+//         setDashboardData(response.data);
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching dashboard data:", error);
+//       });
+//   }, []);
+
+//   return (
+//     <AdminLayout>
+//       <div className="row">
+//         <div className="col-xl-3 col-sm-6 col-12">
+//           <div className="card">
+//             <div className="card-body">
+//               <div className="dash-widget-header">
+//                 <span className="dash-widget-icon text-primary border-primary">
+//                   <i className="fe fe-users"></i>
+//                 </span>
+//                 <div className="dash-count">
+//                   <h3>{dashboardData.total_specialist}</h3>
+//                 </div>
+//               </div>
+//               <div className="dash-widget-info">
+//                 <h6 className="text-muted">Doctors</h6>
+//                 <div className="progress progress-sm">
+//                   <div className="progress-bar bg-primary w-50"></div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="col-xl-3 col-sm-6 col-12">
+//           <div className="card">
+//             <div className="card-body">
+//               <div className="dash-widget-header">
+//                 <span className="dash-widget-icon text-success">
+//                   <i className="fe fe-credit-card"></i>
+//                 </span>
+//                 <div className="dash-count">
+//                   <h3>{dashboardData.total_patients}</h3>
+//                 </div>
+//               </div>
+//               <div className="dash-widget-info">
+//                 <h6 className="text-muted">Patients</h6>
+//                 <div className="progress progress-sm">
+//                   <div className="progress-bar bg-success w-50"></div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="col-xl-3 col-sm-6 col-12">
+//           <div className="card">
+//             <div className="card-body">
+//               <div className="dash-widget-header">
+//                 <span className="dash-widget-icon text-danger border-danger">
+//                   <i className="fe fe-money"></i>
+//                 </span>
+//                 <div className="dash-count">
+//                   <h3>{dashboardData.total_appointments}</h3>
+//                 </div>
+//               </div>
+//               <div className="dash-widget-info">
+//                 <h6 className="text-muted">Appointments</h6>
+//                 <div className="progress progress-sm">
+//                   <div className="progress-bar bg-danger w-50"></div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="col-xl-3 col-sm-6 col-12">
+//           <div className="card">
+//             <div className="card-body">
+//               <div className="dash-widget-header">
+//                 <span className="dash-widget-icon text-warning border-warning">
+//                   <i className="fe fe-folder"></i>
+//                 </span>
+//                 <div className="dash-count">
+//                   <h3>{dashboardData.total_stations}</h3>
+//                 </div>
+//               </div>
+//               <div className="dash-widget-info">
+//                 <h6 className="text-muted">Stations</h6>
+//                 <div className="progress progress-sm">
+//                   <div className="progress-bar bg-warning w-50"></div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </AdminLayout>
+//   );
+// };
+
+// export default AdminDashboard;
