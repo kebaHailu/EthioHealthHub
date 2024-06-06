@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { message, Select, Modal, Button } from "antd";
 import Header from "../Shared/Header/Header";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Scan = () => {
+   const [, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [profileData, setProfileData] = useState([]);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -77,6 +79,8 @@ const Scan = () => {
       const uploadData = new FormData();
       uploadData.append("image", file);
       uploadData.append("clinical_record", formData.clinical_record);
+       setLoading(true);
+       const toastId = toast.loading("uploading image to the model...");
 
       try {
         const response = await fetch(
@@ -93,6 +97,7 @@ const Scan = () => {
           setFile(null);
           setPreviewUrl(null);
           setError(null);
+         toast.dismiss(toastId);
 
           // Update modal data and show modal
           setModalData({
@@ -109,11 +114,18 @@ const Scan = () => {
         }
       } catch (error) {
         setError("Error uploading image: " + error.message);
+         toast.dismiss(toastId);
       }
     } else {
       setError("Please select an image and clinical record to upload.");
+     
+      setLoading(false);
+   
     }
-  };
+    
+  }
+  
+  ;
 
   const handleToggleTable = () => {
     setTableVisible(!tableVisible);

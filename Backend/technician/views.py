@@ -42,8 +42,17 @@ class PatientViewset(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
 
 
+class PatientViewSetByTechnicain(generics.ListAPIView):
+    serializer_class = PatientSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Patient.objects.filter(technician__user_id=user.id).order_by('-created_at')
+
+
 class ClinicalRecordViewByTechnician(generics.ListAPIView):
     serializer_class = ClinicalRecordSerializer
+
     def get_queryset(self):
         user = self.request.user
         return ClinicalRecord.objects.filter(patient__technician__user_id=user.id).order_by('-created_at')
@@ -55,7 +64,7 @@ class SpecialistClinicalRecordAPIView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         specialist = Specialist.objects.get(user=user)
-        return ClinicalRecord.objects.filter(appointment__specialist_id=specialist.id)
+        return ClinicalRecord.objects.filter(appointment__specialist_id=specialist.id).order_by('-created_at')
 
 class TechnicalReportViewSet(viewsets.ModelViewSet):
     serializer_class = TechnicalReportSerializer
@@ -85,12 +94,13 @@ class MachineLearningModelViewSet(mixins.RetrieveModelMixin, mixins.ListModelMix
         user = self.request.user
         technician = Technician.objects.get(user_id=user.id)
         print(user.id, technician.id)
-        return MachineLearningModel.objects.filter(clinical_record__patient__technician_id=technician.id)
+        return MachineLearningModel.objects.filter(
+            clinical_record__patient__technician_id=technician.id).order_by('-created_at')
 
 
 class MachineLearningModelCreateViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = MachineLearningModelCreateSerializer
-    queryset = MachineLearningModel.objects.all()
+    queryset = MachineLearningModel.objects.all().order_by('-created_at')
 
     def create(self, request, *args, **kwargs):
 
@@ -135,6 +145,24 @@ class MachineLearningModelCreateViewSet(mixins.CreateModelMixin, mixins.UpdateMo
             return Response(response_data, status=status.HTTP_201_CREATED, headers=header)
 
         return Response("The request has some error", status=status.HTTP_400_BAD_REQUEST)
+ 
+
+@api_view(['POST'])
+def machine_learning_test(request):
+    image = request.FILES.get('image')
+    disease_type = request.data.get('diseaseType')
+    if disease_type == 'E':
+        result, accuracy = ml.predict_with_eye_model(image)
+
+    elif disease_type == 'S':
+        result, accuracy = ml.predict_with_skin_model(image)
+
+    else:
+        
+        return Response(disease_type, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({'result': result, 'accuracy': accuracy}, status=status.HTTP_202_ACCEPTED)
+
 
 
 def generate_password():

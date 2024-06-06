@@ -67,6 +67,11 @@
 .footer-contact-info p i {
 	margin-right: 15px;
 }
+.footer-bottom{
+	background-color: rgb(25, 102, 123);
+}
+
+
 .footer .footer-bottom .copyright {
 	border-top: 1px solid #16a629;
 	padding: 30px 0;

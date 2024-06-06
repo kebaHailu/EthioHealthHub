@@ -37,11 +37,11 @@ import UnAuthorized from "./UnAuthorized/UnAuthrized";
 import PrivateAuthRoute from "./components/Auth/PrivateAuthRoute";
 
 import Physician from "./components/Physician/Physician";
+import DoctorScan from "./components/ImageUploader/DoctorScan";
 //hello
 
 function App() {
   return (
-
     <div>
       <ToastContainer />
 
@@ -155,6 +155,14 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        <Route
+          path="/dashboard/scan"
+          element={
+            <PrivateAuthRoute roles={["HO"]}>
+              <DoctorScan />
+            </PrivateAuthRoute>
+          }
+        />
 
         {/* Admin Routes */}
         <Route
@@ -180,6 +188,12 @@ function App() {
             <PrivateAuthRoute roles={["HO"]}>{<Physician />}</PrivateAuthRoute>
           }
         />
+        <Route
+          path="/admin/physician/:id"
+          element={
+            <PrivateAuthRoute roles={["HO"]}>{<Physician />}</PrivateAuthRoute>
+          }
+        />
 
         <Route
           path="/admin/appointments"
@@ -189,6 +203,7 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+
         <Route
           path="/admin/patients"
           element={

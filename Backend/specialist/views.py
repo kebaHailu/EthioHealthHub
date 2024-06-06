@@ -18,7 +18,7 @@ from .serializers import SpecialistSerializer
 
 
 class SpecialistViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
-    queryset = Specialist.objects.all()
+    queryset = Specialist.objects.all().order_by('-user__date_joined')
     serializer_class = SpecialistSerializer
 
     # def perform_create(self, serializer):

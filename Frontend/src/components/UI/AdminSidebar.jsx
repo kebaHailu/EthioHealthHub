@@ -5,21 +5,22 @@ import { FaListUl } from "react-icons/fa";
 import { FaPeopleArrows } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { FaUserAstronaut, FaSignOutAlt } from "react-icons/fa";
+import { IoMdPersonAdd } from "react-icons/io";
+import { FaUpload } from "react-icons/fa";
+import { CiCirclePlus } from "react-icons/ci";
+
 import { FaRegStar } from "react-icons/fa";
 import { FaBriefcase } from "react-icons/fa";
-import { Link,NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const AdminSidebar = () => {
-
-
-    const handleLogout = () => {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("user_role");
-      navigate("/");
-    };
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user_role");
+    navigate("/");
+  };
   return (
     <>
-    
       <div className="sidebar" id="sidebar">
         <div className="sidebar-inner slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
@@ -62,9 +63,20 @@ const AdminSidebar = () => {
               <li></li>
               <li>
                 <Link to={"/admin/addpatient"}>
-                  <FaUserAstronaut /> <span>Add Patient</span>
+                  <IoMdPersonAdd /> <span>Add Patient</span>
                 </Link>
               </li>
+              <li>
+                <Link to={"/scan"}>
+                  <FaUpload /> <span>Upload Image </span>
+                </Link>
+              </li>
+              <li>
+                <Link to={"/doctors"}>
+                  <CiCirclePlus /> <span>Make Appointment </span>
+                </Link>
+              </li>
+
               <li>
                 <NavLink to={"/"} onClick={handleLogout}>
                   <FaSignOutAlt className="icon" />

@@ -73,32 +73,27 @@ const Stations = () => {
           />
         </div>
         <div className="stations-list">
-          <Row gutter={[20, 20]}>
-            {displayedStations.map((station) => (
-              <Col key={station.id} >
-                <div className="station-card">
-                  <img src={station.cover_image} alt={station.name} />
-                  <div className="station-info">
-                    <h3>{station?.name}</h3>
-                    <p>{station?.location}</p>
-                   
-                    <p>{station?.description}</p>
-                  </div>
-                  <div className="station-buttons">
-                    <Button
-                      className="view-details-button"
-                      onClick={() => handleViewDetails(station)}
-                    >
-                      View Details
-                    </Button>
-                    <Button className="view-details-button">
-                      Make Appointment
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            ))}
-          </Row>
+          {displayedStations.map((station) => (
+            <div key={station.id} className="station-card">
+              <img src={station.cover_image} alt={station.name} />
+              <div className="station-info">
+                <h3>{station?.name}</h3>
+                <p>{station?.location}</p>
+                <p>{station?.description}</p>
+              </div>
+              <div className="station-buttons">
+                <Button
+                  className="view-details-button"
+                  onClick={() => handleViewDetails(station)}
+                >
+                  View Details
+                </Button>
+                <Button className="view-details-button">
+                  Make Appointment
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Modal to display station details */}

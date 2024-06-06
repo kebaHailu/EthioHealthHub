@@ -5,9 +5,6 @@ from django.conf import settings
 import numpy as np
 import cv2
 
-
-
-
 def preprocess_image_for_eye(image):
     # Resize the image to match the input size required by the model
     image_size = 224
@@ -15,9 +12,6 @@ def preprocess_image_for_eye(image):
     new_image = cv2.resize(new_image, (image_size, image_size))
     new_image = new_image.astype(np.float32)
     return new_image
-
-
-
 def predict_with_eye_model(image):
 
     # access and load the model
@@ -45,9 +39,6 @@ def predict_with_eye_model(image):
         print(f"Class: {class_label}, Probability: {probability}")
 
     return ans, round(top_predictions[0][1]*100, 2)
-
-
-
 #### SKIN ####
 def preprocess_image_for_skin(image):
     # Resize the image to match the input size required by the model

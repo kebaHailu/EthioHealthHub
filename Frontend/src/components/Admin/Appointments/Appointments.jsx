@@ -67,7 +67,7 @@ const AdminAppointments = () => {
             <th>Specialization Area</th>
             <th>Patient Name</th>
 
-            <th>Gender</th>
+            <th> Patinet Gender</th>
             {/* <th>Station Name</th> */}
             <th>Technician Name</th>
 

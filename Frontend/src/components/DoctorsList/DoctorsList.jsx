@@ -55,8 +55,8 @@ const DoctorsList = () => {
                 <strong>Address:</strong> {doctor.clinic_address}
               </p>
               <p>
-                <strong>Experience: </strong>
-                {doctor.experience} years
+                <strong>Hospital Name: </strong>
+                {doctor.clinic_name}
               </p>
             </div>
           </div>
@@ -88,22 +88,40 @@ const DoctorsList = () => {
                 <h3>
                   {selectedDoctor.first_name} {selectedDoctor.last_name}
                 </h3>
-                <p>Email: {selectedDoctor.email}</p>
-                <p>Phone: {selectedDoctor.phone}</p>
-                <p>Date of Birth: {selectedDoctor.date_of_birth}</p>
-                <p>Gender: {selectedDoctor.gender}</p>
-                <p>About Me: {selectedDoctor.about_me}</p>
-                <p>Service: {selectedDoctor.service}</p>
-                <p>Specialization: {selectedDoctor.specialization}</p>
                 <p>
-                  License Verified:{" "}
-                  {selectedDoctor.is_license_verified ? "Yes" : "No"}
+                  <strong>Email:</strong> {selectedDoctor.email}
                 </p>
-                <p>Clinic Name: {selectedDoctor.clinic_name}</p>
                 <p>
-                  Full Address: {selectedDoctor.clinic_address},{" "}
-                  {selectedDoctor.city}, {selectedDoctor.state},{" "}
-                  {selectedDoctor.country}
+                  <strong>Phone:</strong> {selectedDoctor.phone}
+                </p>
+                <p>
+                  <strong>Date of Birth:</strong> {selectedDoctor.date_of_birth}
+                </p>
+                <p>
+                  <strong>Gender:</strong> {selectedDoctor.gender}
+                </p>
+                <p>
+                  <strong>About Me:</strong> {selectedDoctor.about_me}
+                </p>
+                <p>
+                  <strong>Service:</strong> {selectedDoctor.service}
+                </p>
+                <p>
+                  <strong>Specialization:</strong>
+                  {selectedDoctor.specialization}
+                </p>
+                <p >
+                  <strong>License Verified:</strong>
+                  {selectedDoctor.is_license_verified ?  "Yes" : "No"}
+                  
+                </p>
+                <p>
+                  <strong>Clinic Name:</strong> {selectedDoctor.clinic_name}
+                </p>
+                <p>
+                  <strong>Full Address: </strong>
+                  {selectedDoctor.clinic_address}, {selectedDoctor.city},{" "}
+                  {selectedDoctor.state}, {selectedDoctor.country}
                 </p>
               </div>
             </div>

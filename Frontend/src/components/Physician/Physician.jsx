@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { message, Modal, Button, Form, Input, InputNumber } from "antd";
 import axios from "axios";
 import "./physician.css";
+import { useParams } from "react-router-dom";
 
 const Physician = () => {
+    const { id } = useParams();
   const [data, setData] = useState(null); // Change initial state to null
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,7 +17,7 @@ const Physician = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/clinical-record/5/"
+          `http://127.0.0.1:8000/clinical-record/${id}/`
         );
         setData(response.data);
       } catch (error) {

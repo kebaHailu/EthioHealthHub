@@ -97,7 +97,7 @@ const Specialites = () => {
                     </th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Verified</th>
+                    <th>Hospital name</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -109,7 +109,7 @@ const Specialites = () => {
                       <td>{data.gender}</td>
                       <td>{data.email}</td>
                       <td>{data.phone}</td>
-                      <td>{data.isVerified ? "Yes" : "No"}</td>
+                      <td>{data.clinic_name}</td>
                       <td>
                         <Button
                           type="primary"

@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 
-const DashboardSidebar = () => {
+const ebar = () => {
   const [profileData, setProfileData] = useState({});
   const navigate = useNavigate();
 
@@ -157,7 +157,7 @@ const DashboardSidebar = () => {
             </li>
 
             <li>
-              <NavLink to={"/scan"} activeClassName="active" end>
+              <NavLink to={"/dashboard/scan"} activeClassName="active" end>
                 <FaLock className="icon" />
                 <span>upload Image</span>
               </NavLink>
@@ -165,6 +165,7 @@ const DashboardSidebar = () => {
 
             <li>
               <NavLink
+              
                 to={"/dashboard/change-password"}
                 activeClassName="active"
                 end

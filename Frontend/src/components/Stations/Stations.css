@@ -37,13 +37,18 @@
     box-shadow: 0 0 5px #3487df;
 }
 
+.stations-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
 .station-card {
-    width: 100%;
+    width: 32%; /* Adjust width to 32% to fit 3 cards in a row with some spacing */
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
-    margin:30px;
+    margin-bottom: 30px; /* Adjust margin to ensure proper spacing between rows */
 }
 
 .station-card img {
@@ -69,7 +74,6 @@
 .view-details-button {
     background-color: #3487df;
     margin-left: 5px;
-   
     color: #fff;
     border: none;
 }
@@ -77,4 +81,3 @@
 .view-details-button:hover {
     background-color: #0f60b7;
 }
-

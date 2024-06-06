@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 from .models import Appointment, Prescription
-from technician.models import Patient, Technician, ClinicalRecord
+from technician.models import Patient, Technician, ClinicalRecord, MachineLearningModel
 from specialist.models import Specialist
 from station.models import Station
 from datetime import datetime
@@ -15,7 +15,8 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from user.models import User
 class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = Appointment.objects.all()
+    queryset = Appointment.objects.all().order_by('-created_at')
+
     serializer_class = AppointmentSerializer
 
     def perform_create(self, serializer):
@@ -73,7 +74,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class PrescriptionViewSet(viewsets.ModelViewSet):
-    queryset = Prescription.objects.all()
+    queryset = Prescription.objects.all().order_by('-created_at')
     serializer_class = PrescriptionSerializer
 
 
@@ -82,7 +83,7 @@ class SpecialistPrescriptionViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Prescription.objects.filter(appointment__specialist__user_id=user.id)
+        return Prescription.objects.filter(appointment__specialist__user_id=user.id).order_by('-created_at')
 
 
 class SpecialistAppointmentAPIView(generics.ListAPIView):
@@ -90,20 +91,34 @@ class SpecialistAppointmentAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         specialist_id = self.kwargs['specialist_id']
-        return Appointment.objects.filter(specialist__user_id=specialist_id)
+        return Appointment.objects.filter(specialist__user_id=specialist_id).order_by('-created_at')
 
 
 class StationAppointmentAPIView(generics.ListAPIView):
     serializer_class = AppointmentGetSerializer
     def get_queryset(self):
         technician_user_id = self.kwargs['station_id']
-        return Appointment.objects.filter(technician__user_id=technician_user_id)
+        return Appointment.objects.filter(technician__user_id=technician_user_id).order_by('-created_at')
 
 
 class AppointmentDetailAPIView(generics.RetrieveAPIView):
     serializer_class = AppointmentDetailSerializer
-    queryset = Appointment.objects.all()
+    queryset = Appointment.objects.all().order_by('-created_at')
     lookup_field = 'id'
+
+    def get_object(self):
+        appointment = super().get_object()
+        clinical_record = appointment.clinical_record
+        machine_learning_data = MachineLearningModel.objects.filter(clinical_record=clinical_record).values_list('result', flat=True)
+        appointment.machine_learning_data = list(machine_learning_data)
+        return appointment
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        serialized_data = serializer.data
+        serialized_data['machine_learning_data'] = instance.machine_learning_data
+        return Response(serialized_data)
 
 
 # Dashboards
