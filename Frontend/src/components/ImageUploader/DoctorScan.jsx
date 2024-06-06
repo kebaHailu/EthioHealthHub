@@ -2,8 +2,10 @@ import { useState } from "react";
 import { message, Select, Modal, Button } from "antd";
 import Header from "../Shared/Header/Header";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const DoctorScan = () => {
+const [, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [error, setError] = useState(null);
@@ -30,6 +32,8 @@ const DoctorScan = () => {
       const uploadData = new FormData();
       uploadData.append("image", file);
       uploadData.append("diseaseType", formData.diseaseType);
+        setLoading(true);
+        const toastId = toast.loading("uploading image to the model...");
 
       try {
         const response = await fetch(
@@ -46,6 +50,7 @@ const DoctorScan = () => {
           setFile(null);
           setPreviewUrl(null);
           setError(null);
+          toast.dismiss(toastId);
 
           setModalData({
             result: responseData.result,
@@ -60,9 +65,11 @@ const DoctorScan = () => {
         }
       } catch (error) {
         setError("Error uploading image: " + error.message);
+        toast.dismiss(toastId);
       }
     } else {
       setError("Please select an image and disease type to upload.");
+      setLoading(false)
     }
   };
 

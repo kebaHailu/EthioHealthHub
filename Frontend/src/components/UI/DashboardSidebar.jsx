@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 
-const DashboardSidebar = () => {
+const ebar = () => {
   const [profileData, setProfileData] = useState({});
   const navigate = useNavigate();
 

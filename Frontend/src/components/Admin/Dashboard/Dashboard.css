@@ -81,3 +81,46 @@
     color: #333;
     font-weight: 600;
 }
+/* Table Row Styles */
+.table-hover tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:nth-of-type(even) {
+  background-color: #ffffff;
+}
+
+.table-hover tbody tr td {
+  font-size: 0.875rem; /* Adjust font size */
+  white-space: nowrap; /* Ensure content stays in one line */
+}
+
+.table-avatar {
+  display: flex;
+  align-items: center;
+}
+
+.table-avatar .avatar {
+  margin-right: 10px;
+}
+
+.table-avatar a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Button Styles */
+.see-more {
+  font-size: 0.75rem; /* Adjust font size */
+}
+
+/* Additional Styles for Better Appearance */
+.table th, .table td {
+  padding: 12px;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}

@@ -147,6 +147,20 @@ const ViewDetail = () => {
               <td>{appointmentData.message}</td>
             </tr>
             <tr>
+              <td>Machine learning result:</td>
+              <td>
+                {appointmentData.machine_learning_data.map((item, index) => (
+                  <span key={index}>
+                    {item}
+                    {index < appointmentData.machine_learning_data.length - 1 &&
+                      ", "}
+                    <br />
+                  </span>
+                ))}
+              </td>
+            </tr>
+
+            <tr>
               <td>Status:</td>
               <td>{appointmentData.status ? "Active" : "Inactive"}</td>
             </tr>

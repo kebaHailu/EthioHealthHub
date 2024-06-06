@@ -6,8 +6,10 @@ import Header from "../Shared/Header/Header";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Footer from "../Shared/Footer/Footer";
+import { toast } from "react-toastify";
 
 const StationAdmin = () => {
+  const [, setLoading]=useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -164,6 +166,8 @@ const StationAdmin = () => {
       const formData = new FormData();
       formData.append("email", values.email);
       formData.append("station_id", stationId);
+      setLoading(true);
+      const toastId = toast.loading("Registering local physician...");
 
       const response = await axios.post(
         "http://127.0.0.1:8000/send_email",
@@ -178,10 +182,13 @@ const StationAdmin = () => {
       const responseData = response.data;
       setTechnicians([...technicians, responseData]);
       message.success("Technician added successfully!");
+      toast.dismiss(toastId);
     } catch (error) {
       console.error("Error adding technician:", error);
       message.error("Failed to add technician!");
+      
     }
+    
   };
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
