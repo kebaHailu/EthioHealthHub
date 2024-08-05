@@ -166,6 +166,7 @@ const [, setLoading] = useState(false);
                 borderRadius: "5px",
               }}
             >
+              Result: 
               {modalData.result.split(',').map((resultItem, index) => (
                 <p key={index} style={{ margin: "5px 0" }}>
                   {resultItem}
