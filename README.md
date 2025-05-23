@@ -4,9 +4,7 @@ A comprehensive healthcare platform connecting Ethiopian healthcare services, pr
 
 ## Documentation
 
-- [System Documentation (PDF)](docs/EthioHealthHub_Documentation.pdf)
-- [API Documentation (PDF)](docs/API_Documentation.pdf)
-- [User Manual (PDF)](docs/User_Manual.pdf)
+- [System Documentation (PDF)](documentation.pdf)
 
 ## Development Guide
 
