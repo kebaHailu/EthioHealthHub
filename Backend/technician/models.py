@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from station.models import Station
-
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -93,7 +93,7 @@ class TechnicalReport(models.Model):
 class MachineLearningModel(models.Model):
 
     clinical_record = models.ForeignKey(ClinicalRecord, on_delete=models.DO_NOTHING)
-    image = models.ImageField(upload_to="images/")
+    image = CloudinaryField("images")
     result = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     accuracy = models.DecimalField(max_digits=5, decimal_places=2, default=0)

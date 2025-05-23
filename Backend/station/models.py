@@ -1,12 +1,13 @@
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 
 class Station(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    cover_image = models.ImageField(upload_to='images/', null=True, blank=True)
+    cover_image = CloudinaryField('images')
     location = models.CharField(max_length=255)
     latitude = models.CharField(max_length=300, null=True, blank=True)
     longitude = models.CharField(max_length=300, null=True, blank=True)

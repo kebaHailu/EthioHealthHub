@@ -140,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # image upload configuration
 
-
+load_dotenv()
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_NAME'),
     api_key=os.getenv('API_KEY'),
@@ -172,8 +172,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-     "http://localhost:5173",
-     "https://ethio-vertual-healthcare-center.netlify.app"
+    "https://ethio-vertual-healthcare-center.netlify.app"
     
     #  "https://musical-croissant-f0fb3d.netlify.app",
     #  "https://musical-croissant-f0fb3d.netlify.app/",
@@ -181,7 +180,8 @@ CORS_ALLOWED_ORIGINS = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'kibromhailu.5513@gmail.com'
-EMAIL_HOST_PASSWORD = 'yeye aqxo tjih pjno'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True  # Use this if your SMTP server requires TLS
-DEFAULT_FROM_EMAIL = 'kibromhailu.5513@gmail.com'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
