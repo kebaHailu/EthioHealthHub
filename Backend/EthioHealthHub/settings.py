@@ -10,9 +10,14 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 from datetime import timedelta
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,6 +138,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# image upload configuration
+
+load_dotenv()
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET')
+)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -158,8 +172,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-     "http://localhost:5173",
-     "https://ethio-vertual-healthcare-center.netlify.app"
+    "https://ethio-vertual-healthcare-center.netlify.app"
     
     #  "https://musical-croissant-f0fb3d.netlify.app",
     #  "https://musical-croissant-f0fb3d.netlify.app/",
@@ -167,7 +180,8 @@ CORS_ALLOWED_ORIGINS = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'kibromhailu.5513@gmail.com'
-EMAIL_HOST_PASSWORD = 'yeye aqxo tjih pjno'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True  # Use this if your SMTP server requires TLS
-DEFAULT_FROM_EMAIL = 'kibromhailu.5513@gmail.com'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
